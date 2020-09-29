@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "105035491003",
+    "firebase_url": "https://live-music-app-b45e2.firebaseio.com",
+    "project_id": "live-music-app-b45e2",
+    "storage_bucket": "live-music-app-b45e2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105035491003:android:9f5ed3ed849fb176a42b9e",
+        "android_client_info": {
+          "package_name": "com.livemusic.livemusic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105035491003-cmuu148788lk6ah1iaaccv6n09apdhu6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.livemusic.livemusic",
+            "certificate_hash": "d6f65453b743a1c656434c640f0458669397de03"
+          }
+        },
+        {
+          "client_id": "105035491003-t76jo54ailu446c84me9tkg4iapp36lv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvTTxszeNA2E6GIWsRRNiv1AfKZ0EekiI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105035491003-t76jo54ailu446c84me9tkg4iapp36lv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
