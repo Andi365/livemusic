@@ -8,35 +8,39 @@ class HeroTop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      //margin: EdgeInsets.all(10),
-      //padding: EdgeInsets.only(left: 10),
-      child: Stack(
-        children: [
+        width: double.infinity,
+        //margin: EdgeInsets.all(10),
+        //padding: EdgeInsets.only(left: 10),
+        child: Stack(
+          children: [
             Container(
               //alignment: Alignment.center,
-              child: Image.asset('assets/images/arctic_mokeys.jpg',
+              child: Image.asset(
+                'assets/images/arctic_mokeys.jpg',
                 height: 250,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
             ),
             Container(
-                //alignment: Alignment.bottomCenter,
+              child: Positioned(
+                left: 10,
+                bottom: 5,
                 child: Text(
                   artistNameText,
                   style: TextStyle(
                     fontSize: 28,
-                     color: Color.fromRGBO(255, 255, 255, 1),
-                    ),
-                  textAlign: TextAlign.start,
+                    color: Color.fromRGBO(193, 160, 80, 1),
                   ),
                 ),
-          ],)
-      /*Text(
+              ),
+            ),
+          ],
+        )
+        /*Text(
         artistNameText, 
         
         ), */
-    );
+        );
   }
 }

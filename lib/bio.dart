@@ -9,21 +9,11 @@ class Bio extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.white,
-          width: 5
-        )
-      ),
-      child: 
-        Text(
-          descText,
+      child: Text(descText,
           style: TextStyle(
-            fontSize: 14,
-            color: Color.fromRGBO(255, 255, 255, 1), 
-            backgroundColor: Color.fromRGBO(20, 20, 20, 1)
-          )
-        ),
+              fontSize: 12,
+              color: Color.fromRGBO(255, 255, 255, 1),
+              backgroundColor: Color.fromRGBO(20, 20, 20, 1))),
     );
   }
 }
