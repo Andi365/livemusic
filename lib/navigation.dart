@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Navigation extends StatelessWidget {
+  final Function onItemTapped;
+  final int selectedItem;
+
+  Navigation(this.onItemTapped, this.selectedItem);
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -25,8 +30,10 @@ class Navigation extends StatelessWidget {
           icon: Icon(Icons.portrait),
           title: Text('Profile'),
           backgroundColor: Color.fromRGBO(48, 44, 45, 1),
-        )
+        ),
       ],
+      currentIndex: selectedItem,
+      onTap: onItemTapped,
     );
   }
 }
