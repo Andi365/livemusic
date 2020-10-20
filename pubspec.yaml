@@ -24,14 +24,20 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #provider
+  provider: ^4.3.2+2
+
   firebase_core: ^0.5.0
 
   # Database
-  #cloud_firestore: 
+  cloud_firestore: ^0.14.1 
 
   # User Auth
   firebase_auth: ^0.18.0+1
   google_sign_in: ^4.5.3
+
+  #Firebase Storage
+  firebase_storage: ^4.0.1
 
   # Analytics
   #firebase_analytics:

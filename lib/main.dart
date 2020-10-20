@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:livemusic/notifier/artist_notifier.dart';
+import 'package:provider/provider.dart';
 
-import './loginpage.dart';
+import 'view/loginpage.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(
+      ChangeNotifierProvider(
+        create: (context) => ArtistNotifier(),
+        child: MyApp(),
+      ),
+    );
 
 class MyApp extends StatefulWidget {
   @override
@@ -23,7 +28,6 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       home: LoginPage(),
-
     );
   }
 }

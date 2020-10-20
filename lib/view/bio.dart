@@ -17,16 +17,16 @@ class Bio extends StatelessWidget {
               border: Border.all(10)
             ),*/
             child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Biography',
-              style: TextStyle(
-                fontSize: 24,
-                color: Color.fromRGBO(193, 160, 80, 1),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Biography',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Color.fromRGBO(193, 160, 80, 1),
+                ),
+                textAlign: TextAlign.left,
               ),
-            textAlign: TextAlign.left,
             ),
-          ),
           ),
           Text(
             descText,
