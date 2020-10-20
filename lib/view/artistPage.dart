@@ -42,12 +42,10 @@ class _ArtistPage extends State<ArtistPage> {
   @override
   Widget build(BuildContext context) {
     ArtistNotifier artistNotifier = Provider.of<ArtistNotifier>(context);
-    var _artist = 'Arctic Monkeys';
+    var _artist = artistNotifier.currentArtist.name;
 
-    //var _artist = 'Arctic Monkeys';
-
-    var _desc =
-        'Let\'s go down, down low down Where I know I should not go Oh, and she thinks she\'s the one But she\'s just one in twenty-four And just cause everybody\'s doing it Does that mean that I can, too?';
+    var _desc = artistNotifier.currentArtist.bio;
+        //'Let\'s go down, down low down Where I know I should not go Oh, and she thinks she\'s the one But she\'s just one in twenty-four And just cause everybody\'s doing it Does that mean that I can, too?';
 
     return MaterialApp(
       theme: ThemeData(

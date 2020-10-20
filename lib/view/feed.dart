@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../api/artist_api.dart';
 import 'navigation.dart';
+import 'artistPage.dart';
 
 class Feed extends StatefulWidget {
   @override
@@ -38,6 +39,13 @@ class _FeedState extends State<Feed> {
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
               title: Text(artistNotifier.artistList[index].name),
+              onTap: () {
+                artistNotifier.currentArtist = artistNotifier.artistList[index];
+                Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) {
+                  return ArtistPage();
+                },)
+              );},
             );
           },
           separatorBuilder: (BuildContext context, int index) {
