@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 
-class ProfilePage extends StatelessWidget{
+class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -8,12 +8,11 @@ class ProfilePage extends StatelessWidget{
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.redAccent, Colors.pinkAccent],
-              )
-            ),
+                gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.redAccent, Colors.pinkAccent],
+            )),
           )
         ],
       ),
