@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import 'heroTop.dart';
 import 'bio.dart';
-import 'navigation.dart';
 import 'members.dart';
 import 'rating.dart';
 
@@ -51,3 +50,5 @@ class _ArtistPage extends State<ArtistPage> {
     );
   }
 }
+
+class Artistpage {}

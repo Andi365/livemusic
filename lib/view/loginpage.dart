@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:livemusic/view/navigation.dart';
 
 import 'sign_in.dart';
-import 'artistPage.dart';
-import 'feed.dart';
 
 class LoginPage extends StatefulWidget {
   @override

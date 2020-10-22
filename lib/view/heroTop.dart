@@ -21,11 +21,14 @@ class HeroTop extends StatelessWidget {
         children: [
           Container(
             //alignment: Alignment.center,
-            child: Image.network(
-              artistNotifier.currentArtist.image,
-              height: 250,
-              width: double.infinity,
-              fit: BoxFit.cover,
+            child: Hero(
+              tag: Text('Hello'),
+              child: Image.network(
+                artistNotifier.currentArtist.image,
+                height: 250,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Container(
