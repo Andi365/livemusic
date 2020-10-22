@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
+
+FirebaseAuth auth = FirebaseAuth.instance;
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -25,15 +28,15 @@ class ProfilePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          "https://www.carverpump.com/wp-content/uploads/2016/09/7269033-Portrait-of-happy-smiling-man-isolated-on-white-Stock-Photo-man-men-face-e1481656222290.jpg"),
+                      backgroundImage:
+                          NetworkImage(auth.currentUser.photoURL.toString()),
                       radius: 50.0,
                     ),
                     SizedBox(
                       height: 10.0,
                     ),
                     Text(
-                      "Kevin James",
+                      "" + auth.currentUser.displayName.toString(),
                       style: TextStyle(
                           fontSize: 22.0,
                           color: Color.fromRGBO(193, 160, 80, 1)),
