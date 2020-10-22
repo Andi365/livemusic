@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:livemusic/view/navigation.dart';
 
 import 'sign_in.dart';
 import 'artistPage.dart';
@@ -39,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) {
-                  return Feed();
+                  return Navigation();
                 },
               ),
             );

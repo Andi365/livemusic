@@ -16,7 +16,7 @@ class MembersIndv extends StatelessWidget {
         children: [
           Container(
             margin: EdgeInsets.fromLTRB(0, 0, 0, 3),
-            child: Image.asset(
+            child: Image.network(
               photoPath,
               height: 80,
               width: 55,

@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
+import 'package:livemusic/notifier/navigation_notifier.dart';
 import 'package:provider/provider.dart';
 
 import 'view/loginpage.dart';
 
 void main() => runApp(
-      ChangeNotifierProvider(
-        create: (context) => ArtistNotifier(),
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => ArtistNotifier(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => NavigationNotifer(),
+          ),
+        ],
         child: MyApp(),
       ),
     );

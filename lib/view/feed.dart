@@ -5,7 +5,6 @@ import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:provider/provider.dart';
 
 import '../api/artist_api.dart';
-import 'navigation.dart';
 import 'artistPage.dart';
 
 class Feed extends StatefulWidget {
@@ -14,15 +13,6 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
-  var _selectedItem = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedItem = index;
-    });
-    print(_selectedItem);
-  }
-
   @override
   void initState() {
     ArtistNotifier artistNotifier =
@@ -42,10 +32,11 @@ class _FeedState extends State<Feed> {
               onTap: () {
                 artistNotifier.currentArtist = artistNotifier.artistList[index];
                 Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) {
-                  return ArtistPage();
-                },)
-              );},
+                  builder: (context) {
+                    return ArtistPage();
+                  },
+                ));
+              },
             );
           },
           separatorBuilder: (BuildContext context, int index) {
@@ -54,7 +45,6 @@ class _FeedState extends State<Feed> {
             );
           },
           itemCount: artistNotifier.artistList.length),
-      bottomNavigationBar: Navigation(_onItemTapped, 1),
     );
   }
 }

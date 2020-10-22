@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:provider/provider.dart';
@@ -18,34 +16,12 @@ class ArtistPage extends StatefulWidget {
 }
 
 class _ArtistPage extends State<ArtistPage> {
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedItem = index;
-    });
-    print(_selectedItem);
-  }
-
-  void _answerChosen() {
-    setState(() {
-      _questionIndex++;
-    });
-    print(_questionIndex);
-  }
-
-  var _questionIndex = 0;
-  var _selectedItem = 0;
-  CollectionReference artist = FirebaseFirestore.instance.collection('Artist');
-  final firestoreInstance = FirebaseFirestore.instance;
-  User user = FirebaseAuth.instance.currentUser;
-  FirebaseAuth auth = FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
     ArtistNotifier artistNotifier = Provider.of<ArtistNotifier>(context);
-    var _artist = artistNotifier.currentArtist.name;
 
+    var _artist = artistNotifier.currentArtist.name;
     var _desc = artistNotifier.currentArtist.bio;
-        //'Let\'s go down, down low down Where I know I should not go Oh, and she thinks she\'s the one But she\'s just one in twenty-four And just cause everybody\'s doing it Does that mean that I can, too?';
 
     return MaterialApp(
       theme: ThemeData(
@@ -55,7 +31,6 @@ class _ArtistPage extends State<ArtistPage> {
         backgroundColor: Color.fromRGBO(20, 20, 20, 1),
         appBar: AppBar(
           leading: Icon(Icons.arrow_back),
-          //title: Text(''),
           actions: [
             Icon(Icons.share),
             Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
@@ -68,15 +43,10 @@ class _ArtistPage extends State<ArtistPage> {
               HeroTop(_artist.toString()),
               Rating(7.5, 3543),
               Bio(_desc),
-              /*RaisedButton(
-                child: Text('test'),
-                onPressed: _answerChosen,
-              ),*/
               Members()
             ],
           ),
         ),
-        bottomNavigationBar: Navigation(_onItemTapped, _selectedItem),
       ),
     );
   }

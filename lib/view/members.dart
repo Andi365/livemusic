@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:livemusic/notifier/artist_notifier.dart';
+import 'package:provider/provider.dart';
 
 import 'membersIndv.dart';
 
 class Members extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ArtistNotifier artistNotifier = Provider.of<ArtistNotifier>(context);
     return Column(
       children: [
         Container(
@@ -30,28 +34,19 @@ class Members extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(5, 1, 5, 1),
           height: 120,
           width: double.infinity,
-          child: ListView(
+          child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            children: [
-              MembersIndv('assets/images/alex_turner.png', 'Alex Turner'),
-              MembersIndv('assets/images/jamie_cook.jpg', 'Jamie Cook'),
-              MembersIndv('assets/images/nick_omalley.jpg', 'Nick O\'Malley'),
-              MembersIndv('assets/images/nick_omalley.jpg', 'Nick O\'Malley'),
-              MembersIndv('assets/images/nick_omalley.jpg', 'Nick O\'Malley'),
-              MembersIndv('assets/images/nick_omalley.jpg', 'Nick O\'Malley'),
-            ],
-            //itemCount: 5,
-            /*itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                        leading: Icon(Icons.list),
-                        trailing: Text(
-                          "GFG",
-                          style: TextStyle(color: Colors.green, fontSize: 15),
-                        ),
-                        title: Text("List item $index"));
-                  },*/
+            itemBuilder: (context, index) {
+              return MembersIndv(
+                (artistNotifier.currentArtist.members
+                    .elementAt(index))['image'],
+                (artistNotifier.currentArtist.members
+                    .elementAt(index))['member'],
+              );
+            },
+            itemCount: artistNotifier.currentArtist.members.length,
           ),
-        )
+        ),
       ],
     );
   }
