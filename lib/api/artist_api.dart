@@ -9,7 +9,8 @@ getArtists(ArtistNotifier artistNotifier) async {
   List<Artist> _artist = [];
 
   snapshot.docs.forEach((document) {
-    Artist artist = Artist.fromMap(document.data());
+    print('document id: ${document.id}');
+    Artist artist = Artist.fromMap(document.id, document.data());
     _artist.add(artist);
   });
 

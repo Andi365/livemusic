@@ -1,5 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:livemusic/colors.dart';
 
 class Bio extends StatelessWidget {
   final String descText;
@@ -19,7 +20,7 @@ class Bio extends StatelessWidget {
             'Biography',
             style: TextStyle(
               fontSize: 18,
-              color: Color.fromRGBO(193, 160, 80, 1),
+              color: primaryColor,
             ),
             textAlign: TextAlign.left,
           ),
@@ -32,7 +33,7 @@ class Bio extends StatelessWidget {
           style: TextStyle(
             fontSize: 12,
             color: Color.fromRGBO(255, 255, 255, 1),
-            backgroundColor: Color.fromRGBO(20, 20, 20, 1),
+            backgroundColor: backgroundColor,
           ),
         ),
         expanded: Text(
@@ -41,7 +42,7 @@ class Bio extends StatelessWidget {
           style: TextStyle(
             fontSize: 12,
             color: Color.fromRGBO(255, 255, 255, 1),
-            backgroundColor: Color.fromRGBO(20, 20, 20, 1),
+            backgroundColor: backgroundColor,
           ),
         ),
       ),

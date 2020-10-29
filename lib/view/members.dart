@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:livemusic/colors.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -17,8 +18,7 @@ class Members extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               'Members',
-              style: TextStyle(
-                  fontSize: 18, color: Color.fromRGBO(193, 160, 80, 1)),
+              style: TextStyle(fontSize: 18, color: primaryColor),
             ),
           ),
         ),
@@ -27,7 +27,7 @@ class Members extends StatelessWidget {
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
               width: 1,
-              color: Color.fromRGBO(193, 160, 80, 1),
+              color: primaryColor,
             ),
           ),
           margin: EdgeInsets.fromLTRB(20, 0, 20, 20),

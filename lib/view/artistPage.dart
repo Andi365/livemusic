@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:livemusic/colors.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -18,18 +19,24 @@ class _ArtistPage extends State<ArtistPage> {
   @override
   Widget build(BuildContext context) {
     ArtistNotifier artistNotifier = Provider.of<ArtistNotifier>(context);
-
     var _artist = artistNotifier.currentArtist.name;
     var _desc = artistNotifier.currentArtist.bio;
+
+    print('artist id: ${artistNotifier.currentArtist.id}');
 
     return MaterialApp(
       theme: ThemeData(
         fontFamily: 'Montserrat',
       ),
       home: Scaffold(
-        backgroundColor: Color.fromRGBO(20, 20, 20, 1),
+        backgroundColor: backgroundColor,
         appBar: AppBar(
-          leading: Icon(Icons.arrow_back),
+          leading: InkWell(
+            child: Icon(Icons.arrow_back),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
           actions: [
             Icon(Icons.share),
             Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
@@ -50,5 +57,3 @@ class _ArtistPage extends State<ArtistPage> {
     );
   }
 }
-
-class Artistpage {}
