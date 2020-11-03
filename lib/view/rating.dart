@@ -4,7 +4,7 @@ import 'package:livemusic/colors.dart';
 import 'package:livemusic/view/votePage.dart';
 
 class Rating extends StatelessWidget {
-  final double rating;
+  var rating;
   String ratingString;
   final int numRates;
   bool rated = false;

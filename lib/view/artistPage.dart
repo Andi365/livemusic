@@ -21,6 +21,7 @@ class _ArtistPage extends State<ArtistPage> {
     ArtistNotifier artistNotifier = Provider.of<ArtistNotifier>(context);
     var _artist = artistNotifier.currentArtist.name;
     var _desc = artistNotifier.currentArtist.bio;
+    var _rating = artistNotifier.currentArtist.rating;
 
     print('artist id: ${artistNotifier.currentArtist.id}');
 
@@ -47,7 +48,7 @@ class _ArtistPage extends State<ArtistPage> {
           child: Column(
             children: [
               HeroTop(_artist.toString()),
-              Rating(7.5, 3543),
+              Rating(_rating, 3543),
               Bio(_desc),
               Members()
             ],
