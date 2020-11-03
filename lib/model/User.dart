@@ -11,6 +11,7 @@ class User {
   bool isAnonymous = auth.currentUser.isAnonymous;
   String phone = auth.currentUser.phoneNumber;
   String photoUrl = auth.currentUser.photoURL;
+  Map<String, dynamic> indvReviews;
 
   User get user => _user;
 }

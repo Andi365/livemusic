@@ -1,209 +1,210 @@
+import 'package:flutter/material.dart';
+import 'dart:math' as math;
+
+import 'package:livemusic/colors.dart';
+import 'package:livemusic/model/User.dart';
+import 'package:livemusic/notifier/rating_notifier.dart';
+import 'package:livemusic/api/rating_api.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import "package:flutter/material.dart";
 
-FirebaseAuth auth = FirebaseAuth.instance;
+class ProfilePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _Profilepage();
+  }
+}
 
-class ProfilePage extends StatelessWidget {
+class _Profilepage extends State<ProfilePage> {
+  @override
+  void initState() {
+    RatingNotifier ratingNotifier =
+        Provider.of<RatingNotifier>(context, listen: false);
+    if (ratingNotifier.ratingList.isEmpty) {
+      getIndvRatings(auth.currentUser.uid, ratingNotifier);
+      print('init list: ${ratingNotifier.ratingList.toString()}');
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    RatingNotifier ratingNotifier = Provider.of<RatingNotifier>(context);
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color.fromRGBO(20, 20, 20, 1),
-                Color.fromRGBO(20, 20, 20, 1)
-              ],
-            )),
-            child: Container(
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        leading: InkWell(
+          child: Icon(Icons.arrow_back),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+        backgroundColor: backgroundColor,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
               width: double.infinity,
-              height: 350.0,
               child: Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundImage:
-                          NetworkImage(auth.currentUser.photoURL.toString()),
-                      radius: 50.0,
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Text(
-                      "" + auth.currentUser.displayName.toString(),
-                      style: TextStyle(
-                          fontSize: 22.0,
-                          color: Color.fromRGBO(193, 160, 80, 1)),
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Card(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
-                      clipBehavior: Clip.antiAlias,
-                      color: Colors.white,
-                      elevation: 8.0,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 22.0, horizontal: 8.0),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                                child: Column(
-                              children: <Widget>[
-                                Text(
-                                  "Ratings",
-                                  style: TextStyle(
-                                    color: Color.fromRGBO(193, 160, 80, 1),
-                                    fontSize: 22.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                Text(
-                                  "54",
-                                  style: TextStyle(
-                                    color: Color.fromRGBO(193, 160, 80, 1),
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                )
-                              ],
-                            )),
-                            Expanded(
-                                child: Column(
-                              children: <Widget>[
-                                Text(
-                                  "Followers",
-                                  style: TextStyle(
-                                    color: Color.fromRGBO(193, 160, 80, 1),
-                                    fontSize: 22.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                Text(
-                                  "28.6k",
-                                  style: TextStyle(
-                                    color: Color.fromRGBO(193, 160, 80, 1),
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                )
-                              ],
-                            )),
-                            Expanded(
-                                child: Column(
-                              children: <Widget>[
-                                Text(
-                                  "Follow",
-                                  style: TextStyle(
-                                    color: Color.fromRGBO(193, 160, 80, 1),
-                                    fontSize: 22.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                Text(
-                                  "234",
-                                  style: TextStyle(
-                                    color: Color.fromRGBO(193, 160, 80, 1),
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                )
-                              ],
-                            )),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
+                heightFactor: 1.5,
+                child: CircleAvatar(
+                  backgroundImage:
+                      NetworkImage(auth.currentUser.photoURL.toString()),
+                  radius: 50.0,
                 ),
               ),
             ),
-          ),
-          Container(
-              child: Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("Bio",
-                    style: TextStyle(
-                      color: Color.fromRGBO(193, 160, 80, 1),
-                      fontStyle: FontStyle.normal,
-                      fontSize: 28.0,
-                    )),
-                SizedBox(
-                  height: 10.0,
+            Container(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+              child: Text(
+                auth.currentUser.displayName,
+                style: TextStyle(
+                  fontSize: 22.0,
+                  color: Color.fromRGBO(193, 160, 80, 1),
                 ),
-                Text(
-                  "This is the bio.",
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(5),
+              child: Card(
+                color: primaryWhiteColor,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Ratings',
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '54',
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 18,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Followers',
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '25',
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 18,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Following',
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '20',
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 18,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 5, 0, 5),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'My Reviews',
                   style: TextStyle(
-                    fontSize: 22.0,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.black,
-                    letterSpacing: 2.0,
+                    color: primaryColor,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+            CustomScrollView(
+              shrinkWrap: true,
+              slivers: [
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 1),
+                            ),
+                            margin: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                Container(
+                                  child: Expanded(
+                                    child: Text(
+                                      '${ratingNotifier.ratingList[index].rating.toString()}/10',
+                                      style: TextStyle(
+                                          color: primaryColor, fontSize: 20),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: Expanded(
+                                    child: Text(
+                                      ratingNotifier.ratingList[index].name,
+                                      style: TextStyle(
+                                          color: primaryWhiteColor,
+                                          fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      );
+                    },
+                    childCount: ratingNotifier.ratingList.length,
                   ),
                 ),
               ],
             ),
-          )),
-          SizedBox(
-            height: 10.0,
-          ),
-          Container(
-              width: 300.0,
-              child: RaisedButton(
-                onPressed: () {},
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(80.0)),
-                elevation: 0.0,
-                padding: EdgeInsets.all(0.0),
-                child: Ink(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [
-                        Color.fromRGBO(193, 160, 80, 1),
-                        Color.fromRGBO(110, 90, 46, 1)
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  child: Container(
-                    constraints:
-                        BoxConstraints(maxWidth: 300.0, minHeight: 50.0),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Follow user",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24.0,
-                          letterSpacing: 2.0,
-                          fontWeight: FontWeight.w300),
-                    ),
-                  ),
-                ),
-              ))
-        ],
+          ],
+        ),
       ),
     );
   }

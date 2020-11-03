@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,7 +31,7 @@ class _VotePage extends State<VotePage> {
       _rating = ratingNotifier.rating;
     } else {
       _rating = Rating();
-      _rating.artistId = artistNotifier.currentArtist.name;
+      _rating.wasCreated = Timestamp.now();
     }
     super.initState();
   }
@@ -49,7 +50,7 @@ class _VotePage extends State<VotePage> {
 
     print('map: ${_rating.toMap()}');
 
-    print('ArtistID is: ${_rating.artistId}');
+    print('timeStamp is: ${_rating.wasCreated}');
     print('UserID is: ${_rating.userId}');
     print('Rating is: ${_rating.rating}');
   }
