@@ -24,6 +24,7 @@ class _FeedState extends State<Feed> {
 
   @override
   Widget build(BuildContext context) {
+    int _index;
     ArtistNotifier artistNotifier = Provider.of<ArtistNotifier>(context);
     return Scaffold(
       backgroundColor: Color.fromRGBO(20, 20, 20, 1),
@@ -32,46 +33,45 @@ class _FeedState extends State<Feed> {
           itemCount: artistNotifier.artistList.length,
           gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, crossAxisSpacing: 4, mainAxisSpacing: 4),
-          itemBuilder: (context, index) {
-            return Hero(
-              tag: Text('Hello'),
-              child: InkWell(
-                child: Container(
-                  margin: EdgeInsets.all(5),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(5, 0, 5, 3),
+          itemBuilder: (context, _index) {
+            return InkWell(
+              child: Container(
+                margin: EdgeInsets.all(5),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.fromLTRB(5, 0, 5, 3),
+                      child: Hero(
+                        tag: 'dash$_index',
                         child: Image.network(
-                          artistNotifier.artistList[index].image,
+                          artistNotifier.artistList[_index].image,
                           height: 100,
                           width: 200,
                           fit: BoxFit.fill,
                         ),
                       ),
-                      Text(
-                        artistNotifier.artistList[index].name,
-                        style: TextStyle(
-                            color: Color.fromRGBO(193, 160, 80, 1),
-                            fontSize: 16),
-                      ),
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  artistNotifier.currentArtist =
-                      artistNotifier.artistList[index];
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return ArtistPage();
-                      },
                     ),
-                  );
-                },
+                    Text(
+                      artistNotifier.artistList[_index].name,
+                      style: TextStyle(
+                          color: Color.fromRGBO(193, 160, 80, 1), fontSize: 16),
+                    ),
+                  ],
+                ),
               ),
+              onTap: () {
+                artistNotifier.currentArtist =
+                    artistNotifier.artistList[_index];
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ArtistPage(_index);
+                    },
+                  ),
+                );
+              },
             );
           },
           //shrinkWrap: true,

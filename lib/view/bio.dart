@@ -9,40 +9,42 @@ class Bio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(20),
-      child: ExpandablePanel(
-        // ignore: deprecated_member_use
-        iconColor: Color.fromRGBO(242, 153, 74, 1),
-        header: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Biography',
-            style: TextStyle(
-              fontSize: 18,
-              color: primaryColor,
+    return SliverToBoxAdapter(
+      child: Container(
+        margin: EdgeInsets.all(20),
+        child: ExpandablePanel(
+          // ignore: deprecated_member_use
+          iconColor: Color.fromRGBO(242, 153, 74, 1),
+          header: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Biography',
+              style: TextStyle(
+                fontSize: 18,
+                color: primaryColor,
+              ),
+              textAlign: TextAlign.left,
             ),
-            textAlign: TextAlign.left,
           ),
-        ),
-        collapsed: Text(
-          descText,
-          softWrap: true,
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: 12,
-            color: Color.fromRGBO(255, 255, 255, 1),
-            backgroundColor: backgroundColor,
+          collapsed: Text(
+            descText,
+            softWrap: true,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 12,
+              color: Color.fromRGBO(255, 255, 255, 1),
+              backgroundColor: backgroundColor,
+            ),
           ),
-        ),
-        expanded: Text(
-          descText,
-          softWrap: true,
-          style: TextStyle(
-            fontSize: 12,
-            color: Color.fromRGBO(255, 255, 255, 1),
-            backgroundColor: backgroundColor,
+          expanded: Text(
+            descText,
+            softWrap: true,
+            style: TextStyle(
+              fontSize: 12,
+              color: Color.fromRGBO(255, 255, 255, 1),
+              backgroundColor: backgroundColor,
+            ),
           ),
         ),
       ),
