@@ -23,7 +23,6 @@ class _ArtistPage extends State<ArtistPage> {
   @override
   Widget build(BuildContext context) {
     ArtistNotifier artistNotifier = Provider.of<ArtistNotifier>(context);
-    var _artist = artistNotifier.currentArtist.name;
     var _desc = artistNotifier.currentArtist.bio;
     var _rating = artistNotifier.currentArtist.rating;
     int _index = widget.index;
