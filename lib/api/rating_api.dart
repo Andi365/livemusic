@@ -47,7 +47,22 @@ uploadRating(
 }
 
 getIndvRatings(String userId, RatingNotifier ratingNotifier) async {
+  //getArtists(ArtistNotifier artistNotifier) async {
+  QuerySnapshot snapshot =
+      await FirebaseFirestore.instance.collection('rating').get();
+
   List<Rating> _ratings = [];
+
+  snapshot.docs.forEach((document) {
+    print('document id: ${document.id}');
+    print('data: ${document.data().toString()}');
+    Rating rating = Rating.fromMap(document.data());
+    _ratings.add(rating);
+  });
+
+//}
+
+  /*List<Rating> _ratings = [];
 
   print('userId: ${userId}');
 
@@ -62,7 +77,7 @@ getIndvRatings(String userId, RatingNotifier ratingNotifier) async {
     Rating rating = Rating.fromMap(document.data());
     print('review is: ${rating.toMap()}');
     _ratings.add(rating);
-  });
+  });*/
 
   ratingNotifier.ratingList = _ratings;
 }

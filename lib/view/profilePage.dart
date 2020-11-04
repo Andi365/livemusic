@@ -185,7 +185,7 @@ class _Profilepage extends State<ProfilePage> {
                           Container(
                             child: Expanded(
                               child: Text(
-                                ratingNotifier.ratingList[index].name,
+                                ratingNotifier.ratingList[index].artistId,
                                 style: TextStyle(
                                     color: primaryWhiteColor, fontSize: 16),
                               ),

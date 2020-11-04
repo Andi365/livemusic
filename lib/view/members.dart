@@ -10,8 +10,7 @@ class Members extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ArtistNotifier artistNotifier = Provider.of<ArtistNotifier>(context);
-    return SliverToBoxAdapter(
-      child: Column(
+    return  Column(
         children: [
           Container(
             padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
@@ -48,8 +47,7 @@ class Members extends StatelessWidget {
               itemCount: artistNotifier.currentArtist.members.length,
             ),
           ),
-        ],
-      ),
+        ],   
     );
   }
 }

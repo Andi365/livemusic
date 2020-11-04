@@ -9,8 +9,7 @@ class Bio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Container(
+    return Container(
         margin: EdgeInsets.all(20),
         child: ExpandablePanel(
           // ignore: deprecated_member_use
@@ -47,7 +46,6 @@ class Bio extends StatelessWidget {
             ),
           ),
         ),
-      ),
     );
   }
 }

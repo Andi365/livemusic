@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:livemusic/model/User.dart';
 
 class Rating {
-  String name;
   int rating;
+  String artistName;
+  Timestamp concertId;
+  String artistId;
   String userId = User().id;
   var wasCreated;
 
@@ -11,16 +13,20 @@ class Rating {
   Rating();
 
   Rating.fromMap(Map<String, dynamic> data) {
-    name = data['name'];
     rating = data['rating'];
+    artistName = data['artistName'];
+    concertId = data['concertId'];
+    artistId = data['artistId'];
     userId = data['userId'];
     wasCreated = data['wasCreated'];
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'name': name,
       'rating': rating,
+      'artistName': artistName,
+      'concertId': concertId,
+      'artistId': artistId,
       'userId': userId,
       'wasCreated': wasCreated
     };

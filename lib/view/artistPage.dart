@@ -36,32 +36,50 @@ class _ArtistPage extends State<ArtistPage> {
       ),
       home: Scaffold(
         backgroundColor: backgroundColor,
-        body: CustomScrollView(
-          shrinkWrap: true,
-          slivers: [
-            SliverAppBar(
-              backgroundColor: backgroundColor,
-              leading: InkWell(
-                child: Icon(Icons.arrow_back),
-                onTap: () {
-                  Navigator.pop(context);
-                },
+        body: SafeArea(
+          child: DefaultTabController(length: 2, child: NestedScrollView(headerSliverBuilder: (context, _) {
+            return [SliverAppBar(
+                backgroundColor: backgroundColor,
+                leading: InkWell(
+                  child: Icon(Icons.arrow_back),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                expandedHeight: 200,
+                flexibleSpace: FlexibleSpaceBar(
+                  background:
+                      HeroTop(index: _index, artistNotifier: artistNotifier),
+                ),
+                actions: [
+                  Icon(Icons.share),
+                  Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                ],
               ),
-              expandedHeight: 200,
-              flexibleSpace: FlexibleSpaceBar(
-                background:
-                    HeroTop(index: _index, artistNotifier: artistNotifier),
+              Rating(_rating, 3543)];
+          }, body: Column(
+            children: [
+              TabBar(
+                tabs: [
+                  Tab(text: 'Info'), 
+                  Tab(text: 'Concerts'),
+                ],
               ),
-              actions: [
-                Icon(Icons.share),
-                Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-              ],
-            ),
-            Rating(_rating, 3543),
-            Bio(_desc),
-            Members(),
-          ],
+              Expanded(child: TabBarView(children: [
+                  SingleChildScrollView(child: Column(
+                      children: [
+                        Bio(_desc),
+                        Members(),
+                      ],
+                    ),
+                  ),
+                  Text('data'),
+                ],),),
+            ],
+          ),
         ),
+        ),
+      ),
       ),
     );
   }
