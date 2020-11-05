@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:livemusic/api/concert_api.dart';
 import 'package:livemusic/colors.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
+import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:provider/provider.dart';
 
 import 'bio.dart';
@@ -21,13 +23,29 @@ class ArtistPage extends StatefulWidget {
 
 class _ArtistPage extends State<ArtistPage> {
   @override
+  void initState() {
+    ArtistNotifier artistNotifier =
+        Provider.of<ArtistNotifier>(context, listen: false);
+    ConcertNotifier concertNotifier =
+        Provider.of<ConcertNotifier>(context, listen: false);
+    getConcerts(artistNotifier.currentArtist.id, concertNotifier);
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     ArtistNotifier artistNotifier = Provider.of<ArtistNotifier>(context);
+    ConcertNotifier concertNotifier = Provider.of<ConcertNotifier>(context);
     var _desc = artistNotifier.currentArtist.bio;
     var _rating = artistNotifier.currentArtist.rating;
     int _index = widget.index;
+    /*if (artistNotifier.currentArtist.id != artistId) {
+      getConcerts(artistNotifier.currentArtist.id, concertNotifier);
+    }*/
 
     print('artist id: ${artistNotifier.currentArtist.id}');
+    print('concert data: ${concertNotifier.concertList.toString()}');
 
     return MaterialApp(
       theme: ThemeData(
@@ -36,50 +54,94 @@ class _ArtistPage extends State<ArtistPage> {
       home: Scaffold(
         backgroundColor: backgroundColor,
         body: SafeArea(
-          child: DefaultTabController(length: 2, child: NestedScrollView(headerSliverBuilder: (context, _) {
-            return [SliverAppBar(
-                backgroundColor: backgroundColor,
-                leading: InkWell(
-                  child: Icon(Icons.arrow_back),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                expandedHeight: 200,
-                flexibleSpace: FlexibleSpaceBar(
-                  background:
-                      HeroTop(index: _index, artistNotifier: artistNotifier),
-                ),
-                actions: [
-                  Icon(Icons.share),
-                  Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                ],
-              ),
-              Rating(_rating, 3543)];
-          }, body: Column(
-            children: [
-              TabBar(
-                tabs: [
-                  Tab(text: 'Info'), 
-                  Tab(text: 'Concerts'),
-                ],
-              ),
-              Expanded(child: TabBarView(children: [
-                  SingleChildScrollView(child: Column(
+          child: DefaultTabController(
+            length: 2,
+            child: NestedScrollView(
+              headerSliverBuilder: (context, _) {
+                return [
+                  MySliverAppBar(index: _index, artistNotifier: artistNotifier),
+                  Rating(_rating, 3543)
+                ];
+              },
+              body: Column(
+                children: [
+                  TabBar(
+                    indicatorColor: primaryColor,
+                    labelColor: primaryColor,
+                    unselectedLabelColor: primaryWhiteColor,
+                    labelStyle: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    tabs: [
+                      Tab(text: 'Info'),
+                      Tab(text: 'Concerts'),
+                    ],
+                  ),
+                  Expanded(
+                    child: TabBarView(
                       children: [
-                        Bio(_desc),
-                        Members(),
+                        SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Bio(_desc),
+                              Members(),
+                            ],
+                          ),
+                        ),
+                        ListView.separated(
+                          separatorBuilder: (_, __) => Divider(height: 0.5),
+                          itemCount: concertNotifier.concertList.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                                child: Text(
+                              concertNotifier.concertList[index].name,
+                              style: TextStyle(color: primaryColor),
+                            ));
+                          },
+                        ),
                       ],
                     ),
                   ),
-                  Text('data'),
-                ],),),
-            ],
+                ],
+              ),
+            ),
           ),
         ),
-        ),
       ),
+    );
+  }
+}
+
+class MySliverAppBar extends StatelessWidget {
+  const MySliverAppBar({
+    Key key,
+    @required int index,
+    @required this.artistNotifier,
+  })  : _index = index,
+        super(key: key);
+
+  final int _index;
+  final ArtistNotifier artistNotifier;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      backgroundColor: backgroundColor,
+      leading: InkWell(
+        child: Icon(Icons.arrow_back),
+        onTap: () {
+          Navigator.pop(context);
+        },
       ),
+      expandedHeight: 200,
+      flexibleSpace: FlexibleSpaceBar(
+        background: HeroTop(index: _index, artistNotifier: artistNotifier),
+      ),
+      actions: [
+        Icon(Icons.share),
+        Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+      ],
     );
   }
 }

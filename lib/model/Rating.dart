@@ -4,7 +4,7 @@ import 'package:livemusic/model/User.dart';
 class Rating {
   int rating;
   String artistName;
-  Timestamp concertId;
+  Timestamp date;
   String artistId;
   String userId = User().id;
   var wasCreated;
@@ -15,9 +15,10 @@ class Rating {
   Rating.fromMap(Map<String, dynamic> data) {
     rating = data['rating'];
     artistName = data['artistName'];
-    concertId = data['concertId'];
+    date = data['date'];
     artistId = data['artistId'];
     userId = data['userId'];
+    print(date.seconds);
     wasCreated = data['wasCreated'];
   }
 
@@ -25,7 +26,7 @@ class Rating {
     return {
       'rating': rating,
       'artistName': artistName,
-      'concertId': concertId,
+      'date': date,
       'artistId': artistId,
       'userId': userId,
       'wasCreated': wasCreated

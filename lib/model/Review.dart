@@ -12,6 +12,10 @@ class Review {
   }
 
   Map<String, dynamic> toMap() {
-    return {'rating': rating, 'userId': userId, 'wasCreated': wasCreated};
+    return {
+      'rating': rating,
+      'userId': userId,
+      'wasCreated': wasCreated,
+    };
   }
 }
