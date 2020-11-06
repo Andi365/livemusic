@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -17,10 +19,10 @@ class ProfilePage extends StatefulWidget {
 
 int perPage = 3;
 int present = 0;
-List<String> ratings = List<String>();
+List<double> ratings = List<double>();
 List<String> bands = List<String>();
 List<String> dates = List<String>();
-var items = List<String>();
+var items = List<double>();
 
 class _Profilepage extends State<ProfilePage> {
   @override
@@ -40,13 +42,14 @@ class _Profilepage extends State<ProfilePage> {
         Provider.of<RatingNotifier>(context, listen: false);
     setState(() {
       for (int i = 0; i < ratingNotifier.ratingList.length; i++) {
-        ratings.add(ratingNotifier.ratingList[i].rating.toString());
+        ratings.add(ratingNotifier.ratingList[i].rating);
         bands.add(ratingNotifier.ratingList[i].artistName.toString());
         dates.add(ratingNotifier.ratingList[i].date.toDate().toString());
       }
 
       for (int i = 0; i < ratings.length; i++) {
-        print("Today is the day i debug like a motherfucker " + ratings[i]);
+        print("Today is the day i debug like a motherfucker " +
+            ratings[i].toString());
       }
       items.addAll(ratings.getRange(present, present + perPage));
       present = present + perPage;
@@ -214,7 +217,7 @@ class _Profilepage extends State<ProfilePage> {
                                       color: primaryColor, size: 30.0),
                                   tileColor: Color.fromRGBO(5, 5, 5, 5),
                                   title: Text(
-                                    '${items[index]}/10',
+                                    '${items[index]}/10.0',
                                     style: TextStyle(
                                         color: primaryColor, fontSize: 20),
                                   ),

@@ -13,7 +13,7 @@ class Rating {
   Rating();
 
   Rating.fromMap(Map<String, dynamic> data) {
-    rating = data['rating'];
+    rating = data['rating'].toDouble();
     artistName = data['artistName'];
     date = data['date'];
     artistId = data['artistId'];
