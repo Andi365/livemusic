@@ -23,14 +23,58 @@ class ArtistPage extends StatefulWidget {
 }
 
 class _ArtistPage extends State<ArtistPage> {
+  bool _isLiked = false;
+  DatabaseAPI database = DatabaseAPI.instance;
+
+  void _isLikedCheck(
+      BuildContext context, ArtistNotifier artistNotifier) async {
+    Favorite f = await database.getFavorite(artistNotifier.currentArtist.id);
+    if (f == null) {
+      print('no entry found');
+    }
+    print('Found entry: ${f.toMap().toString()}');
+    print(f.isFavorite);
+    if (f.isFavorite) {
+      setState(() {
+        _isLiked = false;
+      });
+      f.isFavorite = false;
+      await database.update(f);
+    } else {
+      setState(() {
+        _isLiked = true;
+      });
+      f.isFavorite = true;
+      await database.update(f);
+    }
+  }
+
+  void _check(BuildContext context, ArtistNotifier artistNotifier) async {
+    Favorite f = await database.getFavorite(artistNotifier.currentArtist.id);
+    if (f == null) {
+      f = Favorite();
+      f.artistId = artistNotifier.currentArtist.id;
+      f.isFavorite = false;
+      _isLiked = false;
+      print('No entry found, inserted new');
+      database.insert(f);
+    } else {
+      if (f.isFavorite) {
+        _isLiked = true;
+      } else {
+        _isLiked = false;
+      }
+    }
+  }
+
   @override
   void initState() {
     ArtistNotifier artistNotifier =
         Provider.of<ArtistNotifier>(context, listen: false);
     ConcertNotifier concertNotifier =
         Provider.of<ConcertNotifier>(context, listen: false);
+    _check(context, artistNotifier);
     getConcerts(artistNotifier.currentArtist.id, concertNotifier);
-
     super.initState();
   }
 
@@ -56,7 +100,11 @@ class _ArtistPage extends State<ArtistPage> {
             child: NestedScrollView(
               headerSliverBuilder: (context, _) {
                 return [
-                  MySliverAppBar(index: _index, artistNotifier: artistNotifier),
+                  MySliverAppBar(
+                      index: _index,
+                      artistNotifier: artistNotifier,
+                      isLiked: _isLiked,
+                      isLikedCheck: _isLikedCheck),
                   Rating(_rating, 3543)
                 ];
               },
@@ -183,14 +231,16 @@ class ConcertsView extends StatelessWidget {
 
 class MySliverAppBar extends StatelessWidget {
   const MySliverAppBar({
-    Key key,
-    @required int index,
+    @required this.index,
     @required this.artistNotifier,
-  })  : _index = index,
-        super(key: key);
+    this.isLiked,
+    this.isLikedCheck,
+  });
 
-  final int _index;
+  final int index;
+  final bool isLiked;
   final ArtistNotifier artistNotifier;
+  final Function isLikedCheck;
 
   @override
   Widget build(BuildContext context) {
@@ -204,7 +254,11 @@ class MySliverAppBar extends StatelessWidget {
       ),
       expandedHeight: 200,
       flexibleSpace: FlexibleSpaceBar(
-        background: HeroTop(index: _index, artistNotifier: artistNotifier),
+        background: HeroTop(
+            index: index,
+            artistNotifier: artistNotifier,
+            isLiked: isLiked,
+            isLikedCheck: isLikedCheck),
       ),
       actions: [
         Icon(Icons.share),
@@ -215,19 +269,19 @@ class MySliverAppBar extends StatelessWidget {
 }
 
 class HeroTop extends StatelessWidget {
-  HeroTop({
-    Key key,
-    @required int index,
-    @required this.artistNotifier,
-  }) : super(key: key);
+  HeroTop(
+      {@required int index,
+      @required this.artistNotifier,
+      this.isLiked,
+      this.isLikedCheck});
 
   final ArtistNotifier artistNotifier;
   int index;
-  bool isLiked = false;
+  final isLiked;
+  final Function isLikedCheck;
 
   @override
   Widget build(BuildContext context) {
-    //timeDilation = 1.0;
     return Stack(
       children: [
         Container(
@@ -258,12 +312,17 @@ class HeroTop extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                   child: IconButton(
                     onPressed: () {
-                      isLiked ? _query() : print('h');
+                      isLikedCheck(context, artistNotifier);
                     },
-                    icon: Icon(
-                      Icons.favorite,
-                      color: primaryColor,
-                    ),
+                    icon: isLiked
+                        ? Icon(
+                            Icons.favorite,
+                            color: primaryColor,
+                          )
+                        : Icon(
+                            Icons.favorite_border,
+                            color: primaryWhiteColor,
+                          ),
                   ),
                 ),
               ],
@@ -272,11 +331,5 @@ class HeroTop extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  void _query() async {
-    var database = DatabaseAPI.instance;
-    //final allrows = await database.getFavorites();
-    //allrows.forEach((row) => print(row));
   }
 }
