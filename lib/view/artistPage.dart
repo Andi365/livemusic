@@ -276,7 +276,7 @@ class HeroTop extends StatelessWidget {
 
   void _query() async {
     var database = DatabaseAPI.instance;
-    final allrows = await database.getFavorites();
-    allrows.forEach((row) => print(row));
+    //final allrows = await database.getFavorites();
+    //allrows.forEach((row) => print(row));
   }
 }
