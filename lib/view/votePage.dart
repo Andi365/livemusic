@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:livemusic/api/rating_api.dart';
 import 'package:livemusic/model/Rating.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
+import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:livemusic/notifier/rating_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -27,11 +28,16 @@ class _VotePage extends State<VotePage> {
         Provider.of<ArtistNotifier>(context, listen: false);
     RatingNotifier ratingNotifier =
         Provider.of<RatingNotifier>(context, listen: false);
+    ConcertNotifier concertNotifier =
+        Provider.of<ConcertNotifier>(context, listen: false);
     if (ratingNotifier.rating != null) {
       _rating = ratingNotifier.rating;
     } else {
       _rating = Rating();
       _rating.wasCreated = Timestamp.now();
+      _rating.artistId = artistNotifier.currentArtist.id;
+      _rating.artistName = artistNotifier.currentArtist.name;
+      _rating.date = concertNotifier.currentConcert.date;
     }
     super.initState();
   }

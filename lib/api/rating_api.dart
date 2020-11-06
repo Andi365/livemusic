@@ -9,41 +9,15 @@ uploadRating(
   Rating rating,
 ) async {
   CollectionReference ratingRef =
-      await FirebaseFirestore.instance.collection('venues');
-
-  /*QuerySnapshot snapshot = await FirebaseFirestore.instance
-      .collection(
-          '/venues/3gM7InaiFObahgUBJQCl/concerts/7T8S4iH4K684jvr9oaTr/ratings/')
-      .get();
-
-  snapshot.docs.forEach((document) {
-    print('Snapshop is: ${document.data().toString()}');
-  });*/
-
-  var myReviews = FirebaseFirestore.instance
-      .collectionGroup('ratings')
-      .where('userId', isEqualTo: '${rating.userId}');
-
-  QuerySnapshot snapshot1 = await myReviews.get();
-
-  snapshot1.docs.forEach((document) {
-    print('Snapshop is: ${document.data().toString()}');
-  });
-
-  /*await ratingRef
-      .doc(
-          '/3gM7InaiFObahgUBJQCl/concerts/7T8S4iH4K684jvr9oaTr/ratings/Y5g5Fi8Aox6SiSjHrbST')
-      .set(rating.toMap(), SetOptions(merge: true));
-*/
-/*
-  await ratingRef.doc(rating.userId).update({
-    'ratings': FieldValue.arrayUnion([rating.toMap()])
-  });
+      await FirebaseFirestore.instance.collection('rating');
 
   print(rating.toMap());
 
+  await ratingRef
+      .doc('${rating.artistId}_${rating.userId}_${rating.date.seconds}')
+      .set(rating.toMap(), SetOptions(merge: true));
+
   print('updated rating on artist ${rating.artistId}');
-  */
 }
 
 getIndvRatings(String userId, RatingNotifier ratingNotifier) async {
