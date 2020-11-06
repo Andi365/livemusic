@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:livemusic/api/rating_api.dart';
 import 'package:livemusic/model/Rating.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
@@ -21,6 +20,17 @@ class VotePage extends StatefulWidget {
 
 class _VotePage extends State<VotePage> {
   Rating _rating;
+  bool _isButtonDisabled = true;
+
+  isRatingFound() {
+    setState(() {
+      if (_rating.rating == null || _rating.rating == 0.0) {
+        _isButtonDisabled = true;
+      } else {
+        _isButtonDisabled = false;
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -98,6 +108,7 @@ class _VotePage extends State<VotePage> {
               onRated: (double rating) {
                 setState(() {
                   _rating.rating = rating;
+                  isRatingFound();
                 });
               },
             ),
@@ -105,7 +116,7 @@ class _VotePage extends State<VotePage> {
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               width: double.infinity,
               child: RaisedButton(
-                color: primaryColor,
+                color: _isButtonDisabled ? Colors.grey[400] : primaryColor,
                 onPressed: () {
                   uploadRating(_rating);
                 },
@@ -113,7 +124,12 @@ class _VotePage extends State<VotePage> {
                   padding: EdgeInsets.fromLTRB(5, 8, 5, 8),
                   child: Text(
                     'Rate',
-                    style: TextStyle(color: primaryWhiteColor, fontSize: 20),
+                    style: _isButtonDisabled
+                        ? TextStyle(
+                            color: Colors.grey[100],
+                            fontSize: 20,
+                          )
+                        : TextStyle(color: primaryWhiteColor, fontSize: 20),
                   ),
                 ),
               ),

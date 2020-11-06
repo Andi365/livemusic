@@ -85,6 +85,7 @@ class _ArtistPage extends State<ArtistPage> {
     ConcertNotifier concertNotifier = Provider.of<ConcertNotifier>(context);
     var _desc = artistNotifier.currentArtist.bio;
     var _rating = artistNotifier.currentArtist.rating;
+    var _ratingCount = artistNotifier.currentArtist.noOfRatings;
     int _index = widget.index;
 
     print('artist id: ${artistNotifier.currentArtist.id}');
@@ -106,7 +107,7 @@ class _ArtistPage extends State<ArtistPage> {
                       artistNotifier: artistNotifier,
                       isLiked: _isLiked,
                       isLikedCheck: _isLikedCheck),
-                  Rating(_rating, 3543)
+                  Rating(_rating, _ratingCount),
                 ];
               },
               body: Column(

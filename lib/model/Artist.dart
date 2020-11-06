@@ -6,6 +6,7 @@ class Artist {
   String name;
   bool isBand;
   var rating;
+  var noOfRatings;
   String bio;
   List members;
 
@@ -15,6 +16,7 @@ class Artist {
     name = data['name'];
     isBand = data['isBand'];
     rating = data['rating'];
+    noOfRatings = data['noOfRatings'];
     bio = data['bio'];
     members = data['members'];
   }
@@ -26,6 +28,7 @@ class Artist {
       'name': name,
       'isBand': isBand,
       'rating': rating,
+      'noOfRatings': noOfRatings,
       'bio': bio,
       'members': members
     };
