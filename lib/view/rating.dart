@@ -13,6 +13,7 @@ class Rating extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //https://pub.dev/packages/smooth_star_rating
     return SliverToBoxAdapter(
       child: Container(
         height: 50,
@@ -74,7 +75,8 @@ class Rating extends StatelessWidget {
                           size: 20,
                         )
                       ],
-                    )),
+                    ),
+                ),
               ),
             ),
             Expanded(
