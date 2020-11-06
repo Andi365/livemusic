@@ -8,7 +8,7 @@ getConcerts(String artistId, ConcertNotifier concertNotifier) async {
       .where('artistId', isEqualTo: artistId)
       .get();
 
-  List<Concert> _concert = [];
+  List<Concert> _concert = [];  
 
   snapshot.docs.forEach((document) {
     print('document id: ${document.id}');

@@ -6,6 +6,7 @@ import 'package:livemusic/model/Concert.dart';
 class ConcertNotifier with ChangeNotifier {
   List<Concert> _concertList = [];
   Concert _currentConcert;
+  
 
   UnmodifiableListView<Concert> get concertList =>
       UnmodifiableListView(_concertList);
