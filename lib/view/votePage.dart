@@ -8,6 +8,7 @@ import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:livemusic/notifier/rating_notifier.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 import '../colors.dart';
 
@@ -19,7 +20,6 @@ class VotePage extends StatefulWidget {
 }
 
 class _VotePage extends State<VotePage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Rating _rating;
 
   @override
@@ -42,60 +42,9 @@ class _VotePage extends State<VotePage> {
     super.initState();
   }
 
-  _saveRating() {
-    print('SaveRating Called');
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
-
-    _formKey.currentState.save();
-
-    print('form saved');
-
-    uploadRating(_rating);
-
-    print('map: ${_rating.toMap()}');
-
-    print('timeStamp is: ${_rating.wasCreated}');
-    print('UserID is: ${_rating.userId}');
-    print('Rating is: ${_rating.rating}');
-  }
-
-  Widget _ratingField() {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: TextFormField(
-        style: TextStyle(color: primaryColor, fontSize: 16),
-        decoration: InputDecoration(
-          labelText: 'Rate from 0-10',
-          //fillColor: primaryColor,
-        ),
-        keyboardType: TextInputType.number,
-        inputFormatters: <TextInputFormatter>[
-          FilteringTextInputFormatter.digitsOnly
-        ],
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Rating is required';
-          }
-
-          if (!value.contains(new RegExp(r'^[1]?[0-9]$'))) {
-            return 'Please provide a rating from 1..10';
-          }
-          return null;
-        },
-        onSaved: (String value) {
-          _rating.rating = int.parse(value);
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     ArtistNotifier artistNotifier = Provider.of<ArtistNotifier>(context);
-    String currArtist = artistNotifier.currentArtist.name;
-    // TODO: implement build
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -106,31 +55,70 @@ class _VotePage extends State<VotePage> {
             Navigator.pop(context);
           },
         ),
-        title: Text(
-          'Rate $currArtist',
-          style: TextStyle(color: primaryColor),
-        ),
       ),
       body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          autovalidate: true,
-          child: Column(
-            children: [
-              Image.network(artistNotifier.currentArtist.image),
-              _ratingField(),
-              RaisedButton(
-                color: primaryColor,
-                onPressed: () {
-                  _saveRating();
-                },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Stack(
+              children: [
+                Opacity(
+                  opacity: 0.3,
+                  child: Image.network(artistNotifier.currentArtist.image),
+                ),
+                Positioned.fill(
+                  child: Align(
+                    child: Text(
+                      _rating.rating == null ? "" : '${_rating.rating}',
+                      style: TextStyle(
+                          color: primaryWhiteColor,
+                          fontSize: 80,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Center(
+              child: Container(
+                padding: EdgeInsets.fromLTRB(15, 30, 10, 30),
                 child: Text(
-                  'Save',
-                  style: TextStyle(color: primaryWhiteColor, fontSize: 16),
+                  'How would you rate your concert with ${artistNotifier.currentArtist.name}?',
+                  style: TextStyle(color: primaryWhiteColor, fontSize: 24),
                 ),
               ),
-            ],
-          ),
+            ),
+            SmoothStarRating(
+              color: primaryColor,
+              borderColor: primaryWhiteColor,
+              allowHalfRating: true,
+              starCount: 10,
+              size: 40,
+              onRated: (double rating) {
+                setState(() {
+                  _rating.rating = rating;
+                });
+              },
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+              width: double.infinity,
+              child: RaisedButton(
+                color: primaryColor,
+                onPressed: () {
+                  uploadRating(_rating);
+                },
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(5, 8, 5, 8),
+                  child: Text(
+                    'Rate',
+                    style: TextStyle(color: primaryWhiteColor, fontSize: 20),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
