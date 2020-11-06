@@ -22,8 +22,10 @@ uploadRating(
 
 getIndvRatings(String userId, RatingNotifier ratingNotifier) async {
   //getArtists(ArtistNotifier artistNotifier) async {
-  QuerySnapshot snapshot =
-      await FirebaseFirestore.instance.collection('rating').get();
+  QuerySnapshot snapshot = await FirebaseFirestore.instance
+      .collection('rating')
+      .where('userId', isEqualTo: userId)
+      .get();
 
   List<Rating> _ratings = [];
 

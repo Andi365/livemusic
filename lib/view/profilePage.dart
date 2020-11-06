@@ -183,11 +183,20 @@ class _Profilepage extends State<ProfilePage> {
                             ),
                           ),
                           Container(
-                            child: Expanded(
-                              child: Text(
-                                ratingNotifier.ratingList[index].artistName,
-                                style: TextStyle(
-                                    color: primaryWhiteColor, fontSize: 16),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    ratingNotifier.ratingList[index].artistName,
+                                    style: TextStyle(
+                                        color: primaryWhiteColor, fontSize: 16),
+                                  ),
+                                  Text(
+                                    'Date: ${ratingNotifier.ratingList[index].date.toDate().toString()}',
+                                    style: TextStyle(
+                                        color: primaryWhiteColor, fontSize: 16),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
