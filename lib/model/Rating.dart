@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:livemusic/model/User.dart';
 
 class Rating {
-  double rating;
+  var rating;
   String artistName;
   Timestamp date;
   String artistId;

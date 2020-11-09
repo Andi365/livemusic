@@ -1,7 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
+import 'package:livemusic/colors.dart';
+import 'package:livemusic/view/customTextView.dart';
 import 'package:livemusic/view/navigation.dart';
 
-import 'sign_in.dart';
+import '../api/signIn_api.dart';
+import '../colors.dart';
+import '../model/User.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -9,67 +15,416 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  PersistentBottomSheetController _sheetController;
+  String _email;
+  String _password;
+  String _displayName;
+  bool _loading;
+  bool _autoValidate = false;
+  String errorMsg = "";
+
+  @override
+  void initState() {
+    _loading = false;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.white,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FlutterLogo(size: 150),
-              SizedBox(height: 50),
-              _signInButton(),
-            ],
-          ),
+      key: _scaffoldKey,
+      backgroundColor: backgroundColor,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            FlutterLogo(size: 75),
+            SizedBox(height: 50),
+            loginGoogle(),
+            Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: Text(
+                'Or',
+                style: TextStyle(fontSize: 12, color: primaryWhiteColor),
+              ),
+            ),
+            Form(
+              key: _formKey,
+              autovalidateMode: AutovalidateMode.always,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 20, top: 0),
+                    child: CustomTextField(
+                      onSaved: (input) {
+                        _email = input;
+                      },
+                      validator: emailValidator,
+                      icon: Icon(Icons.email),
+                      hint: "EMAIL",
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 15),
+                    child: CustomTextField(
+                      obsecure: true,
+                      onSaved: (input) => _password = input,
+                      validator: (input) => input.isEmpty ? "*Required" : null,
+                      icon: Icon(Icons.lock),
+                      hint: "PASSWORD",
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 15),
+                    child: Container(
+                      child: _loading
+                          ? CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  primaryColor),
+                            )
+                          : customButton("Login", Colors.white, primaryColor,
+                              primaryColor, Colors.white, _validateLoginInput),
+                      height: 30,
+                      width: 80,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 15),
+              child: Text(
+                'Or',
+                style: TextStyle(fontSize: 12, color: primaryWhiteColor),
+              ),
+            ),
+            Container(
+              child: customButton("Create account", Colors.white, primaryColor,
+                  primaryColor, Colors.white, registerSheet),
+              height: 30,
+              width: 140,
+            ),
+            Divider(
+              height: 20,
+              thickness: 1,
+              indent: 170,
+              endIndent: 170,
+              color: primaryWhiteColor,
+            ),
+            loginAnonymously(),
+          ],
         ),
       ),
     );
   }
 
-  Widget _signInButton() {
-    return OutlineButton(
-      splashColor: Colors.grey,
-      onPressed: () {
-        signInWithGoogle().then((result) {
-          if (result != null) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) {
-                  return Navigation();
-                },
-              ),
-            );
-          }
+  Widget customButton(String text, Color splashColor, Color highlightColor,
+      Color fillColor, Color textColor, void function()) {
+    return RaisedButton(
+      splashColor: splashColor,
+      highlightColor: highlightColor,
+      color: fillColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      onPressed: () => function(),
+      child: Text(
+        text,
+        style: TextStyle(
+            fontWeight: FontWeight.bold, color: textColor, fontSize: 12),
+      ),
+    );
+  }
+
+  void _validateLoginInput() async {
+    final FormState form = _formKey.currentState;
+    form.save();
+    setState(() {
+      _loading = true;
+    });
+    try {
+      UserCredential user = await auth
+          .signInWithEmailAndPassword(email: _email, password: _password)
+          .then((value) => Navigator.of(context).pushReplacementNamed('/home'))
+          .then((value) {
+        setState(() {
+          _loading = false;
         });
-      },
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-      highlightElevation: 0,
-      borderSide: BorderSide(color: Colors.grey),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image(
-                image: AssetImage('assets/images/google_logo.png'),
-                height: 35.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                'Sign in with Google',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.grey,
+      });
+    } catch (error) {
+      switch (error.code) {
+        case "ERROR_USER_NOT_FOUND":
+          {
+            setState(() {
+              errorMsg =
+                  "There is no user with such entries. Please try again.";
+              _loading = false;
+            });
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: Container(
+                      child: Text(errorMsg),
+                    ),
+                  );
+                });
+          }
+          break;
+        case "ERROR_WRONG_PASSWORD":
+          {
+            setState(() {
+              errorMsg = "Password doesn\'t match your email.";
+              _loading = false;
+            });
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: Container(
+                      child: Text(errorMsg),
+                    ),
+                  );
+                });
+          }
+          break;
+        default:
+          {
+            setState(() {
+              errorMsg = "";
+            });
+          }
+      }
+    }
+  }
+
+  void _validateRegisterInput() async {
+    final FormState form = _formKey.currentState;
+    if (_formKey.currentState.validate()) {
+      form.save();
+      _sheetController.setState(() {
+        _loading = true;
+      });
+      try {
+        signInWithEmail(_displayName, _email, _password).then((value) {
+          Navigator.of(context).pushReplacementNamed('/home');
+        }).then((value) {
+          _sheetController.setState(() {
+            _loading = false;
+          });
+        });
+      } catch (error) {
+        switch (error.code) {
+          case "ERROR_EMAIL_ALREADY_IN_USE":
+            {
+              _sheetController.setState(() {
+                errorMsg = "This email is already in use.";
+                _loading = false;
+              });
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: Container(
+                        child: Text(errorMsg),
+                      ),
+                    );
+                  });
+            }
+            break;
+          case "ERROR_WEAK_PASSWORD":
+            {
+              _sheetController.setState(() {
+                errorMsg = "The password must be 6 characters long or more.";
+                _loading = false;
+              });
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: Container(
+                        child: Text(errorMsg),
+                      ),
+                    );
+                  });
+            }
+            break;
+          default:
+            {
+              _sheetController.setState(() {
+                errorMsg = "";
+              });
+            }
+        }
+      }
+    } else {
+      setState(() {
+        _autoValidate = true;
+      });
+    }
+  }
+
+  void registerSheet() {
+    _sheetController =
+        _scaffoldKey.currentState.showBottomSheet<void>((BuildContext context) {
+      return DecoratedBox(
+        decoration: BoxDecoration(color: backgroundColor),
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40.0), topRight: Radius.circular(40.0)),
+          child: Container(
+            child: ListView(
+              children: <Widget>[
+                Container(
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned(
+                        left: 10,
+                        top: 10,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            size: 30.0,
+                            color: primaryColor,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  height: 50,
+                  width: 50,
                 ),
-              ),
-            )
-          ],
+                SingleChildScrollView(
+                    child: Form(
+                  child: Column(children: <Widget>[
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 30),
+                        child: Text('Create User'),
+                      ),
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(
+                          bottom: 20,
+                          top: 60,
+                        ),
+                        child: CustomTextField(
+                          icon: Icon(Icons.account_circle),
+                          hint: "Name",
+                          validator: (input) =>
+                              input.isEmpty ? "*Required" : null,
+                          onSaved: (input) => _displayName = input,
+                        )),
+                    Padding(
+                        padding: EdgeInsets.only(
+                          bottom: 20,
+                        ),
+                        child: CustomTextField(
+                          icon: Icon(Icons.email),
+                          hint: "E-mail",
+                          onSaved: (input) {
+                            _email = input;
+                          },
+                          validator: emailValidator,
+                        )),
+                    Padding(
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: CustomTextField(
+                          icon: Icon(Icons.lock),
+                          obsecure: true,
+                          onSaved: (input) => _password = input,
+                          validator: (input) =>
+                              input.isEmpty ? "*Required" : null,
+                          hint: "Password",
+                        )),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                      child: _loading
+                          ? CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  primaryColor),
+                            )
+                          : Container(
+                              child: customButton(
+                                  "REGISTER",
+                                  Colors.white,
+                                  primaryColor,
+                                  primaryColor,
+                                  Colors.white,
+                                  _validateRegisterInput),
+                              height: 50,
+                              width: MediaQuery.of(context).size.width,
+                            ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ]),
+                  key: _formKey,
+                  // ignore: deprecated_member_use
+                  autovalidate: _autoValidate,
+                )),
+              ],
+            ),
+            height: MediaQuery.of(context).size.height / 1.1,
+            width: MediaQuery.of(context).size.width,
+            color: backgroundColor,
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget loginGoogle() {
+    return Container(
+      padding: EdgeInsets.only(top: 20, bottom: 15),
+      child: GoogleSignInButton(
+        onPressed: () {
+          signInWithGoogle().then(
+            (result) {
+              if (result != null) {
+                Navigator.of(context).pushReplacementNamed('/home');
+              }
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget loginAnonymously() {
+    return Center(
+      child: InkWell(
+        onTap: () {
+          signInAnonymously().then(
+            (result) {
+              if (result != null) {
+                Navigator.of(context).pushReplacementNamed('/home');
+              }
+            },
+          );
+        },
+        child: Text(
+          'Later',
+          style: TextStyle(fontSize: 14, color: Colors.grey),
         ),
       ),
     );
+  }
+
+  String emailValidator(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (value.isEmpty) return '*Required';
+    if (!regex.hasMatch(value))
+      return '*Enter a valid email';
+    else
+      return null;
   }
 }
