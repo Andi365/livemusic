@@ -41,8 +41,7 @@ Future<String> signInWithGoogle() async {
 Future<void> signInWithEmail(String name, String email, String password) async {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  UserCredential authResult = await auth.createUserWithEmailAndPassword(
-      email: email, password: password);
+  await auth.createUserWithEmailAndPassword(email: email, password: password);
 
   await auth.currentUser.updateProfile(
       displayName: name,
@@ -64,7 +63,7 @@ Future<void> signInWithEmail(String name, String email, String password) async {
   }
 
   CollectionReference ratingRef =
-      await FirebaseFirestore.instance.collection('users');
+      FirebaseFirestore.instance.collection('users');
 
   await ratingRef.doc(auth.currentUser.uid).set({'name': name});
 

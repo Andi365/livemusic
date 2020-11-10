@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:livemusic/model/Concert.dart';
+import 'package:livemusic/model/Venue.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
 
 getConcerts(String artistId, ConcertNotifier concertNotifier) async {
@@ -8,7 +9,7 @@ getConcerts(String artistId, ConcertNotifier concertNotifier) async {
       .where('artistId', isEqualTo: artistId)
       .get();
 
-  List<Concert> _concert = [];  
+  List<Concert> _concert = [];
 
   snapshot.docs.forEach((document) {
     print('document id: ${document.id}');
@@ -17,4 +18,10 @@ getConcerts(String artistId, ConcertNotifier concertNotifier) async {
   });
 
   concertNotifier.concertList = _concert;
+}
+
+Future<Venue> getVenue(String venueId) async {
+  DocumentSnapshot doc =
+      await FirebaseFirestore.instance.collection('venues').doc(venueId).get();
+  return Venue.fromMap(doc.data());
 }

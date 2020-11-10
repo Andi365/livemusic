@@ -6,7 +6,7 @@ uploadRating(
   Rating rating,
 ) async {
   CollectionReference ratingRef =
-      await FirebaseFirestore.instance.collection('rating');
+      FirebaseFirestore.instance.collection('rating');
 
   print(rating.toMap());
 
