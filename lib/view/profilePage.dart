@@ -44,7 +44,7 @@ class _Profilepage extends State<ProfilePage> {
       for (int i = 0; i < ratingNotifier.ratingList.length; i++) {
         ratings.add(ratingNotifier.ratingList[i].rating);
         bands.add(ratingNotifier.ratingList[i].artistName.toString());
-        dates.add(ratingNotifier.ratingList[i].date.toDate().toString());
+        dates.add(ratingNotifier.ratingList[i].wasCreated.toDate().toString());
       }
 
       for (int i = 0; i < ratings.length; i++) {
