@@ -36,84 +36,93 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: backgroundColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            FlutterLogo(size: 75),
-            SizedBox(height: 50),
-            loginGoogle(),
-            Padding(
-              padding: EdgeInsets.only(bottom: 20),
-              child: Text(
-                'Or',
-                style: TextStyle(fontSize: 12, color: primaryWhiteColor),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              FlutterLogo(size: 150),
+              SizedBox(height: 35),
+              loginGoogle(),
+              Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: Text(
+                  'Or',
+                  style: TextStyle(fontSize: 12, color: primaryWhiteColor),
+                ),
               ),
-            ),
-            Form(
-              key: _formKey,
-              autovalidateMode: AutovalidateMode.always,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 20, top: 0),
-                    child: CustomTextField(
-                      onSaved: (input) {
-                        _email = input;
-                      },
-                      validator: emailValidator,
-                      icon: Icon(Icons.email),
-                      hint: "EMAIL",
+              Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20, top: 0),
+                      child: CustomTextField(
+                        onSaved: (input) {
+                          _email = input;
+                        },
+                        validator: emailValidator,
+                        icon: Icon(Icons.email),
+                        hint: "EMAIL",
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 15),
-                    child: CustomTextField(
-                      obsecure: true,
-                      onSaved: (input) => _password = input,
-                      validator: (input) => input.isEmpty ? "*Required" : null,
-                      icon: Icon(Icons.lock),
-                      hint: "PASSWORD",
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 15),
+                      child: CustomTextField(
+                        obsecure: true,
+                        onSaved: (input) => _password = input,
+                        validator: (input) =>
+                            input.isEmpty ? "*Required" : null,
+                        icon: Icon(Icons.lock),
+                        hint: "PASSWORD",
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 15),
-                    child: Container(
-                      child: _loading
-                          ? CircularProgressIndicator(
-                              valueColor: new AlwaysStoppedAnimation<Color>(
-                                  primaryColor),
-                            )
-                          : customButton("Login", Colors.white, primaryColor,
-                              primaryColor, Colors.white, _validateLoginInput),
-                      height: 30,
-                      width: 80,
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 15),
+                      child: Container(
+                        child: _loading
+                            ? CircularProgressIndicator(
+                                valueColor: new AlwaysStoppedAnimation<Color>(
+                                    primaryColor),
+                              )
+                            : customButton(
+                                "Login",
+                                Colors.white,
+                                primaryColor,
+                                primaryColor,
+                                Colors.white,
+                                _validateLoginInput),
+                        height: 30,
+                        width: 80,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 15),
-              child: Text(
-                'Or',
-                style: TextStyle(fontSize: 12, color: primaryWhiteColor),
+              Padding(
+                padding: EdgeInsets.only(bottom: 15),
+                child: Text(
+                  'Or',
+                  style: TextStyle(fontSize: 12, color: primaryWhiteColor),
+                ),
               ),
-            ),
-            Container(
-              child: customButton("Create account", Colors.white, primaryColor,
-                  primaryColor, Colors.white, registerSheet),
-              height: 30,
-              width: 140,
-            ),
-            Divider(
-              height: 20,
-              thickness: 1,
-              indent: 170,
-              endIndent: 170,
-              color: primaryWhiteColor,
-            ),
-            loginAnonymously(),
-          ],
+              Container(
+                child: customButton("Create account", Colors.white,
+                    primaryColor, primaryColor, Colors.white, registerSheet),
+                height: 30,
+                width: 140,
+              ),
+              Divider(
+                height: 20,
+                thickness: 1,
+                indent: 170,
+                endIndent: 170,
+                color: primaryWhiteColor,
+              ),
+              loginAnonymously(),
+            ],
+          ),
         ),
       ),
     );
