@@ -22,7 +22,6 @@ class _LoginPageState extends State<LoginPage> {
   String _password;
   String _displayName;
   bool _loading;
-  bool _autoValidate = false;
   String errorMsg = "";
 
   @override
@@ -265,10 +264,6 @@ class _LoginPageState extends State<LoginPage> {
             }
         }
       }
-    } else {
-      setState(() {
-        _autoValidate = true;
-      });
     }
   }
 
