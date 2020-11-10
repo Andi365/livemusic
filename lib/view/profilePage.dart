@@ -1,14 +1,13 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
+import 'package:livemusic/api/signIn_api.dart';
 
 import 'package:livemusic/colors.dart';
-import 'package:livemusic/model/Rating.dart';
 import 'package:livemusic/model/User.dart';
 import 'package:livemusic/notifier/rating_notifier.dart';
 import 'package:livemusic/api/rating_api.dart';
 import 'package:provider/provider.dart';
+
+import '../colors.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -37,7 +36,7 @@ class _Profilepage extends State<ProfilePage> {
     super.initState();
   }
 
-  void setTheDamnState() {
+  /*void setTheDamnState() {
     RatingNotifier ratingNotifier =
         Provider.of<RatingNotifier>(context, listen: false);
     setState(() {
@@ -54,12 +53,12 @@ class _Profilepage extends State<ProfilePage> {
       items.addAll(ratings.getRange(present, present + perPage));
       present = present + perPage;
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
     RatingNotifier ratingNotifier = Provider.of<RatingNotifier>(context);
-    setTheDamnState();
+    //setTheDamnState();
     return Scaffold(
       backgroundColor: backgroundColor,
       body: CustomScrollView(
@@ -175,7 +174,23 @@ class _Profilepage extends State<ProfilePage> {
                     ),
                   ),
                 ),
-                Column(
+                Container(
+                  child: RaisedButton(
+                    color: primaryColor,
+                    onPressed: () {
+                      signOut().then((value) =>
+                          Navigator.of(context).pushReplacementNamed('/login'));
+                    },
+                    child: Text(
+                      'Sign out',
+                      style: TextStyle(
+                          fontSize: 10,
+                          color: primaryWhiteColor,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+                /*Column(
                   children: <Widget>[
                     Align(
                       alignment: Alignment.center,
@@ -232,7 +247,7 @@ class _Profilepage extends State<ProfilePage> {
                       ),
                     )
                   ],
-                ),
+                ),*/
               ],
             ),
           ),

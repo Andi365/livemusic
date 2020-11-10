@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:livemusic/notifier/navigation_notifier.dart';
 import 'package:livemusic/view/feed.dart';
@@ -23,6 +24,16 @@ class _Navigation extends State<Navigation> {
         Provider.of<NavigationNotifer>(context);
     return Scaffold(
       body: currentTab[navigationProvider.currentIndex],
+      /*FutureBuilder(
+        future: FirebaseAuth.instance.currentUser(),
+        builder: (context, user) {
+          if (user.connectionState == ConnectionState.waiting) {
+            return Container();
+          } else {
+            return currentTab[navigationProvider.currentIndex];
+          }
+        },
+      ),*/
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: navigationProvider.currentIndex,
         onTap: (index) {
@@ -32,22 +43,22 @@ class _Navigation extends State<Navigation> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Home'),
+            label: 'Home',
             backgroundColor: Color.fromRGBO(48, 44, 45, 1),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            title: Text('Search'),
+            label: 'Search',
             backgroundColor: Color.fromRGBO(48, 44, 45, 1),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.music_note),
-            title: Text('Concerts'),
+            label: 'Concerts',
             backgroundColor: Color.fromRGBO(48, 44, 45, 1),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.portrait),
-            title: Text('Profile'),
+            label: 'Profile',
             backgroundColor: Color.fromRGBO(48, 44, 45, 1),
           ),
         ],

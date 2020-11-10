@@ -55,6 +55,10 @@ dependencies:
   #Firebase Storage
   firebase_storage: ^4.0.1
 
+  #auth buttons
+  #https://pub.dev/packages/flutter_auth_buttons/
+  flutter_auth_buttons: ^0.10.0
+
   # Analytics
   #firebase_analytics:
 
