@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:livemusic/api/concert_api.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:livemusic/view/votePage.dart';
 
