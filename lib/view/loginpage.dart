@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:livemusic/colors.dart';
 import 'package:livemusic/view/customTextView.dart';
-import 'package:livemusic/view/navigation.dart';
 
 import '../api/signIn_api.dart';
 import '../colors.dart';
@@ -15,6 +13,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  //Some inspiration from here
+  //https://github.com/pr-Mais/flutter_firebase_login
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   PersistentBottomSheetController _sheetController;
@@ -22,7 +22,6 @@ class _LoginPageState extends State<LoginPage> {
   String _password;
   String _displayName;
   bool _loading;
-  bool _autoValidate = false;
   String errorMsg = "";
 
   @override
@@ -151,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
       _loading = true;
     });
     try {
-      UserCredential user = await auth
+      await auth
           .signInWithEmailAndPassword(email: _email, password: _password)
           .then((value) => Navigator.of(context).pushReplacementNamed('/home'))
           .then((value) {
@@ -265,10 +264,6 @@ class _LoginPageState extends State<LoginPage> {
             }
         }
       }
-    } else {
-      setState(() {
-        _autoValidate = true;
-      });
     }
   }
 
@@ -376,7 +371,7 @@ class _LoginPageState extends State<LoginPage> {
                   ]),
                   key: _formKey,
                   // ignore: deprecated_member_use
-                  autovalidate: _autoValidate,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                 )),
               ],
             ),

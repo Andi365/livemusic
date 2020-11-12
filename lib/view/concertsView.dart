@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:livemusic/view/votePage.dart';
@@ -5,23 +6,24 @@ import 'package:livemusic/view/votePage.dart';
 import '../colors.dart';
 
 class ConcertsView extends StatelessWidget {
-  const ConcertsView({
+  ConcertsView({
     Key key,
     @required this.concertNotifier,
   }) : super(key: key);
 
   final ConcertNotifier concertNotifier;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return concertNotifier.concertList.isNotEmpty
         ? ListView.separated(
             separatorBuilder: (_, __) => Divider(
-                  height: 2,
-                  color: primaryColor,
-                  indent: 10,
-                  endIndent: 10,
-                ),
+              height: 2,
+              color: primaryColor,
+              indent: 10,
+              endIndent: 10,
+            ),
             itemCount: concertNotifier.concertList.length,
             itemBuilder: (context, index) {
               return Container(
@@ -35,7 +37,10 @@ class ConcertsView extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              concertNotifier.concertList[index].venueId,
+                              /*getVenue(concertNotifier
+                                      .concertList[index].venueId)
+                                  .then((value) => value.name)*/
+                              concertNotifier.concertList[index].name,
                               style: TextStyle(color: primaryColor),
                             ),
                             Text(
@@ -52,14 +57,17 @@ class ConcertsView extends StatelessWidget {
                       onPressed: () {
                         concertNotifier.currentConcert =
                             concertNotifier.concertList[index];
-
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return VotePage();
-                            },
-                          ),
-                        );
+                        if (auth.currentUser.isAnonymous) {
+                          Navigator.of(context).pushReplacementNamed('/home');
+                        } else {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return VotePage();
+                              },
+                            ),
+                          );
+                        }
                       },
                       color: primaryColor,
                       child: Row(
@@ -83,7 +91,8 @@ class ConcertsView extends StatelessWidget {
                   ],
                 ),
               );
-            })
+            },
+          )
         : Center(
             child: Text(
               'No concerts available',

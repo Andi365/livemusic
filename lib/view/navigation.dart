@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:livemusic/notifier/navigation_notifier.dart';
 import 'package:livemusic/view/feed.dart';
@@ -24,16 +23,6 @@ class _Navigation extends State<Navigation> {
         Provider.of<NavigationNotifer>(context);
     return Scaffold(
       body: currentTab[navigationProvider.currentIndex],
-      /*FutureBuilder(
-        future: FirebaseAuth.instance.currentUser(),
-        builder: (context, user) {
-          if (user.connectionState == ConnectionState.waiting) {
-            return Container();
-          } else {
-            return currentTab[navigationProvider.currentIndex];
-          }
-        },
-      ),*/
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: navigationProvider.currentIndex,
         onTap: (index) {
