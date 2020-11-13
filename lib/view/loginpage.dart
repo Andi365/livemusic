@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: 15),
+                      padding: EdgeInsets.only(bottom: 10),
                       child: Container(
                         child: _loading
                             ? CircularProgressIndicator(
@@ -92,15 +92,14 @@ class _LoginPageState extends State<LoginPage> {
                                 primaryColor,
                                 Colors.white,
                                 _validateLoginInput),
-                        height: 30,
-                        width: 80,
+                        height: 40,
                       ),
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(bottom: 15),
+                padding: EdgeInsets.only(bottom: 10),
                 child: Text(
                   'Or',
                   style: TextStyle(fontSize: 12, color: primaryWhiteColor),
@@ -109,8 +108,7 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 child: customButton("Create account", Colors.white,
                     primaryColor, primaryColor, Colors.white, registerSheet),
-                height: 30,
-                width: 140,
+                height: 40,
               ),
               Divider(
                 height: 20,
@@ -129,18 +127,23 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget customButton(String text, Color splashColor, Color highlightColor,
       Color fillColor, Color textColor, void function()) {
-    return RaisedButton(
-      splashColor: splashColor,
-      highlightColor: highlightColor,
-      color: fillColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      onPressed: () => function(),
-      child: Text(
-        text,
-        style: TextStyle(
-            fontWeight: FontWeight.bold, color: textColor, fontSize: 12),
+    return Container(
+      padding: EdgeInsets.only(left: 60, right: 60),
+      child: SizedBox(
+        width: double.infinity,
+        child: RaisedButton(
+        splashColor: splashColor,
+        highlightColor: highlightColor,
+        color: fillColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        onPressed: () => function(),
+        child: Text(
+          text,
+          style: TextStyle(
+              fontWeight: FontWeight.bold, color: textColor, fontSize: 12),
+        ),
       ),
-    );
+    ),);
   }
 
   void _validateLoginInput() async {
@@ -370,7 +373,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ]),
                   key: _formKey,
-                  // ignore: deprecated_member_use
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 )),
               ],
@@ -386,8 +388,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget loginGoogle() {
     return Container(
-      padding: EdgeInsets.only(top: 20, bottom: 15),
-      child: GoogleSignInButton(
+      padding: EdgeInsets.only(top: 20, bottom: 15, right: 60, left: 60),
+      child: SizedBox(
+        width: double.infinity, 
+        child: GoogleSignInButton(
         onPressed: () {
           signInWithGoogle().then(
             (result) {
@@ -398,7 +402,7 @@ class _LoginPageState extends State<LoginPage> {
           );
         },
       ),
-    );
+    ),);
   }
 
   Widget loginAnonymously() {

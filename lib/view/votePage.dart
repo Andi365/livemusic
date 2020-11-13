@@ -99,14 +99,12 @@ class _VotePage extends State<VotePage> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: SmoothStarRating(
+              SmoothStarRating(
                 color: primaryColor,
                 borderColor: primaryWhiteColor,
                 allowHalfRating: true,
                 starCount: 10,
-                size: 40,
+                size: MediaQuery.of(context).size.width/11,
                 onRated: (double rating) {
                   setState(() {
                     _rating.rating = rating;
@@ -114,7 +112,6 @@ class _VotePage extends State<VotePage> {
                   });
                 },
               ),
-            ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               width: double.infinity,
