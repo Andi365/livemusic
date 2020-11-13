@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:livemusic/controller/routeGenerator.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:livemusic/notifier/navigation_notifier.dart';
@@ -60,10 +61,8 @@ class _MyAppState extends State<MyApp> {
           return LoginPage();
         },
       ),
-      routes: {
-        '/home': (context) => new Navigation(),
-        '/login': (context) => new LoginPage(),
-      },
+      initialRoute: '/',
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }

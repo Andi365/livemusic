@@ -90,58 +90,53 @@ class _ArtistPage extends State<ArtistPage> {
 
     print('artist id: ${artistNotifier.currentArtist.id}');
 
-    return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Montserrat',
-      ),
-      home: Scaffold(
-        backgroundColor: backgroundColor,
-        body: SafeArea(
-          child: DefaultTabController(
-            length: 2,
-            child: NestedScrollView(
-              headerSliverBuilder: (context, _) {
-                return [
-                  SliverTopBar(
-                      index: _index,
-                      artistNotifier: artistNotifier,
-                      isLiked: _isLiked,
-                      isLikedCheck: _isLikedCheck),
-                  Rating(_rating, _ratingCount),
-                ];
-              },
-              body: Column(
-                children: [
-                  TabBar(
-                    indicatorColor: primaryColor,
-                    labelColor: primaryColor,
-                    unselectedLabelColor: primaryWhiteColor,
-                    labelStyle: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    tabs: [
-                      Tab(text: 'General information'),
-                      Tab(text: 'Concerts'),
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: DefaultTabController(
+          length: 2,
+          child: NestedScrollView(
+            headerSliverBuilder: (context, _) {
+              return [
+                SliverTopBar(
+                    index: _index,
+                    artistNotifier: artistNotifier,
+                    isLiked: _isLiked,
+                    isLikedCheck: _isLikedCheck),
+                Rating(_rating, _ratingCount),
+              ];
+            },
+            body: Column(
+              children: [
+                TabBar(
+                  indicatorColor: primaryColor,
+                  labelColor: primaryColor,
+                  unselectedLabelColor: primaryWhiteColor,
+                  labelStyle: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  tabs: [
+                    Tab(text: 'General information'),
+                    Tab(text: 'Concerts'),
+                  ],
+                ),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Bio(_desc),
+                            Members(),
+                          ],
+                        ),
+                      ),
+                      ConcertsView(concertNotifier: concertNotifier),
                     ],
                   ),
-                  Expanded(
-                    child: TabBarView(
-                      children: [
-                        SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Bio(_desc),
-                              Members(),
-                            ],
-                          ),
-                        ),
-                        ConcertsView(concertNotifier: concertNotifier),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

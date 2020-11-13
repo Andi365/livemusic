@@ -80,13 +80,7 @@ class _FeedState extends State<Feed> {
                 onTap: () {
                   artistNotifier.currentArtist =
                       artistNotifier.artistList[_index];
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return ArtistPage(_index);
-                      },
-                    ),
-                  );
+                  Navigator.of(context).pushNamed('/artist', arguments: _index);
                 },
               );
             },

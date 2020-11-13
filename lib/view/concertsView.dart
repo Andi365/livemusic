@@ -58,15 +58,9 @@ class ConcertsView extends StatelessWidget {
                         concertNotifier.currentConcert =
                             concertNotifier.concertList[index];
                         if (auth.currentUser.isAnonymous) {
-                          Navigator.of(context).pushReplacementNamed('/home');
+                          Navigator.of(context).popAndPushNamed('/votepage');
                         } else {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return VotePage();
-                              },
-                            ),
-                          );
+                          Navigator.of(context).pushNamed('/votepage');
                         }
                       },
                       color: primaryColor,
