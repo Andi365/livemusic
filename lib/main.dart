@@ -52,16 +52,7 @@ class _MyAppState extends State<MyApp> {
         fontFamily: 'Montserrat',
         primarySwatch: Colors.blue,
       ),
-      home: StreamBuilder(
-        stream: auth.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Navigation();
-          }
-          return LoginPage();
-        },
-      ),
-      initialRoute: '/',
+      initialRoute: '/login',
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }

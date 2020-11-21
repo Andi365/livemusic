@@ -12,28 +12,26 @@ class Rating extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Container(
-        margin: EdgeInsets.fromLTRB(30, 5, 30, 0),
-        child: Align(
-          alignment: Alignment.center,
-          child: Container(
-            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: Column(
-              children: [
-                Text(
-                  rating.toString() + '/10',
-                  style: TextStyle(fontSize: 18, color: primaryColor),
+    return Container(
+      margin: EdgeInsets.fromLTRB(30, 5, 30, 0),
+      child: Align(
+        alignment: Alignment.center,
+        child: Container(
+          padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+          child: Column(
+            children: [
+              Text(
+                rating.toString() + '/10',
+                style: TextStyle(fontSize: 18, color: primaryColor),
+              ),
+              Text(
+                numRates.toString(),
+                style: TextStyle(
+                  fontSize: 11,
+                  color: primaryWhiteColor,
                 ),
-                Text(
-                  numRates.toString(),
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: primaryWhiteColor,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

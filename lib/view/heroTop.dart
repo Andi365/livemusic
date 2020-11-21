@@ -47,7 +47,7 @@ class HeroTop extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                   child: IconButton(
                     onPressed: () {
-                      isLikedCheck(context, artistNotifier);
+                      isLikedCheck(artistNotifier);
                     },
                     icon: isLiked
                         ? Icon(

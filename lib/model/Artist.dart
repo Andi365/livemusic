@@ -3,6 +3,7 @@ class Artist {
   String image;
   String name;
   bool isBand;
+  String genre;
   var rating;
   var noOfRatings;
   String bio;
@@ -13,6 +14,7 @@ class Artist {
     image = data['image'];
     name = data['name'];
     isBand = data['isBand'];
+    genre = data['genre'];
     rating = data['rating'];
     noOfRatings = data['noOfRatings'];
     bio = data['bio'];
@@ -25,6 +27,7 @@ class Artist {
       'image': image,
       'name': name,
       'isBand': isBand,
+      'genre': genre,
       'rating': rating,
       'noOfRatings': noOfRatings,
       'bio': bio,

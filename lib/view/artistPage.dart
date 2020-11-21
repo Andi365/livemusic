@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:livemusic/api/concert_api.dart';
 import 'package:livemusic/api/database_api.dart';
 import 'package:livemusic/colors.dart';
+import 'package:livemusic/model/Venue.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:livemusic/view/concertsView.dart';
@@ -27,8 +30,7 @@ class _ArtistPage extends State<ArtistPage> {
   bool _isLiked = false;
   DatabaseAPI database = DatabaseAPI.instance;
 
-  void _isLikedCheck(
-      BuildContext context, ArtistNotifier artistNotifier) async {
+  void _isLikedCheck(ArtistNotifier artistNotifier) async {
     Favorite f = await database.getFavorite(artistNotifier.currentArtist.id);
     if (f == null) {
       print('no entry found');
@@ -50,7 +52,7 @@ class _ArtistPage extends State<ArtistPage> {
     }
   }
 
-  void _check(BuildContext context, ArtistNotifier artistNotifier) async {
+  void _check(ArtistNotifier artistNotifier) async {
     Favorite f = await database.getFavorite(artistNotifier.currentArtist.id);
     if (f == null) {
       f = Favorite();
@@ -72,11 +74,22 @@ class _ArtistPage extends State<ArtistPage> {
   void initState() {
     ArtistNotifier artistNotifier =
         Provider.of<ArtistNotifier>(context, listen: false);
+    _check(artistNotifier);
+
     ConcertNotifier concertNotifier =
         Provider.of<ConcertNotifier>(context, listen: false);
-    _check(context, artistNotifier);
+
     getConcerts(artistNotifier.currentArtist.id, concertNotifier);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    ConcertNotifier concertNotifier =
+        Provider.of<ConcertNotifier>(context, listen: false);
+
+    getVenuesConcertView(concertNotifier);
+    super.didChangeDependencies();
   }
 
   @override
@@ -87,8 +100,6 @@ class _ArtistPage extends State<ArtistPage> {
     var _rating = artistNotifier.currentArtist.rating;
     var _ratingCount = artistNotifier.currentArtist.noOfRatings;
     int _index = widget.index;
-
-    print('artist id: ${artistNotifier.currentArtist.id}');
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -103,7 +114,14 @@ class _ArtistPage extends State<ArtistPage> {
                     artistNotifier: artistNotifier,
                     isLiked: _isLiked,
                     isLikedCheck: _isLikedCheck),
-                Rating(_rating, _ratingCount),
+                SliverToBoxAdapter(
+                  child: Row(
+                    children: [
+                      Rating(_rating, _ratingCount),
+                      _genre(),
+                    ],
+                  ),
+                )
               ];
             },
             body: Column(
@@ -141,6 +159,22 @@ class _ArtistPage extends State<ArtistPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _genre() {
+    return Row(
+      children: [
+        Icon(
+          Icons.music_video,
+          color: primaryColor,
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 8),
+          child:
+              Text('Rock', style: TextStyle(fontSize: 18, color: primaryColor)),
+        ),
+      ],
     );
   }
 }

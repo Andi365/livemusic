@@ -5,6 +5,7 @@ class Concert {
   Timestamp date;
   String name;
   String venueId;
+  String _venueName;
 
   Concert.fromMap(Map<String, dynamic> data) {
     date = data['date'];
@@ -20,5 +21,11 @@ class Concert {
       'artistId': artistId,
       'venueId': venueId,
     };
+  }
+
+  String get venueName => _venueName;
+
+  set venueName(String venueName) {
+    _venueName = venueName;
   }
 }

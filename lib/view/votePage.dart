@@ -99,19 +99,19 @@ class _VotePage extends State<VotePage> {
                 ),
               ),
             ),
-              SmoothStarRating(
-                color: primaryColor,
-                borderColor: primaryWhiteColor,
-                allowHalfRating: true,
-                starCount: 10,
-                size: MediaQuery.of(context).size.width/11,
-                onRated: (double rating) {
-                  setState(() {
-                    _rating.rating = rating;
-                    isRatingFound();
-                  });
-                },
-              ),
+            SmoothStarRating(
+              color: primaryColor,
+              borderColor: primaryWhiteColor,
+              allowHalfRating: true,
+              starCount: 10,
+              size: MediaQuery.of(context).size.width / 11,
+              onRated: (double rating) {
+                setState(() {
+                  _rating.rating = rating;
+                  isRatingFound();
+                });
+              },
+            ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               width: double.infinity,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:livemusic/colors.dart';
 import 'package:livemusic/view/customTextView.dart';
+import 'package:provider/provider.dart';
 
 import '../api/signIn_api.dart';
 import '../colors.dart';
@@ -28,6 +29,26 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     _loading = false;
+
+    StreamBuilder(
+      stream: auth.authStateChanges(),
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            CircularProgressIndicator();
+            break;
+          case ConnectionState.done:
+            if (snapshot.hasData) {
+              Navigator.of(context).pushReplacementNamed('/');
+            } else {
+              Navigator.of(context).pushReplacementNamed('/login');
+            }
+            break;
+          default:
+            Navigator.of(context).pushReplacementNamed('/login');
+        }
+      },
+    );
     super.initState();
   }
 
