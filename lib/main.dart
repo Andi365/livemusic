@@ -8,9 +8,6 @@ import 'package:livemusic/notifier/navigation_notifier.dart';
 import 'package:livemusic/notifier/rating_notifier.dart';
 import 'package:provider/provider.dart';
 
-import 'view/loginpage.dart';
-import 'view/navigation.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

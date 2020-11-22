@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:livemusic/model/Concert.dart';
 import 'package:livemusic/model/Venue.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
-import 'package:provider/provider.dart';
 
 getConcerts(String artistId, ConcertNotifier concertNotifier) async {
   Timestamp now = Timestamp.now();
@@ -19,7 +17,7 @@ getConcerts(String artistId, ConcertNotifier concertNotifier) async {
 
   snapshot.docs.forEach((document) {
     print('document id: ${document.id}');
-    Concert artist = Concert.fromMap(document.data());
+    Concert artist = Concert.fromMap(document.id, document.data());
     _upcoming.add(artist);
   });
 
@@ -37,13 +35,15 @@ getConcerts(String artistId, ConcertNotifier concertNotifier) async {
 
   snapshot.docs.forEach((document) {
     print('document id: ${document.id}');
-    Concert artist = Concert.fromMap(document.data());
+    Concert artist = Concert.fromMap(document.id, document.data());
     _previous.add(artist);
   });
 
   concertNotifier.previousConcerts = _previous;
 
   print('previous concerts? ${concertNotifier.previousConcerts.isNotEmpty}');
+
+  getVenuesConcertView(concertNotifier);
 }
 
 Future<Venue> getVenue(String venueId) async {
@@ -73,7 +73,8 @@ getVenuesConcertView(ConcertNotifier concertNotifier) async {
         }
         if (i >=
                 (concertNotifier.previousConcerts.length +
-                        concertNotifier.upcomingConcerts.length) -
+                        concertNotifier.upcomingConcerts.length -
+                        1) -
                     1 &&
             concertNotifier.upcomingConcerts.length != 0) {
           concertNotifier

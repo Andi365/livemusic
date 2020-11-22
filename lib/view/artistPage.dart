@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:livemusic/api/concert_api.dart';
 import 'package:livemusic/api/database_api.dart';
 import 'package:livemusic/colors.dart';
-import 'package:livemusic/model/Venue.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:livemusic/view/concertsView.dart';
@@ -42,25 +41,23 @@ class _ArtistPage extends State<ArtistPage> {
         _isLiked = false;
       });
       f.isFavorite = false;
-      await database.update(f);
+      await database.updateFavorite(f);
     } else {
       setState(() {
         _isLiked = true;
       });
       f.isFavorite = true;
-      await database.update(f);
+      await database.updateFavorite(f);
     }
   }
 
-  void _check(ArtistNotifier artistNotifier) async {
+  void _checkForFavorite(ArtistNotifier artistNotifier) async {
     Favorite f = await database.getFavorite(artistNotifier.currentArtist.id);
     if (f == null) {
-      f = Favorite();
-      f.artistId = artistNotifier.currentArtist.id;
-      f.isFavorite = false;
+      f = Favorite(artistNotifier.currentArtist.id, false);
       _isLiked = false;
       print('No entry found, inserted new');
-      database.insert(f);
+      database.insertFavorite(f);
     } else {
       if (f.isFavorite) {
         _isLiked = true;
@@ -74,8 +71,7 @@ class _ArtistPage extends State<ArtistPage> {
   void initState() {
     ArtistNotifier artistNotifier =
         Provider.of<ArtistNotifier>(context, listen: false);
-    _check(artistNotifier);
-
+    _checkForFavorite(artistNotifier);
     ConcertNotifier concertNotifier =
         Provider.of<ConcertNotifier>(context, listen: false);
 
@@ -84,18 +80,8 @@ class _ArtistPage extends State<ArtistPage> {
   }
 
   @override
-  void didChangeDependencies() {
-    ConcertNotifier concertNotifier =
-        Provider.of<ConcertNotifier>(context, listen: false);
-
-    getVenuesConcertView(concertNotifier);
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     ArtistNotifier artistNotifier = Provider.of<ArtistNotifier>(context);
-    ConcertNotifier concertNotifier = Provider.of<ConcertNotifier>(context);
     var _desc = artistNotifier.currentArtist.bio;
     var _rating = artistNotifier.currentArtist.rating;
     var _ratingCount = artistNotifier.currentArtist.noOfRatings;
@@ -150,7 +136,7 @@ class _ArtistPage extends State<ArtistPage> {
                           ],
                         ),
                       ),
-                      ConcertsView(concertNotifier: concertNotifier),
+                      ConcertsView(),
                     ],
                   ),
                 ),

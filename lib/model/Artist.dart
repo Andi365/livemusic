@@ -9,8 +9,8 @@ class Artist {
   String bio;
   List members;
 
-  Artist.fromMap(String id1, Map<String, dynamic> data) {
-    id = id1;
+  Artist.fromMap(String id, Map<String, dynamic> data) {
+    this.id = id;
     image = data['image'];
     name = data['name'];
     isBand = data['isBand'];

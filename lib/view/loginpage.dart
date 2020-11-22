@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:livemusic/colors.dart';
 import 'package:livemusic/view/customTextView.dart';
-import 'package:provider/provider.dart';
 
 import '../api/signIn_api.dart';
 import '../colors.dart';
