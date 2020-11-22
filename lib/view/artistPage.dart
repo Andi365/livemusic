@@ -34,7 +34,7 @@ class _ArtistPage extends State<ArtistPage> {
     if (f == null) {
       print('no entry found');
     }
-    print('Found entry: ${f.toMap().toString()}');
+    print('Entry was: ${f.toMap().toString()}');
     print(f.isFavorite);
     if (f.isFavorite) {
       setState(() {
@@ -59,10 +59,15 @@ class _ArtistPage extends State<ArtistPage> {
       print('No entry found, inserted new');
       database.insertFavorite(f);
     } else {
+      print('inital entry was: ${f.toMap().toString()}');
       if (f.isFavorite) {
-        _isLiked = true;
+        setState(() {
+          _isLiked = true;
+        });
       } else {
-        _isLiked = false;
+        setState(() {
+          _isLiked = false;
+        });
       }
     }
   }
