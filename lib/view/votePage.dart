@@ -60,7 +60,7 @@ class _VotePage extends State<VotePage> {
       appBar: AppBar(
         backgroundColor: backgroundColor,
         leading: InkWell(
-          child: Icon(Icons.arrow_back),
+          child: Icon(Icons.close),
           onTap: () {
             Navigator.pop(context);
           },
@@ -119,6 +119,7 @@ class _VotePage extends State<VotePage> {
                 color: _isButtonDisabled ? Colors.grey[400] : primaryColor,
                 onPressed: () {
                   uploadRating(_rating);
+                  Navigator.pop(context);
                 },
                 child: Container(
                   padding: EdgeInsets.fromLTRB(5, 8, 5, 8),
