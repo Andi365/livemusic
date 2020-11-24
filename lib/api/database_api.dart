@@ -4,15 +4,43 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+//varibles for favorite
 final String favorites = 'favorites';
 final String columnArtistId = 'artistId';
 final String columnIsFavorite = 'isFavorite';
+
+//variables for bookmark
+final String bookmarks = 'bookmarks';
+final String columnBookmarkId = 'bookmarkId';
+final String columnIsBookmarked = 'isBookmarked';
+
+class Bookmark {
+  String bookmarkId;
+  bool isBookmarked;
+
+  Bookmark(this.bookmarkId, this.isBookmarked);
+
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      'isBookmarked': isBookmarked == true ? 1 : 0,
+    };
+    if (bookmarkId != null) {
+      map['bookmarkId'] = bookmarkId;
+    }
+    return map;
+  }
+
+  Bookmark.fromMap(Map<String, dynamic> data) {
+    bookmarkId = data['bookmarkId'];
+    isBookmarked = data['isBookmarked'] == 1;
+  }
+}
 
 class Favorite {
   String artistId;
   bool isFavorite;
 
-  Favorite();
+  Favorite(this.artistId, this.isFavorite);
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
@@ -31,7 +59,7 @@ class Favorite {
 }
 
 class DatabaseAPI {
-  static final _databaseName = 'favorites.db';
+  static final _databaseName = 'database.db';
   static final _databaseVersion = 1;
 
   DatabaseAPI._privateConstructor();
@@ -63,10 +91,53 @@ class DatabaseAPI {
       $columnIsFavorite INTEGER NOT NULL
       )
       ''');
+    await db.execute('''
+      CREATE TABLE $bookmarks (
+      $columnBookmarkId TEXT PRIMARY KEY NOT NULL,
+      $columnIsBookmarked INTEGER NOT NULL
+      )
+      ''');
   }
 
-  // Database helper methods:
-  Future<int> insert(Favorite favorite) async {
+  // Bookmarks helper methods:
+  Future<int> insertBookmark(Bookmark bookmark) async {
+    Database db = await database;
+    print(bookmark.toMap());
+    int bookmarkId = await db.insert(bookmarks, bookmark.toMap());
+    return bookmarkId;
+  }
+
+  Future<Bookmark> getBookmark(String bookmarkId) async {
+    Database db = await database;
+    List<Map> maps = await db.query(bookmarks,
+        columns: [columnBookmarkId, columnIsBookmarked],
+        where: '$columnBookmarkId = ?',
+        whereArgs: [bookmarkId]);
+    if (maps.length > 0) {
+      return Bookmark.fromMap(maps.first);
+    }
+    return null;
+  }
+
+  Future<List<Map<String, dynamic>>> getBookmarks() async {
+    Database db = await database;
+    return await db.query(bookmarks);
+  }
+
+  Future<int> deleteBookmark(String bookmarkId) async {
+    Database db = await database;
+    return await db.delete(bookmarks,
+        where: '$columnBookmarkId = ?', whereArgs: [bookmarkId]);
+  }
+
+  Future<int> updateBookmark(Bookmark bookmark) async {
+    Database db = await database;
+    return await db.update(bookmarks, bookmark.toMap(),
+        where: '$columnBookmarkId = ?', whereArgs: [bookmark.bookmarkId]);
+  }
+
+  // favorite helper methods:
+  Future<int> insertFavorite(Favorite favorite) async {
     Database db = await database;
     print(favorite.toMap());
     int artistId = await db.insert(favorites, favorite.toMap());
@@ -90,13 +161,13 @@ class DatabaseAPI {
     return await db.query(favorites);
   }
 
-  Future<int> delete(String artistId) async {
+  Future<int> deleteFavorite(String artistId) async {
     Database db = await database;
     return await db
         .delete(favorites, where: '$columnArtistId = ?', whereArgs: [artistId]);
   }
 
-  Future<int> update(Favorite favorite) async {
+  Future<int> updateFavorite(Favorite favorite) async {
     Database db = await database;
     return await db.update(favorites, favorite.toMap(),
         where: '$columnArtistId = ?', whereArgs: [favorite.artistId]);

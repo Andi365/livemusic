@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Concert {
+  String concertId;
   String artistId;
   Timestamp date;
   String name;
   String venueId;
+  String _venueName;
 
-  Concert.fromMap(Map<String, dynamic> data) {
+  Concert.fromMap(String concertId, Map<String, dynamic> data) {
+    this.concertId = concertId;
     date = data['date'];
     name = data['name'];
     artistId = data['artistId'];
@@ -20,5 +23,11 @@ class Concert {
       'artistId': artistId,
       'venueId': venueId,
     };
+  }
+
+  String get venueName => _venueName;
+
+  set venueName(String venueName) {
+    _venueName = venueName;
   }
 }

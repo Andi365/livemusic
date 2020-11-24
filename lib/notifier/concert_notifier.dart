@@ -4,19 +4,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:livemusic/model/Concert.dart';
 
 class ConcertNotifier with ChangeNotifier {
-  List<Concert> _concertList = [];
+  List<Concert> _upcomingConcerts = [];
+  List<Concert> _previousConcerts = [];
   Concert _currentConcert;
-  
 
-  UnmodifiableListView<Concert> get concertList =>
-      UnmodifiableListView(_concertList);
+  //upcoming concerts
+  UnmodifiableListView<Concert> get upcomingConcerts =>
+      UnmodifiableListView(_upcomingConcerts);
 
-  Concert get currentConcert => _currentConcert;
-
-  set concertList(List<Concert> concertList) {
-    _concertList = concertList;
+  set upcomingConcerts(List<Concert> upcomingConcerts) {
+    _upcomingConcerts = upcomingConcerts;
     notifyListeners();
   }
+
+  // previous concerts
+  UnmodifiableListView<Concert> get previousConcerts =>
+      UnmodifiableListView(_previousConcerts);
+
+  set previousConcerts(List<Concert> previousConcerts) {
+    _previousConcerts = previousConcerts;
+    notifyListeners();
+  }
+
+  Concert get currentConcert => _currentConcert;
 
   set currentConcert(Concert currentConcert) {
     _currentConcert = currentConcert;

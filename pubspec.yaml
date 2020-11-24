@@ -40,6 +40,10 @@ dependencies:
   # https://pub.dev/packages/smooth_star_rating
   smooth_star_rating: ^1.1.1
 
+  #FlutterIcons
+  # https://pub.dev/packages/fluttericon
+  fluttericon: ^1.0.7
+
   #provider
   provider: ^4.3.2+2
 
@@ -91,7 +95,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/google_logo.png
-  #  - images/arctic_mokeys.jpg
+    - assets/images/arctic_mokeys.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

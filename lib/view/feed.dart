@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
+import 'package:livemusic/colors.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:provider/provider.dart';
 
 import '../api/artist_api.dart';
-import 'artistPage.dart';
 
 class Feed extends StatefulWidget {
   @override
@@ -25,7 +25,7 @@ class _FeedState extends State<Feed> {
   Widget build(BuildContext context) {
     ArtistNotifier artistNotifier = Provider.of<ArtistNotifier>(context);
     return Scaffold(
-      backgroundColor: Color.fromRGBO(20, 20, 20, 1),
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: Container(
           child: GridView.builder(
@@ -80,13 +80,7 @@ class _FeedState extends State<Feed> {
                 onTap: () {
                   artistNotifier.currentArtist =
                       artistNotifier.artistList[_index];
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return ArtistPage(_index);
-                      },
-                    ),
-                  );
+                  Navigator.of(context).pushNamed('/artist', arguments: _index);
                 },
               );
             },

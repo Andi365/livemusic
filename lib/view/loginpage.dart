@@ -16,7 +16,8 @@ class _LoginPageState extends State<LoginPage> {
   //Some inspiration from here
   //https://github.com/pr-Mais/flutter_firebase_login
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeyRegister = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeyLogin = GlobalKey<FormState>();
   PersistentBottomSheetController _sheetController;
   String _email;
   String _password;
@@ -27,6 +28,26 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     _loading = false;
+
+    StreamBuilder(
+      stream: auth.authStateChanges(),
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            CircularProgressIndicator();
+            break;
+          case ConnectionState.done:
+            if (snapshot.hasData) {
+              Navigator.of(context).pushReplacementNamed('/');
+            } else {
+              Navigator.of(context).pushReplacementNamed('/login');
+            }
+            break;
+          default:
+            Navigator.of(context).pushReplacementNamed('/login');
+        }
+      },
+    );
     super.initState();
   }
 
@@ -51,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Form(
-                key: _formKey,
+                key: _formKeyLogin,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   children: [
@@ -78,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: 15),
+                      padding: EdgeInsets.only(bottom: 10),
                       child: Container(
                         child: _loading
                             ? CircularProgressIndicator(
@@ -92,15 +113,14 @@ class _LoginPageState extends State<LoginPage> {
                                 primaryColor,
                                 Colors.white,
                                 _validateLoginInput),
-                        height: 30,
-                        width: 80,
+                        height: 40,
                       ),
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(bottom: 15),
+                padding: EdgeInsets.only(bottom: 10),
                 child: Text(
                   'Or',
                   style: TextStyle(fontSize: 12, color: primaryWhiteColor),
@@ -109,8 +129,7 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 child: customButton("Create account", Colors.white,
                     primaryColor, primaryColor, Colors.white, registerSheet),
-                height: 30,
-                width: 140,
+                height: 40,
               ),
               Divider(
                 height: 20,
@@ -129,22 +148,28 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget customButton(String text, Color splashColor, Color highlightColor,
       Color fillColor, Color textColor, void function()) {
-    return RaisedButton(
-      splashColor: splashColor,
-      highlightColor: highlightColor,
-      color: fillColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      onPressed: () => function(),
-      child: Text(
-        text,
-        style: TextStyle(
-            fontWeight: FontWeight.bold, color: textColor, fontSize: 12),
+    return Container(
+      padding: EdgeInsets.only(left: 60, right: 60),
+      child: SizedBox(
+        width: double.infinity,
+        child: RaisedButton(
+          splashColor: splashColor,
+          highlightColor: highlightColor,
+          color: fillColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          onPressed: () => function(),
+          child: Text(
+            text,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: textColor, fontSize: 12),
+          ),
+        ),
       ),
     );
   }
 
   void _validateLoginInput() async {
-    final FormState form = _formKey.currentState;
+    final FormState form = _formKeyLogin.currentState;
     form.save();
     setState(() {
       _loading = true;
@@ -152,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await auth
           .signInWithEmailAndPassword(email: _email, password: _password)
-          .then((value) => Navigator.of(context).pushReplacementNamed('/home'))
+          .then((value) => Navigator.of(context).pushReplacementNamed('/'))
           .then((value) {
         setState(() {
           _loading = false;
@@ -206,15 +231,15 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _validateRegisterInput() async {
-    final FormState form = _formKey.currentState;
-    if (_formKey.currentState.validate()) {
+    final FormState form = _formKeyRegister.currentState;
+    if (_formKeyRegister.currentState.validate()) {
       form.save();
       _sheetController.setState(() {
         _loading = true;
       });
       try {
         signInWithEmail(_displayName, _email, _password).then((value) {
-          Navigator.of(context).pushReplacementNamed('/home');
+          Navigator.of(context).pushReplacementNamed('/');
         }).then((value) {
           _sheetController.setState(() {
             _loading = false;
@@ -369,8 +394,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 20,
                     ),
                   ]),
-                  key: _formKey,
-                  // ignore: deprecated_member_use
+                  key: _formKeyRegister,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                 )),
               ],
@@ -386,17 +410,20 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget loginGoogle() {
     return Container(
-      padding: EdgeInsets.only(top: 20, bottom: 15),
-      child: GoogleSignInButton(
-        onPressed: () {
-          signInWithGoogle().then(
-            (result) {
-              if (result != null) {
-                Navigator.of(context).pushReplacementNamed('/home');
-              }
-            },
-          );
-        },
+      padding: EdgeInsets.only(top: 20, bottom: 15, right: 60, left: 60),
+      child: SizedBox(
+        width: double.infinity,
+        child: GoogleSignInButton(
+          onPressed: () {
+            signInWithGoogle().then(
+              (result) {
+                if (result != null) {
+                  Navigator.of(context).pushReplacementNamed('/');
+                }
+              },
+            );
+          },
+        ),
       ),
     );
   }
@@ -408,7 +435,7 @@ class _LoginPageState extends State<LoginPage> {
           signInAnonymously().then(
             (result) {
               if (result != null) {
-                Navigator.of(context).pushReplacementNamed('/home');
+                Navigator.of(context).pushReplacementNamed('/');
               }
             },
           );

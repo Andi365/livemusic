@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:livemusic/colors.dart';
 import 'package:livemusic/notifier/navigation_notifier.dart';
 import 'package:livemusic/view/feed.dart';
+import 'package:livemusic/view/home.dart';
 import 'package:livemusic/view/profilePage.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +13,7 @@ class Navigation extends StatefulWidget {
 
 class _Navigation extends State<Navigation> {
   var currentTab = [
-    Feed(),
+    Home(),
     Feed(),
     ProfilePage(),
     ProfilePage(),
@@ -27,28 +29,29 @@ class _Navigation extends State<Navigation> {
         currentIndex: navigationProvider.currentIndex,
         onTap: (index) {
           navigationProvider.currentIndex = index;
+          print('index is: $index');
         },
-        selectedItemColor: Color.fromRGBO(242, 153, 74, 1),
+        selectedItemColor: secondaryColor,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-            backgroundColor: Color.fromRGBO(48, 44, 45, 1),
+            backgroundColor: secondaryBackgroundColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Search',
-            backgroundColor: Color.fromRGBO(48, 44, 45, 1),
+            backgroundColor: secondaryBackgroundColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.music_note),
             label: 'Concerts',
-            backgroundColor: Color.fromRGBO(48, 44, 45, 1),
+            backgroundColor: secondaryBackgroundColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.portrait),
             label: 'Profile',
-            backgroundColor: Color.fromRGBO(48, 44, 45, 1),
+            backgroundColor: secondaryBackgroundColor,
           ),
         ],
       ),

@@ -3,16 +3,18 @@ class Artist {
   String image;
   String name;
   bool isBand;
+  String genre;
   var rating;
   var noOfRatings;
   String bio;
   List members;
 
-  Artist.fromMap(String id1, Map<String, dynamic> data) {
-    id = id1;
+  Artist.fromMap(String id, Map<String, dynamic> data) {
+    this.id = id;
     image = data['image'];
     name = data['name'];
     isBand = data['isBand'];
+    genre = data['genre'];
     rating = data['rating'];
     noOfRatings = data['noOfRatings'];
     bio = data['bio'];
@@ -25,6 +27,7 @@ class Artist {
       'image': image,
       'name': name,
       'isBand': isBand,
+      'genre': genre,
       'rating': rating,
       'noOfRatings': noOfRatings,
       'bio': bio,
