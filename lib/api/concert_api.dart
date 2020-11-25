@@ -66,20 +66,15 @@ getVenuesConcertView(ConcertNotifier concertNotifier) async {
 
   await Future.wait(futures).then(
     (value) {
-      for (int i = 0; i < futures.length; i++) {
-        if (i < concertNotifier.previousConcerts.length &&
-            concertNotifier.previousConcerts.length != 0) {
+      if (concertNotifier.previousConcerts.length != 0) {
+        for (int i = 0; i < concertNotifier.previousConcerts.length; i++) {
           concertNotifier.previousConcerts[i].venueName = value[i].name;
         }
-        if (i >=
-                (concertNotifier.previousConcerts.length +
-                        concertNotifier.upcomingConcerts.length -
-                        1) -
-                    1 &&
-            concertNotifier.upcomingConcerts.length != 0) {
-          concertNotifier
-              .upcomingConcerts[i - concertNotifier.previousConcerts.length]
-              .venueName = value[i].name;
+      }
+
+      if (concertNotifier.upcomingConcerts.length != 0) {
+        for (int i = 0; i < concertNotifier.upcomingConcerts.length; i++) {
+          concertNotifier.upcomingConcerts[i].venueName = value[i].name;
         }
       }
     },
