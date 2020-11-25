@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:livemusic/model/Artist.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -13,28 +15,9 @@ final String columnIsFavorite = 'isFavorite';
 final String bookmarks = 'bookmarks';
 final String columnBookmarkId = 'bookmarkId';
 final String columnIsBookmarked = 'isBookmarked';
-
-class Bookmark {
-  String bookmarkId;
-  bool isBookmarked;
-
-  Bookmark(this.bookmarkId, this.isBookmarked);
-
-  Map<String, dynamic> toMap() {
-    var map = <String, dynamic>{
-      'isBookmarked': isBookmarked == true ? 1 : 0,
-    };
-    if (bookmarkId != null) {
-      map['bookmarkId'] = bookmarkId;
-    }
-    return map;
-  }
-
-  Bookmark.fromMap(Map<String, dynamic> data) {
-    bookmarkId = data['bookmarkId'];
-    isBookmarked = data['isBookmarked'] == 1;
-  }
-}
+final String columnTimestamp = 'timestamp';
+final String columnArtistName = 'artistName';
+final String columnArtistImageURL = 'ArtistImageURL';
 
 class Favorite {
   String artistId;
@@ -44,17 +27,51 @@ class Favorite {
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
-      'isFavorite': isFavorite == true ? 1 : 0,
+      columnIsFavorite: isFavorite == true ? 1 : 0,
     };
     if (artistId != null) {
-      map['artistId'] = artistId;
+      map[columnArtistId] = artistId;
     }
     return map;
   }
 
   Favorite.fromMap(Map<String, dynamic> data) {
-    artistId = data['artistId'];
-    isFavorite = data['isFavorite'] == 1;
+    artistId = data[columnArtistId];
+    isFavorite = data[columnIsFavorite] == 1;
+  }
+}
+
+class Bookmark {
+  String bookmarkId;
+  bool isBookmarked;
+  int timestamp;
+  String artistName;
+  String imageUrl;
+
+  Bookmark(this.bookmarkId, this.isBookmarked, this.artistName, this.imageUrl,
+      {this.timestamp});
+
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      columnIsBookmarked: isBookmarked == true ? 1 : 0,
+      columnArtistName: artistName,
+      columnArtistImageURL: imageUrl
+    };
+    if (bookmarkId != null) {
+      map[columnBookmarkId] = bookmarkId;
+    }
+    if (timestamp == null) {
+      map[columnTimestamp] = Timestamp.now().seconds;
+    }
+    return map;
+  }
+
+  Bookmark.fromMap(Map<String, dynamic> data) {
+    bookmarkId = data[columnBookmarkId];
+    isBookmarked = data[columnIsBookmarked] == 1;
+    timestamp = data[columnTimestamp];
+    artistName = data[columnArtistName];
+    imageUrl = data[columnArtistImageURL];
   }
 }
 
@@ -94,7 +111,10 @@ class DatabaseAPI {
     await db.execute('''
       CREATE TABLE $bookmarks (
       $columnBookmarkId TEXT PRIMARY KEY NOT NULL,
-      $columnIsBookmarked INTEGER NOT NULL
+      $columnIsBookmarked INTEGER NOT NULL,
+      $columnTimestamp INTEGER NOT NULL,
+      $columnArtistName TEXT NOT NULL,
+      $columnArtistImageURL TEXT NOT NULL
       )
       ''');
   }
@@ -110,7 +130,13 @@ class DatabaseAPI {
   Future<Bookmark> getBookmark(String bookmarkId) async {
     Database db = await database;
     List<Map> maps = await db.query(bookmarks,
-        columns: [columnBookmarkId, columnIsBookmarked],
+        columns: [
+          columnBookmarkId,
+          columnIsBookmarked,
+          columnTimestamp,
+          columnArtistName,
+          columnArtistImageURL
+        ],
         where: '$columnBookmarkId = ?',
         whereArgs: [bookmarkId]);
     if (maps.length > 0) {
@@ -119,9 +145,13 @@ class DatabaseAPI {
     return null;
   }
 
-  Future<List<Map<String, dynamic>>> getBookmarks() async {
+  Future<List<Bookmark>> getBookmarks() async {
     Database db = await database;
-    return await db.query(bookmarks);
+    final List<Map<String, dynamic>> maps = await db.query(bookmarks);
+
+    return List.generate(maps.length, (i) {
+      return Bookmark.fromMap(maps[i]);
+    });
   }
 
   Future<int> deleteBookmark(String bookmarkId) async {
