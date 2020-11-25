@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 class CardView extends StatelessWidget {
   final String image, artistName;
-  final int index;
 
-  CardView(this.image, this.artistName, this.index);
+  CardView(this.image, this.artistName);
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +13,13 @@ class CardView extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              width: double.infinity,
+              width: 150,
               height: 150,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  image: DecorationImage(
-                      image: NetworkImage(image), fit: BoxFit.cover)),
+                borderRadius: BorderRadius.circular(20),
+                image: DecorationImage(
+                    image: NetworkImage(image), fit: BoxFit.cover),
+              ),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -50,8 +50,7 @@ class CardView extends StatelessWidget {
         ),
       ),
       onTap: () {
-        //artistNotifier.currentArtist = artistNotifier.artistList[_index];
-        Navigator.of(context).pushNamed('/artist', arguments: index);
+        Navigator.of(context).pushNamed('/artist');
       },
     );
   }
