@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/entypo_icons.dart';
 import 'package:livemusic/api/database_api.dart';
+import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -21,14 +22,19 @@ class _ConcertsView extends State<ConcertsView> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   DatabaseAPI database = DatabaseAPI.instance;
   ConcertNotifier concertNotifier;
+  ArtistNotifier artistNotifier;
 
-  void _checkForBookmarks(ConcertNotifier concertNotifier) async {
+  void _checkForBookmarks(
+      ConcertNotifier concertNotifier, ArtistNotifier artistNotifier) async {
     for (int i = 0; i < concertNotifier.upcomingConcerts.length; i++) {
       Bookmark bookmark = await database
           .getBookmark(concertNotifier.upcomingConcerts[i].concertId);
       if (bookmark == null) {
-        bookmark =
-            Bookmark(concertNotifier.upcomingConcerts[i].concertId, false);
+        bookmark = Bookmark(
+            concertNotifier.upcomingConcerts[i].concertId,
+            false,
+            artistNotifier.currentArtist.name,
+            artistNotifier.currentArtist.image);
         database.insertBookmark(bookmark);
         print('No entry found, inserted new ${bookmark.toMap().toString()}');
       }
@@ -44,25 +50,31 @@ class _ConcertsView extends State<ConcertsView> {
         bookmark.isBookmarked = false;
       });
       await database.updateBookmark(bookmark);
+      print(
+          'Bookmark with id: ${bookmark.bookmarkId} updated to: ${bookmark.isBookmarked}');
     } else {
       setState(() {
         bookmark.isBookmarked = true;
       });
       await database.updateBookmark(bookmark);
+      print(
+          'Bookmark with id: ${bookmark.bookmarkId} updated to: ${bookmark.isBookmarked}');
     }
   }
 
   @override
   void initState() {
     concertNotifier = Provider.of<ConcertNotifier>(context, listen: false);
+    artistNotifier = Provider.of<ArtistNotifier>(context, listen: false);
 
-    _checkForBookmarks(concertNotifier);
+    _checkForBookmarks(concertNotifier, artistNotifier);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     concertNotifier = Provider.of<ConcertNotifier>(context);
+    artistNotifier = Provider.of<ArtistNotifier>(context);
     TabController _tabController;
 
     return DefaultTabController(

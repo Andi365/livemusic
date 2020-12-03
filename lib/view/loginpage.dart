@@ -61,9 +61,10 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             children: [
               SizedBox(height: 20),
-              FlutterLogo(size: 150),
+              _displayLogo(150),
+              //FlutterLogo(size: 150),
               SizedBox(height: 35),
-              loginGoogle(),
+              _loginGoogle(),
               Padding(
                 padding: EdgeInsets.only(bottom: 20),
                 child: Text(
@@ -138,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                 endIndent: 170,
                 color: primaryWhiteColor,
               ),
-              loginAnonymously(),
+              _loginAnonymously(),
             ],
           ),
         ),
@@ -408,7 +409,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  Widget loginGoogle() {
+  Widget _loginGoogle() {
     return Container(
       padding: EdgeInsets.only(top: 20, bottom: 15, right: 60, left: 60),
       child: SizedBox(
@@ -428,7 +429,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget loginAnonymously() {
+  Widget _loginAnonymously() {
     return Center(
       child: InkWell(
         onTap: () {
@@ -446,6 +447,15 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Widget _displayLogo(double size) {
+    return Container(
+        child: Image.asset(
+      'assets/icons/app_icon.png',
+      width: size,
+      height: size,
+    ));
   }
 
   String emailValidator(String value) {

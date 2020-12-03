@@ -24,6 +24,11 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #define App Icon
+  # https://pub.dev/packages/flutter_launcher_icons
+  flutter_launcher_icons: ^0.8.1
+
+
   #Expandable textwidgets
   # https://pub.dev/packages/expandable
   expandable: ^4.1.4
@@ -63,6 +68,11 @@ dependencies:
   #https://pub.dev/packages/flutter_auth_buttons/
   flutter_auth_buttons: ^0.10.0
 
+flutter_icons:
+  image_path: "assets/icons/app_icon.png"
+  android: true
+  ios: true
+
   # Analytics
   #firebase_analytics:
 
@@ -96,6 +106,7 @@ flutter:
     - assets/images/
     - assets/images/google_logo.png
     - assets/images/arctic_mokeys.jpg
+    - assets/icons/app_icon.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
