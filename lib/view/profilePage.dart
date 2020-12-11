@@ -187,8 +187,9 @@ class _Profilepage extends State<ProfilePage> {
                         child: RaisedButton(
                           color: primaryColor,
                           onPressed: () {
-                            signOut().then((value) => Navigator.of(context)
-                                .pushReplacementNamed('/login'));
+                            signOut().then((value) =>
+                                Navigator.pushNamedAndRemoveUntil(context,
+                                    '/login', ModalRoute.withName('/login')));
                             navigationNotifer.currentIndex = 0;
                           },
                           child: Text(
