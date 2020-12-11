@@ -7,10 +7,14 @@ import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:livemusic/notifier/navigation_notifier.dart';
 import 'package:livemusic/notifier/rating_notifier.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
   runApp(
     MultiProvider(
       providers: [

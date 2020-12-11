@@ -54,7 +54,8 @@ class _ArtistPage extends State<ArtistPage> {
   void _checkForFavorite(ArtistNotifier artistNotifier) async {
     Favorite f = await database.getFavorite(artistNotifier.currentArtist.id);
     if (f == null) {
-      f = Favorite(artistNotifier.currentArtist.id, false);
+      f = Favorite(artistNotifier.currentArtist.id, false,
+          artistNotifier.currentArtist.image, artistNotifier.currentArtist.name);
       _isLiked = false;
       print('No entry found, inserted new');
       database.insertFavorite(f);
