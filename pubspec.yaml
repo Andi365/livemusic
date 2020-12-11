@@ -49,6 +49,12 @@ dependencies:
   # https://pub.dev/packages/fluttericon
   fluttericon: ^1.0.7
 
+  # Analytics
+  firebase_analytics:
+
+  # Crashlytics
+  firebase_crashlytics:
+
   #provider
   provider: ^4.3.2+2
 
@@ -72,12 +78,6 @@ flutter_icons:
   image_path: "assets/icons/app_icon.png"
   android: true
   ios: true
-
-  # Analytics
-  #firebase_analytics:
-
-  # Crashlytics
-  #firebase_crashlytics:
 
   # Performance
   #firebase_performance:
