@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:livemusic/api/database_api.dart';
 import 'package:livemusic/colors.dart';
 import 'package:livemusic/view/cardview.dart';
-import 'package:sqflite/sqflite.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -155,13 +154,13 @@ class _Home extends State<Home> {
   Future<List<Bookmark>> _getBookmarks() async {
     DatabaseAPI databaseAPI = DatabaseAPI.instance;
     bookmarks = await databaseAPI.getBookmarks();
-    print('databaseAPI:');
+    /*print('databaseAPI:');
     bookmarks.forEach((element) {
       print(element.bookmarkId);
       print(element.isBookmarked);
       print(element.timestamp);
       print(element.artistName);
-    });
+    });*/
     return bookmarks;
   }
 

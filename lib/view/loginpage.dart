@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     _loading = false;
 
-    StreamBuilder(
+    /*StreamBuilder(
       stream: auth.authStateChanges(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.of(context).pushReplacementNamed('/login');
         }
       },
-    );
+    );*/
     super.initState();
   }
 
