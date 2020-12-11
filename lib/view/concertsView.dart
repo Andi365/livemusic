@@ -86,7 +86,7 @@ class _ConcertsView extends State<ConcertsView> {
       length: 2,
       child: NestedScrollView(
         headerSliverBuilder: (context, _) {
-          return [SliverToBoxAdapter(child: Text(' '))];
+          return [];
         },
         body: Column(
           children: [
