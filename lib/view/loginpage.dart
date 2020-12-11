@@ -62,7 +62,6 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               SizedBox(height: 20),
               _displayLogo(150),
-              //FlutterLogo(size: 150),
               SizedBox(height: 35),
               _loginGoogle(),
               Padding(

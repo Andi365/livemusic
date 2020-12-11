@@ -10,6 +10,7 @@ import 'package:sqflite/sqflite.dart';
 final String favorites = 'favorites';
 final String columnArtistId = 'artistId';
 final String columnIsFavorite = 'isFavorite';
+final String columnFavoriteImageURL = 'FavoriteImageURL';
 
 //variables for bookmark
 final String bookmarks = 'bookmarks';
@@ -22,12 +23,16 @@ final String columnArtistImageURL = 'ArtistImageURL';
 class Favorite {
   String artistId;
   bool isFavorite;
+  String imageUrl;
+  String artistName;
 
-  Favorite(this.artistId, this.isFavorite);
+  Favorite(this.artistId, this.isFavorite, this.imageUrl, this.artistName);
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       columnIsFavorite: isFavorite == true ? 1 : 0,
+      columnFavoriteImageURL: imageUrl,
+      columnArtistName: artistName
     };
     if (artistId != null) {
       map[columnArtistId] = artistId;
@@ -38,6 +43,8 @@ class Favorite {
   Favorite.fromMap(Map<String, dynamic> data) {
     artistId = data[columnArtistId];
     isFavorite = data[columnIsFavorite] == 1;
+    imageUrl = data[columnFavoriteImageURL];
+    artistName = data[columnArtistName];
   }
 }
 
@@ -105,7 +112,9 @@ class DatabaseAPI {
     await db.execute('''
       CREATE TABLE $favorites (
       $columnArtistId TEXT PRIMARY KEY NOT NULL,
-      $columnIsFavorite INTEGER NOT NULL
+      $columnIsFavorite INTEGER NOT NULL,
+      $columnFavoriteImageURL TEXT NOT NULL,
+      $columnArtistName TEXT NOT NULL
       )
       ''');
     await db.execute('''
@@ -154,6 +163,15 @@ class DatabaseAPI {
     });
   }
 
+  Future<List<Map<String, dynamic>>> getArtistNameB(String bookmarkId) async {
+    Database db = await database;
+    List<Map<String, dynamic>> artistN = await db.query(bookmarks,
+        columns: [columnArtistName],
+        where: '$columnBookmarkId = ?',
+        whereArgs: [bookmarkId]);
+    return artistN;
+  }
+
   Future<int> deleteBookmark(String bookmarkId) async {
     Database db = await database;
     return await db.delete(bookmarks,
@@ -177,7 +195,12 @@ class DatabaseAPI {
   Future<Favorite> getFavorite(String artistId) async {
     Database db = await database;
     List<Map> maps = await db.query(favorites,
-        columns: [columnArtistId, columnIsFavorite],
+        columns: [
+          columnArtistId,
+          columnIsFavorite,
+          columnFavoriteImageURL,
+          columnArtistName
+        ],
         where: '$columnArtistId = ?',
         whereArgs: [artistId]);
     if (maps.length > 0) {
@@ -186,9 +209,13 @@ class DatabaseAPI {
     return null;
   }
 
-  Future<List<Map<String, dynamic>>> getFavorites() async {
+  Future<List<Favorite>> getFavorites() async {
     Database db = await database;
-    return await db.query(favorites);
+    final List<Map<String, dynamic>> maps = await db.query(favorites);
+
+    return List.generate(maps.length, (index) {
+      return Favorite.fromMap(maps[index]);
+    });
   }
 
   Future<int> deleteFavorite(String artistId) async {
