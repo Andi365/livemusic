@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/entypo_icons.dart';
-import 'package:livemusic/api/artist_api.dart';
 import 'package:livemusic/api/database_api.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
@@ -25,7 +24,6 @@ class _ConcertsView extends State<ConcertsView> {
   ConcertNotifier concertNotifier;
   ArtistNotifier artistNotifier;
   String artistId;
-  Future artistFuture;
 
   void _checkForBookmarks(
       ConcertNotifier concertNotifier, ArtistNotifier artistNotifier) async {
@@ -54,7 +52,7 @@ class _ConcertsView extends State<ConcertsView> {
       });
       await database.updateBookmark(bookmark);
       print(
-          'Bookmark with id: ${bookmark.bookmarkId} updated to: ${bookmark.isBookmarked}');
+          'Bookmark with id: ${bookmark.bookmarkId} ${bookmark.artistName}  ${bookmark.imageUrl}  updated to: ${bookmark.isBookmarked}');
     } else {
       setState(() {
         bookmark.isBookmarked = true;
@@ -71,8 +69,6 @@ class _ConcertsView extends State<ConcertsView> {
     artistNotifier = Provider.of<ArtistNotifier>(context, listen: false);
 
     _checkForBookmarks(concertNotifier, artistNotifier);
-
-    artistFuture = _getArtist();
     super.initState();
   }
 
@@ -86,7 +82,7 @@ class _ConcertsView extends State<ConcertsView> {
       length: 2,
       child: NestedScrollView(
         headerSliverBuilder: (context, _) {
-          return [SliverToBoxAdapter(child: Text(' '))];
+          return [];
         },
         body: Column(
           children: [
@@ -267,9 +263,5 @@ class _ConcertsView extends State<ConcertsView> {
         ),
       ),
     );
-  }
-
-  _getArtist() {
-    getArtist(artistId);
   }
 }
