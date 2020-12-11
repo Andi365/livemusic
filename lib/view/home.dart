@@ -39,37 +39,39 @@ class _Home extends State<Home> {
         ),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              child: FutureBuilder(
-                future: favoriteFuture,
-                builder: (context, AsyncSnapshot<List<Favorite>> snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.done:
-                      return _listFavorites(snapshot);
-                      break;
-                    default:
-                      return Text('');
-                  }
-                },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                child: FutureBuilder(
+                  future: favoriteFuture,
+                  builder: (context, AsyncSnapshot<List<Favorite>> snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.done:
+                        return _listFavorites(snapshot);
+                        break;
+                      default:
+                        return Text('');
+                    }
+                  },
+                ),
               ),
-            ),
-            Container(
-              child: FutureBuilder(
-                future: bookmarksFuture,
-                builder: (context, AsyncSnapshot<List<Bookmark>> snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.done:
-                      return _listBookmarks(snapshot);
-                      break;
-                    default:
-                      return Text('');
-                  }
-                },
+              Container(
+                child: FutureBuilder(
+                  future: bookmarksFuture,
+                  builder: (context, AsyncSnapshot<List<Bookmark>> snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.done:
+                        return _listBookmarks(snapshot);
+                        break;
+                      default:
+                        return Text('');
+                    }
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
