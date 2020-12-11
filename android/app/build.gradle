@@ -39,7 +39,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.livemusic.livemusic"
+        applicationId "com.livemusic.livemusicrater"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()

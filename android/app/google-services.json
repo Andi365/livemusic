@@ -23,6 +23,59 @@
           }
         },
         {
+          "client_id": "105035491003-qb4osn33igon1sq7ce7ourl2mn7fia5o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.livemusic.livemusic",
+            "certificate_hash": "bea2ac7ebdc51998d4b68f88b88c5be669d13941"
+          }
+        },
+        {
+          "client_id": "105035491003-qo6co2ll9ci9fgnj46gnliu977ijophm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.livemusic.livemusic",
+            "certificate_hash": "87f67c2c328070be63cd4c2bd97f00be088e4210"
+          }
+        },
+        {
+          "client_id": "105035491003-t76jo54ailu446c84me9tkg4iapp36lv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvTTxszeNA2E6GIWsRRNiv1AfKZ0EekiI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105035491003-t76jo54ailu446c84me9tkg4iapp36lv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105035491003:android:379de64ff96f0a27a42b9e",
+        "android_client_info": {
+          "package_name": "com.livemusic.livemusicrater"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105035491003-7007976tnrmtmba1je0phbddr632qd64.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.livemusic.livemusicrater",
+            "certificate_hash": "87f67c2c328070be63cd4c2bd97f00be088e4210"
+          }
+        },
+        {
           "client_id": "105035491003-t76jo54ailu446c84me9tkg4iapp36lv.apps.googleusercontent.com",
           "client_type": 3
         }
