@@ -16,3 +16,9 @@ getArtists(ArtistNotifier artistNotifier) async {
 
   artistNotifier.artistList = _artist;
 }
+
+Future<Artist> getArtist(String artistId) async {
+  DocumentSnapshot doc =
+      await FirebaseFirestore.instance.collection('Artist').doc(artistId).get();
+  return Artist.fromMap(artistId, doc.data());
+}
