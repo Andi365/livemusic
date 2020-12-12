@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Login',
+      title: 'Live music',
       theme: ThemeData(
         fontFamily: 'Montserrat',
         primarySwatch: Colors.blue,
