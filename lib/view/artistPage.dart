@@ -378,6 +378,7 @@ class _ArtistPage extends State<ArtistPage> {
   }
 
   Future<Artist> _getArtist() async {
+    print(artistMap['artistId']);
     return getArtist(artistMap['artistId']);
   }
 }

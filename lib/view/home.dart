@@ -140,9 +140,11 @@ class _Home extends State<Home> {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     return snapshot.data[index].isBookmarked
-                        ? CardView(snapshot.data[index].imageUrl,
-                            snapshot.data[index].artistName,
-                            artistId: snapshot.data[index].bookmarkId)
+                        ? CardView(
+                            snapshot.data[index].imageUrl,
+                            snapshot.data[index].venueName,
+                            venueId: snapshot.data[index].venueId,
+                          )
                         : null;
                   },
                   itemCount: snapshot.data.length,
@@ -156,13 +158,13 @@ class _Home extends State<Home> {
   Future<List<Bookmark>> _getBookmarks() async {
     DatabaseAPI databaseAPI = DatabaseAPI.instance;
     bookmarks = await databaseAPI.getBookmarks();
-    /*print('databaseAPI:');
+    print('databaseAPI:');
     bookmarks.forEach((element) {
       print(element.bookmarkId);
       print(element.isBookmarked);
       print(element.timestamp);
-      print(element.artistName);
-    });*/
+      print(element.venueName);
+    });
     return bookmarks;
   }
 

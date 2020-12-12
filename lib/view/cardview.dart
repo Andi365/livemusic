@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CardView extends StatelessWidget {
-  final String image, artistName, artistId;
+  final String image, name, artistId, venueId;
 
-  const CardView(this.image, this.artistName, {this.artistId});
+  const CardView(this.image, this.name, {this.venueId, this.artistId});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class CardView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      artistName,
+                      name,
                       style: TextStyle(
                           color: Color.fromRGBO(193, 160, 80, 1), fontSize: 16),
                     ),
@@ -50,13 +50,21 @@ class CardView extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Map<String, dynamic> map = {
-          "artistId": artistId,
-          "image": image,
-          "name": artistName
-        };
-        Navigator.of(context).pushNamed('/artist', arguments: map);
+        Map<String, dynamic> map;
+        if (venueId == null) {
+          map = {"artistId": artistId, "image": image, "name": name};
+          Navigator.of(context).pushNamed('/artist', arguments: map);
+        } else {
+          map = {'venueId': '$venueId'};
+          Navigator.of(context).pushNamed('/concert', arguments: map);
+        }
       },
     );
   }
+
+  /*String convertToArtistId(String bookmarkId) {
+    List<String> bookmark = bookmarkId.split("_");
+
+    return bookmark[0];
+  }*/
 }
