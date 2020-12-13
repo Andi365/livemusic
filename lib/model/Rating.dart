@@ -9,7 +9,7 @@ class Rating {
   String userId = User().id;
   var wasCreated;
 
-  Rating();
+  Rating(this.artistName, this.date, this.artistId, this.wasCreated);
 
   Rating.fromMap(Map<String, dynamic> data) {
     rating = data['rating'].toDouble();
