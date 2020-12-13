@@ -4,7 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:livemusic/api/database_api.dart';
 import 'package:livemusic/colors.dart';
+import 'package:livemusic/notifier/savedArtists_notifier.dart';
+import 'package:livemusic/notifier/savedBookmarks_notifier.dart';
 import 'package:livemusic/view/cardview.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -12,23 +15,19 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State<Home> {
+  SavedArtistsNotifer savedArtists;
+  SavedBookmarksNotifer savedBookmarks;
   FirebaseAuth auth = FirebaseAuth.instance;
-  List<Bookmark> bookmarks = [];
-  List<Favorite> favorites = [];
-
-  //Futures loading
-  Future<List<Bookmark>> bookmarksFuture;
-  Future<List<Favorite>> favoriteFuture;
 
   @override
   void initState() {
-    bookmarksFuture = _getBookmarks();
-    favoriteFuture = _getFavorites();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    savedArtists = Provider.of<SavedArtistsNotifer>(context);
+    savedBookmarks = Provider.of<SavedBookmarksNotifer>(context);
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -42,34 +41,8 @@ class _Home extends State<Home> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                child: FutureBuilder(
-                  future: favoriteFuture,
-                  builder: (context, AsyncSnapshot<List<Favorite>> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.done:
-                        return _listFavorites(snapshot);
-                        break;
-                      default:
-                        return Text('');
-                    }
-                  },
-                ),
-              ),
-              Container(
-                child: FutureBuilder(
-                  future: bookmarksFuture,
-                  builder: (context, AsyncSnapshot<List<Bookmark>> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.done:
-                        return _listBookmarks(snapshot);
-                        break;
-                      default:
-                        return Text('');
-                    }
-                  },
-                ),
-              ),
+              Container(child: _listFavorites()),
+              Container(child: _listBookmarks()),
             ],
           ),
         ),
@@ -77,8 +50,8 @@ class _Home extends State<Home> {
     );
   }
 
-  Widget _listFavorites(AsyncSnapshot<List<Favorite>> snapshot) {
-    return snapshot.data.isNotEmpty
+  Widget _listFavorites() {
+    return savedArtists.savedArtists.isNotEmpty
         ? Column(
             children: [
               Container(
@@ -101,13 +74,13 @@ class _Home extends State<Home> {
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    return snapshot.data[index].isFavorite
-                        ? CardView(snapshot.data[index].imageUrl,
-                            snapshot.data[index].artistName,
-                            artistId: snapshot.data[index].artistId)
+                    return savedArtists.savedArtists[index].isFavorite
+                        ? CardView(savedArtists.savedArtists[index].imageUrl,
+                            savedArtists.savedArtists[index].artistName,
+                            artistId: savedArtists.savedArtists[index].artistId)
                         : null;
                   },
-                  itemCount: snapshot.data.length,
+                  itemCount: savedArtists.savedArtists.length,
                 ),
               ),
             ],
@@ -115,8 +88,8 @@ class _Home extends State<Home> {
         : Text('');
   }
 
-  Widget _listBookmarks(AsyncSnapshot<List<Bookmark>> snapshot) {
-    return snapshot.data.isNotEmpty
+  Widget _listBookmarks() {
+    return savedBookmarks.savedBookmarks.isNotEmpty
         ? Column(
             children: [
               Container(
@@ -139,36 +112,17 @@ class _Home extends State<Home> {
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    return snapshot.data[index].isBookmarked
-                        ? CardView(snapshot.data[index].imageUrl,
-                            snapshot.data[index].artistName,
-                            artistId: snapshot.data[index].bookmarkId)
-                        : null;
+                    return CardView(
+                      savedBookmarks.savedBookmarks[index].imageUrl,
+                      savedBookmarks.savedBookmarks[index].venueName,
+                      venueId: savedBookmarks.savedBookmarks[index].venueId,
+                    );
                   },
-                  itemCount: snapshot.data.length,
+                  itemCount: savedBookmarks.savedBookmarks.length,
                 ),
               ),
             ],
           )
         : Text('');
-  }
-
-  Future<List<Bookmark>> _getBookmarks() async {
-    DatabaseAPI databaseAPI = DatabaseAPI.instance;
-    bookmarks = await databaseAPI.getBookmarks();
-    /*print('databaseAPI:');
-    bookmarks.forEach((element) {
-      print(element.bookmarkId);
-      print(element.isBookmarked);
-      print(element.timestamp);
-      print(element.artistName);
-    });*/
-    return bookmarks;
-  }
-
-  Future<List<Favorite>> _getFavorites() async {
-    DatabaseAPI databaseAPI = DatabaseAPI.instance;
-    favorites = await databaseAPI.getFavorites();
-    return favorites;
   }
 }

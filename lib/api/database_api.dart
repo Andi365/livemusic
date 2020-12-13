@@ -9,16 +9,9 @@ import 'package:sqflite/sqflite.dart';
 //varibles for favorite
 final String favorites = 'favorites';
 final String columnArtistId = 'artistId';
+final String columnArtistName = 'artistName';
 final String columnIsFavorite = 'isFavorite';
 final String columnFavoriteImageURL = 'FavoriteImageURL';
-
-//variables for bookmark
-final String bookmarks = 'bookmarks';
-final String columnBookmarkId = 'bookmarkId';
-final String columnIsBookmarked = 'isBookmarked';
-final String columnTimestamp = 'timestamp';
-final String columnArtistName = 'artistName';
-final String columnArtistImageURL = 'ArtistImageURL';
 
 class Favorite {
   String artistId;
@@ -48,21 +41,32 @@ class Favorite {
   }
 }
 
+//variables for bookmark
+final String bookmarks = 'bookmarks';
+final String columnBookmarkId = 'bookmarkId';
+final String columnIsBookmarked = 'isBookmarked';
+final String columnTimestamp = 'timestamp';
+final String columnVenueName = 'venueName';
+final String columnArtistImageURL = 'ArtistImageURL';
+final String columnVenueId = 'venueId';
+
 class Bookmark {
   String bookmarkId;
   bool isBookmarked;
   int timestamp;
-  String artistName;
+  String venueName;
   String imageUrl;
+  String venueId;
 
-  Bookmark(this.bookmarkId, this.isBookmarked, this.artistName, this.imageUrl,
-      {this.timestamp});
+  Bookmark(this.bookmarkId, this.venueName, this.imageUrl, this.venueId,
+      {this.isBookmarked = false, this.timestamp});
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       columnIsBookmarked: isBookmarked == true ? 1 : 0,
-      columnArtistName: artistName,
-      columnArtistImageURL: imageUrl
+      columnVenueName: venueName,
+      columnArtistImageURL: imageUrl,
+      columnVenueId: venueId,
     };
     if (bookmarkId != null) {
       map[columnBookmarkId] = bookmarkId;
@@ -77,8 +81,9 @@ class Bookmark {
     bookmarkId = data[columnBookmarkId];
     isBookmarked = data[columnIsBookmarked] == 1;
     timestamp = data[columnTimestamp];
-    artistName = data[columnArtistName];
+    venueName = data[columnVenueName];
     imageUrl = data[columnArtistImageURL];
+    venueId = data[columnVenueId];
   }
 }
 
@@ -122,8 +127,9 @@ class DatabaseAPI {
       $columnBookmarkId TEXT PRIMARY KEY NOT NULL,
       $columnIsBookmarked INTEGER NOT NULL,
       $columnTimestamp INTEGER NOT NULL,
-      $columnArtistName TEXT NOT NULL,
-      $columnArtistImageURL TEXT NOT NULL
+      $columnVenueName TEXT NOT NULL,
+      $columnArtistImageURL TEXT NOT NULL,
+      $columnVenueId TEXT NOT NULL
       )
       ''');
   }
@@ -143,8 +149,9 @@ class DatabaseAPI {
           columnBookmarkId,
           columnIsBookmarked,
           columnTimestamp,
-          columnArtistName,
-          columnArtistImageURL
+          columnVenueName,
+          columnArtistImageURL,
+          columnVenueId
         ],
         where: '$columnBookmarkId = ?',
         whereArgs: [bookmarkId]);
@@ -163,10 +170,10 @@ class DatabaseAPI {
     });
   }
 
-  Future<List<Map<String, dynamic>>> getArtistNameB(String bookmarkId) async {
+  Future<List<Map<String, dynamic>>> getVenueNameB(String bookmarkId) async {
     Database db = await database;
     List<Map<String, dynamic>> artistN = await db.query(bookmarks,
-        columns: [columnArtistName],
+        columns: [columnVenueName],
         where: '$columnBookmarkId = ?',
         whereArgs: [bookmarkId]);
     return artistN;

@@ -5,6 +5,7 @@ import 'package:fluttericon/entypo_icons.dart';
 import 'package:livemusic/api/database_api.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
+import 'package:livemusic/notifier/savedBookmarks_notifier.dart';
 import 'package:provider/provider.dart';
 
 import '../colors.dart';
@@ -23,7 +24,7 @@ class _ConcertsView extends State<ConcertsView> {
   DatabaseAPI database = DatabaseAPI.instance;
   ConcertNotifier concertNotifier;
   ArtistNotifier artistNotifier;
-  String artistId;
+  SavedBookmarksNotifer savedBookmarks;
 
   void _checkForBookmarks(
       ConcertNotifier concertNotifier, ArtistNotifier artistNotifier) async {
@@ -33,9 +34,9 @@ class _ConcertsView extends State<ConcertsView> {
       if (bookmark == null) {
         bookmark = Bookmark(
             concertNotifier.upcomingConcerts[i].concertId,
-            false,
-            artistNotifier.currentArtist.name,
-            artistNotifier.currentArtist.image);
+            concertNotifier.upcomingConcerts[i].venueName,
+            artistNotifier.currentArtist.image,
+            concertNotifier.upcomingConcerts[i].venueId);
         database.insertBookmark(bookmark);
         print('No entry found, inserted new ${bookmark.toMap().toString()}');
       }
@@ -47,17 +48,19 @@ class _ConcertsView extends State<ConcertsView> {
       print('invalid bookmark');
     }
     if (bookmark.isBookmarked) {
+      savedBookmarks.remove();
       setState(() {
         bookmark.isBookmarked = false;
       });
       await database.updateBookmark(bookmark);
       print(
-          'Bookmark with id: ${bookmark.bookmarkId} ${bookmark.artistName}  ${bookmark.imageUrl}  updated to: ${bookmark.isBookmarked}');
+          'Bookmark with id: ${bookmark.bookmarkId} updated to: ${bookmark.isBookmarked}');
     } else {
       setState(() {
         bookmark.isBookmarked = true;
       });
       await database.updateBookmark(bookmark);
+      savedBookmarks.add(bookmark);
       print(
           'Bookmark with id: ${bookmark.bookmarkId} updated to: ${bookmark.isBookmarked}');
     }
@@ -67,7 +70,7 @@ class _ConcertsView extends State<ConcertsView> {
   void initState() {
     concertNotifier = Provider.of<ConcertNotifier>(context, listen: false);
     artistNotifier = Provider.of<ArtistNotifier>(context, listen: false);
-
+    savedBookmarks = Provider.of<SavedBookmarksNotifer>(context, listen: false);
     _checkForBookmarks(concertNotifier, artistNotifier);
     super.initState();
   }
@@ -123,11 +126,6 @@ class _ConcertsView extends State<ConcertsView> {
     );
   }
 
-  String _formatTime(Timestamp time) {
-    DateTime date = time.toDate();
-    return '${date.day}-${date.month}-${date.year} ${date.hour}:${date.minute}';
-  }
-
   Widget _concertList(bool upcomingOrPrevious) {
     return ListView.separated(
       shrinkWrap: true,
@@ -145,6 +143,7 @@ class _ConcertsView extends State<ConcertsView> {
           padding: EdgeInsets.all(5),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 flex: 2,
@@ -171,23 +170,26 @@ class _ConcertsView extends State<ConcertsView> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: upcomingOrPrevious
-                    ? FutureBuilder(
-                        future: _bookmark(index),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            if (snapshot.hasData) {
-                              return snapshot.data;
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 10),
+                  child: upcomingOrPrevious
+                      ? FutureBuilder(
+                          future: _bookmark(index),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              if (snapshot.hasData) {
+                                return snapshot.data;
+                              }
+                            } else {
+                              CircularProgressIndicator();
                             }
-                          } else {
-                            CircularProgressIndicator();
-                          }
-                          return Text('');
-                        })
-                    : Text(''),
+                            return Text('');
+                          })
+                      : Text(''),
+                ),
               ),
               _button(
                 context,
@@ -263,5 +265,10 @@ class _ConcertsView extends State<ConcertsView> {
         ),
       ),
     );
+  }
+
+  String _formatTime(Timestamp time) {
+    DateTime date = time.toDate();
+    return '${date.day}-${date.month}-${date.year} ${date.hour}:${date.minute}';
   }
 }

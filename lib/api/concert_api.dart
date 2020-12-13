@@ -17,7 +17,7 @@ getConcerts(String artistId, ConcertNotifier concertNotifier) async {
 
   snapshot.docs.forEach((document) {
     print('document id: ${document.id}');
-    Concert artist = Concert.fromMap(document.id, document.data());
+    Concert artist = Concert.fromMap(document.data());
     _upcoming.add(artist);
   });
 
@@ -35,7 +35,7 @@ getConcerts(String artistId, ConcertNotifier concertNotifier) async {
 
   snapshot.docs.forEach((document) {
     print('document id: ${document.id}');
-    Concert artist = Concert.fromMap(document.id, document.data());
+    Concert artist = Concert.fromMap(document.data());
     _previous.add(artist);
   });
 
@@ -49,7 +49,7 @@ getConcerts(String artistId, ConcertNotifier concertNotifier) async {
 Future<Venue> getVenue(String venueId) async {
   DocumentSnapshot doc =
       await FirebaseFirestore.instance.collection('venues').doc(venueId).get();
-  return Venue.fromMap(doc.data());
+  return Venue.fromMap(doc.id, doc.data());
 }
 
 getVenuesConcertView(ConcertNotifier concertNotifier) async {
@@ -74,7 +74,8 @@ getVenuesConcertView(ConcertNotifier concertNotifier) async {
 
       if (concertNotifier.upcomingConcerts.length != 0) {
         for (int i = 0; i < concertNotifier.upcomingConcerts.length; i++) {
-          concertNotifier.upcomingConcerts[i].venueName = value[i].name;
+          concertNotifier.upcomingConcerts[i].venueName =
+              value[i + concertNotifier.previousConcerts.length].name;
         }
       }
     },
