@@ -71,6 +71,6 @@ class _ConcertsView extends State<ConcertView> {
   }
 
   Future<Venue> _getVenue() {
-    return getVenue(_venueMap['venueName']);
+    return getVenue(_venueMap['venueId']);
   }
 }

@@ -26,11 +26,8 @@ Future<Artist> getArtist(String artistId) async {
   return Artist.fromMap(artistId, doc.data());
 }
 
-Future<Venue> getVenue(String venueName) async {
-  QuerySnapshot doc = await FirebaseFirestore.instance
-      .collection('venues')
-      .where('venueName', isEqualTo: venueName)
-      .get();
-  print(Venue.fromMap(doc.docs.first.id, doc.docs.first.data()));
-  return Venue.fromMap(doc.docs.first.id, doc.docs.first.data());
+Future<Venue> getVenue(String venueId) async {
+  DocumentSnapshot doc =
+      await FirebaseFirestore.instance.collection('venues').doc(venueId).get();
+  return Venue.fromMap(doc.id, doc.data());
 }
