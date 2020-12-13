@@ -74,7 +74,8 @@ getVenuesConcertView(ConcertNotifier concertNotifier) async {
 
       if (concertNotifier.upcomingConcerts.length != 0) {
         for (int i = 0; i < concertNotifier.upcomingConcerts.length; i++) {
-          concertNotifier.upcomingConcerts[i].venueName = value[i].name;
+          concertNotifier.upcomingConcerts[i].venueName =
+              value[i + concertNotifier.previousConcerts.length].name;
         }
       }
     },

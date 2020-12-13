@@ -12,7 +12,6 @@ final String columnArtistId = 'artistId';
 final String columnArtistName = 'artistName';
 final String columnIsFavorite = 'isFavorite';
 final String columnFavoriteImageURL = 'FavoriteImageURL';
-final String columnVenueId = 'venueId';
 
 class Favorite {
   String artistId;
@@ -49,6 +48,7 @@ final String columnIsBookmarked = 'isBookmarked';
 final String columnTimestamp = 'timestamp';
 final String columnVenueName = 'venueName';
 final String columnArtistImageURL = 'ArtistImageURL';
+final String columnVenueId = 'venueId';
 
 class Bookmark {
   String bookmarkId;
@@ -170,7 +170,7 @@ class DatabaseAPI {
     });
   }
 
-  Future<List<Map<String, dynamic>>> getArtistNameB(String bookmarkId) async {
+  Future<List<Map<String, dynamic>>> getVenueNameB(String bookmarkId) async {
     Database db = await database;
     List<Map<String, dynamic>> artistN = await db.query(bookmarks,
         columns: [columnVenueName],
