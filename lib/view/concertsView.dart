@@ -5,6 +5,7 @@ import 'package:fluttericon/entypo_icons.dart';
 import 'package:livemusic/api/database_api.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
+import 'package:livemusic/notifier/savedBookmarks_notifier.dart';
 import 'package:provider/provider.dart';
 
 import '../colors.dart';
@@ -23,8 +24,7 @@ class _ConcertsView extends State<ConcertsView> {
   DatabaseAPI database = DatabaseAPI.instance;
   ConcertNotifier concertNotifier;
   ArtistNotifier artistNotifier;
-  int _overallIndex = 0;
-  Future<Bookmark> _futureBookmark;
+  SavedBookmarksNotifer savedBookmarks;
 
   void _checkForBookmarks(
       ConcertNotifier concertNotifier, ArtistNotifier artistNotifier) async {
@@ -48,6 +48,7 @@ class _ConcertsView extends State<ConcertsView> {
       print('invalid bookmark');
     }
     if (bookmark.isBookmarked) {
+      savedBookmarks.remove();
       setState(() {
         bookmark.isBookmarked = false;
       });
@@ -59,6 +60,7 @@ class _ConcertsView extends State<ConcertsView> {
         bookmark.isBookmarked = true;
       });
       await database.updateBookmark(bookmark);
+      savedBookmarks.add(bookmark);
       print(
           'Bookmark with id: ${bookmark.bookmarkId} updated to: ${bookmark.isBookmarked}');
     }
@@ -68,8 +70,8 @@ class _ConcertsView extends State<ConcertsView> {
   void initState() {
     concertNotifier = Provider.of<ConcertNotifier>(context, listen: false);
     artistNotifier = Provider.of<ArtistNotifier>(context, listen: false);
+    savedBookmarks = Provider.of<SavedBookmarksNotifer>(context, listen: false);
     _checkForBookmarks(concertNotifier, artistNotifier);
-    _futureBookmark = _bookmark();
     super.initState();
   }
 
@@ -137,7 +139,6 @@ class _ConcertsView extends State<ConcertsView> {
           ? concertNotifier.upcomingConcerts.length
           : concertNotifier.previousConcerts.length,
       itemBuilder: (context, index) {
-        _overallIndex = index;
         return Container(
           padding: EdgeInsets.all(5),
           child: Row(
@@ -175,32 +176,17 @@ class _ConcertsView extends State<ConcertsView> {
                   padding: EdgeInsets.only(right: 10),
                   child: upcomingOrPrevious
                       ? FutureBuilder(
-                          future: _futureBookmark,
-                          builder: (context, AsyncSnapshot<Bookmark> snapshot) {
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.done:
-                                return IconButton(
-                                    onPressed: () {
-                                      _isBookmarked(snapshot.data);
-                                    },
-                                    icon: snapshot.hasData
-                                        ? snapshot.data.isBookmarked
-                                            ? Icon(
-                                                Icons.bookmark,
-                                                color: primaryColor,
-                                              )
-                                            : Icon(
-                                                Icons.bookmark_border,
-                                                color: primaryColor,
-                                              )
-                                        : Text(''));
-                                break;
-                              case ConnectionState.waiting:
-                                return CircularProgressIndicator();
-                                break;
-                              default:
-                                return Text('');
+                          future: _bookmark(index),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              if (snapshot.hasData) {
+                                return snapshot.data;
+                              }
+                            } else {
+                              CircularProgressIndicator();
                             }
+                            return Text('');
                           })
                       : Text(''),
                 ),
@@ -217,11 +203,23 @@ class _ConcertsView extends State<ConcertsView> {
     );
   }
 
-  Future<Bookmark> _bookmark() async {
-    print('overall index is: $_overallIndex');
+  Future<Widget> _bookmark(int index) async {
     Bookmark bookmark = await database
-        .getBookmark(concertNotifier.upcomingConcerts[_overallIndex].concertId);
-    return bookmark;
+        .getBookmark(concertNotifier.upcomingConcerts[index].concertId);
+    return IconButton(
+      onPressed: () {
+        _isBookmarked(bookmark);
+      },
+      icon: bookmark.isBookmarked
+          ? Icon(
+              Icons.bookmark,
+              color: primaryColor,
+            )
+          : Icon(
+              Icons.bookmark_border,
+              color: primaryColor,
+            ),
+    );
   }
 
   Widget _button(BuildContext context, bool upcomingOrPrevious, int index) {

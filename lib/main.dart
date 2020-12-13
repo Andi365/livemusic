@@ -6,6 +6,8 @@ import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:livemusic/notifier/navigation_notifier.dart';
 import 'package:livemusic/notifier/rating_notifier.dart';
+import 'package:livemusic/notifier/savedArtists_notifier.dart';
+import 'package:livemusic/notifier/savedBookmarks_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
@@ -30,6 +32,12 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => ConcertNotifier(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => SavedArtistsNotifer(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SavedBookmarksNotifer(),
+        ),
       ],
       child: MyApp(),
     ),
@@ -44,6 +52,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    SavedArtistsNotifer savedArtistsNotifer =
+        Provider.of<SavedArtistsNotifer>(context, listen: false);
+    SavedBookmarksNotifer savedBookmarksNotifer =
+        Provider.of<SavedBookmarksNotifer>(context, listen: false);
+    savedArtistsNotifer.loadData();
+    savedBookmarksNotifer.loadData();
+  }
+
   final FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {

@@ -8,6 +8,7 @@ import 'package:livemusic/api/database_api.dart';
 import 'package:livemusic/colors.dart';
 import 'package:livemusic/model/Artist.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
+import 'package:livemusic/notifier/savedArtists_notifier.dart';
 import 'package:livemusic/view/concertsView.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +25,7 @@ class ArtistPage extends StatefulWidget {
 
 class _ArtistPage extends State<ArtistPage> {
   bool _isLiked = false;
+  SavedArtistsNotifer savedArtist;
   DatabaseAPI database = DatabaseAPI.instance;
   Map<String, dynamic> artistMap;
   Future<Artist> _artist;
@@ -36,6 +38,7 @@ class _ArtistPage extends State<ArtistPage> {
     print('Entry was: ${f.toMap().toString()}');
     print(f.isFavorite);
     if (f.isFavorite) {
+      savedArtist.remove();
       setState(() {
         _isLiked = false;
       });
@@ -47,6 +50,7 @@ class _ArtistPage extends State<ArtistPage> {
       });
       f.isFavorite = true;
       await database.updateFavorite(f);
+      savedArtist.add(f);
     }
   }
 
@@ -80,7 +84,7 @@ class _ArtistPage extends State<ArtistPage> {
     _checkForFavorite();
     ConcertNotifier concertNotifier =
         Provider.of<ConcertNotifier>(context, listen: false);
-
+    savedArtist = Provider.of<SavedArtistsNotifer>(context, listen: false);
     getConcerts(artistMap['artistId'], concertNotifier);
     super.initState();
   }
