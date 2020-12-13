@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:livemusic/colors.dart';
+import 'package:livemusic/model/colors.dart';
 import 'package:livemusic/notifier/navigation_notifier.dart';
 import 'package:livemusic/view/feed.dart';
 import 'package:livemusic/view/home.dart';

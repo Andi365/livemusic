@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
-import 'package:livemusic/colors.dart';
+import 'package:livemusic/model/colors.dart';
 import 'package:livemusic/view/customTextView.dart';
 
 import '../api/signIn_api.dart';
-import '../colors.dart';
+import '../model/colors.dart';
 import '../model/User.dart';
 
 class LoginPage extends StatefulWidget {

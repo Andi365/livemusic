@@ -9,7 +9,7 @@ import 'package:livemusic/notifier/rating_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
-import '../colors.dart';
+import '../model/colors.dart';
 
 class VotePage extends StatefulWidget {
   @override

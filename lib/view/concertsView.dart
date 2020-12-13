@@ -8,7 +8,7 @@ import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:livemusic/notifier/savedBookmarks_notifier.dart';
 import 'package:provider/provider.dart';
 
-import '../colors.dart';
+import '../model/colors.dart';
 
 class ConcertsView extends StatefulWidget {
   @override
