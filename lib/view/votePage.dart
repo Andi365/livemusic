@@ -22,16 +22,6 @@ class _VotePage extends State<VotePage> {
   Rating _rating;
   bool _isButtonDisabled = true;
 
-  isRatingFound() {
-    setState(() {
-      if (_rating.rating == null || _rating.rating == 0.0) {
-        _isButtonDisabled = true;
-      } else {
-        _isButtonDisabled = false;
-      }
-    });
-  }
-
   @override
   void initState() {
     ArtistNotifier artistNotifier =
@@ -112,7 +102,7 @@ class _VotePage extends State<VotePage> {
               onRated: (double rating) {
                 setState(() {
                   _rating.rating = rating;
-                  isRatingFound();
+                  _isRatingFound();
                 });
               },
             ),
@@ -143,5 +133,15 @@ class _VotePage extends State<VotePage> {
         ),
       ),
     );
+  }
+
+  void _isRatingFound() {
+    setState(() {
+      if (_rating.rating == null || _rating.rating == 0.0) {
+        _isButtonDisabled = true;
+      } else {
+        _isButtonDisabled = false;
+      }
+    });
   }
 }

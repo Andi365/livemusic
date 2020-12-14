@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:livemusic/controller/timeController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -28,8 +29,8 @@ class _ConcertsView extends State<ConcertView> {
   void initState() {
     super.initState();
     _venueMap = widget.map;
-    _venueFuture = _getVenue();
-    _concertFuture = _getConcert();
+    _venueFuture = getVenue(_venueMap['venueId']);
+    _concertFuture = getConcert(_venueMap['concertId']);
   }
 
   @override
@@ -109,7 +110,7 @@ class _ConcertsView extends State<ConcertView> {
               Padding(
                 padding: EdgeInsets.only(top: 5, left: 20),
                 child: Text(
-                  'Date: ${_formatTime(snapshot.data.date)}',
+                  'Date: ${formatTime(snapshot.data.date)}',
                   style: TextStyle(fontSize: 18, color: primaryColor),
                 ),
               )
@@ -118,20 +119,7 @@ class _ConcertsView extends State<ConcertView> {
         : Text('');
   }
 
-  String _formatTime(Timestamp time) {
-    DateTime date = time.toDate();
-    return '${date.day}-${date.month}-${date.year} ${date.hour}:${date.minute}';
-  }
-
   CameraPosition _cameraPosition(double latitude, double longitude) {
     return CameraPosition(target: LatLng(latitude, longitude), zoom: 16);
-  }
-
-  Future<Venue> _getVenue() {
-    return getVenue(_venueMap['venueId']);
-  }
-
-  Future<Concert> _getConcert() {
-    return getConcert(_venueMap['concertId']);
   }
 }

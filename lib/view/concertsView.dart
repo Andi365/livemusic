@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/entypo_icons.dart';
 import 'package:livemusic/api/database_api.dart';
+import 'package:livemusic/controller/timeController.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:livemusic/notifier/savedBookmarks_notifier.dart';
@@ -120,9 +121,9 @@ class _ConcertsView extends State<ConcertsView> {
                       ),
                       Text(
                         upcomingOrPrevious
-                            ? _formatTime(
+                            ? formatTime(
                                 concertNotifier.upcomingConcerts[index].date)
-                            : _formatTime(
+                            : formatTime(
                                 concertNotifier.previousConcerts[index].date),
                         style: TextStyle(color: primaryWhiteColor),
                       ),
@@ -265,10 +266,5 @@ class _ConcertsView extends State<ConcertsView> {
       print(
           'Bookmark with id: ${bookmark.bookmarkId} updated to: ${bookmark.isBookmarked}');
     }
-  }
-
-  String _formatTime(Timestamp time) {
-    DateTime date = time.toDate();
-    return '${date.day}-${date.month}-${date.year} ${date.hour}:${date.minute}';
   }
 }
