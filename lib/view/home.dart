@@ -116,6 +116,8 @@ class _Home extends State<Home> {
                       savedBookmarks.savedBookmarks[index].imageUrl,
                       savedBookmarks.savedBookmarks[index].venueName,
                       venueId: savedBookmarks.savedBookmarks[index].venueId,
+                      concertId:
+                          savedBookmarks.savedBookmarks[index].bookmarkId,
                     );
                   },
                   itemCount: savedBookmarks.savedBookmarks.length,

@@ -46,6 +46,14 @@ getConcerts(String artistId, ConcertNotifier concertNotifier) async {
   getVenuesConcertView(concertNotifier);
 }
 
+Future<Concert> getConcert(String concertId) async {
+  DocumentSnapshot doc = await FirebaseFirestore.instance
+      .collection('concerts')
+      .doc(concertId)
+      .get();
+  return Concert.fromMap(doc.data());
+}
+
 Future<Venue> getVenue(String venueId) async {
   DocumentSnapshot doc =
       await FirebaseFirestore.instance.collection('venues').doc(venueId).get();

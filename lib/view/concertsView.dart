@@ -26,46 +26,6 @@ class _ConcertsView extends State<ConcertsView> {
   ArtistNotifier artistNotifier;
   SavedBookmarksNotifer savedBookmarks;
 
-  void _checkForBookmarks(
-      ConcertNotifier concertNotifier, ArtistNotifier artistNotifier) async {
-    for (int i = 0; i < concertNotifier.upcomingConcerts.length; i++) {
-      Bookmark bookmark = await database
-          .getBookmark(concertNotifier.upcomingConcerts[i].concertId);
-      if (bookmark == null) {
-        bookmark = Bookmark(
-            concertNotifier.upcomingConcerts[i].concertId,
-            concertNotifier.upcomingConcerts[i].venueName,
-            artistNotifier.currentArtist.image,
-            concertNotifier.upcomingConcerts[i].venueId);
-        database.insertBookmark(bookmark);
-        print('No entry found, inserted new ${bookmark.toMap().toString()}');
-      }
-    }
-  }
-
-  void _isBookmarked(Bookmark bookmark) async {
-    if (bookmark == null) {
-      print('invalid bookmark');
-    }
-    if (bookmark.isBookmarked) {
-      savedBookmarks.remove();
-      setState(() {
-        bookmark.isBookmarked = false;
-      });
-      await database.updateBookmark(bookmark);
-      print(
-          'Bookmark with id: ${bookmark.bookmarkId} updated to: ${bookmark.isBookmarked}');
-    } else {
-      setState(() {
-        bookmark.isBookmarked = true;
-      });
-      await database.updateBookmark(bookmark);
-      savedBookmarks.add(bookmark);
-      print(
-          'Bookmark with id: ${bookmark.bookmarkId} updated to: ${bookmark.isBookmarked}');
-    }
-  }
-
   @override
   void initState() {
     concertNotifier = Provider.of<ConcertNotifier>(context, listen: false);
@@ -265,6 +225,46 @@ class _ConcertsView extends State<ConcertsView> {
         ),
       ),
     );
+  }
+
+  void _checkForBookmarks(
+      ConcertNotifier concertNotifier, ArtistNotifier artistNotifier) async {
+    for (int i = 0; i < concertNotifier.upcomingConcerts.length; i++) {
+      Bookmark bookmark = await database
+          .getBookmark(concertNotifier.upcomingConcerts[i].concertId);
+      if (bookmark == null) {
+        bookmark = Bookmark(
+            concertNotifier.upcomingConcerts[i].concertId,
+            concertNotifier.upcomingConcerts[i].venueName,
+            artistNotifier.currentArtist.image,
+            concertNotifier.upcomingConcerts[i].venueId);
+        database.insertBookmark(bookmark);
+        print('No entry found, inserted new ${bookmark.toMap().toString()}');
+      }
+    }
+  }
+
+  void _isBookmarked(Bookmark bookmark) async {
+    if (bookmark == null) {
+      print('invalid bookmark');
+    }
+    if (bookmark.isBookmarked) {
+      savedBookmarks.remove();
+      setState(() {
+        bookmark.isBookmarked = false;
+      });
+      await database.updateBookmark(bookmark);
+      print(
+          'Bookmark with id: ${bookmark.bookmarkId} updated to: ${bookmark.isBookmarked}');
+    } else {
+      setState(() {
+        bookmark.isBookmarked = true;
+      });
+      await database.updateBookmark(bookmark);
+      savedBookmarks.add(bookmark);
+      print(
+          'Bookmark with id: ${bookmark.bookmarkId} updated to: ${bookmark.isBookmarked}');
+    }
   }
 
   String _formatTime(Timestamp time) {
