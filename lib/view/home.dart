@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:livemusic/model/colors.dart';
-import 'package:livemusic/notifier/savedArtists_notifier.dart';
-import 'package:livemusic/notifier/savedBookmarks_notifier.dart';
+import 'package:livemusic/controller/notifier/savedArtists_notifier.dart';
+import 'package:livemusic/controller/notifier/savedBookmarks_notifier.dart';
 import 'package:livemusic/view/cardview.dart';
 import 'package:provider/provider.dart';
 

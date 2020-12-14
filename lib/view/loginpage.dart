@@ -3,7 +3,7 @@ import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:livemusic/model/colors.dart';
 import 'package:livemusic/view/customTextView.dart';
 
-import '../api/signIn_api.dart';
+import '../controller/api/signIn_api.dart';
 import '../model/colors.dart';
 import '../model/User.dart';
 

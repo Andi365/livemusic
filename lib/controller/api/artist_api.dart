@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:livemusic/model/Artist.dart';
-import 'package:livemusic/notifier/artist_notifier.dart';
+import 'package:livemusic/controller/notifier/artist_notifier.dart';
 
 Future<List<Artist>> getArtists(ArtistNotifier artistNotifier) async {
   QuerySnapshot snapshot =
