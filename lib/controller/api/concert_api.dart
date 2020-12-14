@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:livemusic/model/Concert.dart';
 import 'package:livemusic/model/Venue.dart';
-import 'package:livemusic/notifier/concert_notifier.dart';
+import 'package:livemusic/controller/notifier/concert_notifier.dart';
 
 getConcerts(String artistId, ConcertNotifier concertNotifier) async {
   Timestamp now = Timestamp.now();

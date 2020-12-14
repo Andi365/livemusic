@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:livemusic/model/colors.dart';
-import 'package:livemusic/notifier/artist_notifier.dart';
+import 'package:livemusic/controller/notifier/artist_notifier.dart';
 import 'package:provider/provider.dart';
 
 class Members extends StatelessWidget {

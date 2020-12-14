@@ -5,7 +5,7 @@ import 'package:livemusic/controller/timeController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:livemusic/api/concert_api.dart';
+import 'package:livemusic/controller/api/concert_api.dart';
 import 'package:livemusic/model/Concert.dart';
 import 'package:livemusic/model/colors.dart';
 import 'package:livemusic/model/Venue.dart';

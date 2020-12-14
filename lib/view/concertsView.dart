@@ -1,12 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/entypo_icons.dart';
-import 'package:livemusic/api/database_api.dart';
+import 'package:livemusic/controller/api/database_api.dart';
 import 'package:livemusic/controller/timeController.dart';
-import 'package:livemusic/notifier/artist_notifier.dart';
-import 'package:livemusic/notifier/concert_notifier.dart';
-import 'package:livemusic/notifier/savedBookmarks_notifier.dart';
+import 'package:livemusic/controller/notifier/artist_notifier.dart';
+import 'package:livemusic/controller/notifier/concert_notifier.dart';
+import 'package:livemusic/controller/notifier/savedBookmarks_notifier.dart';
 import 'package:provider/provider.dart';
 
 import '../model/colors.dart';
