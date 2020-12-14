@@ -107,7 +107,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/google_logo.png
-    - assets/images/arctic_mokeys.jpg
+  #  - assets/images/arctic_mokeys.jpg
     - assets/icons/app_icon.png
   #   - images/a_dot_ham.jpeg
 
