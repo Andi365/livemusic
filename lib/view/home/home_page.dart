@@ -8,12 +8,12 @@ import 'package:livemusic/controller/notifier/saved_bookmarks_notifier.dart';
 import 'package:livemusic/view/cardview.dart';
 import 'package:provider/provider.dart';
 
-class Home extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _Home createState() => _Home();
+  _HomePage createState() => _HomePage();
 }
 
-class _Home extends State<Home> {
+class _HomePage extends State<HomePage> {
   SavedArtistsNotifer savedArtists;
   SavedBookmarksNotifer savedBookmarks;
   FirebaseAuth auth = FirebaseAuth.instance;
