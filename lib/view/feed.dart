@@ -20,7 +20,7 @@ class _FeedState extends State<Feed> {
   @override
   void initState() {
     artistNotifier = Provider.of<ArtistNotifier>(context, listen: false);
-    _artists = _getArtists();
+    _artists = getArtists(artistNotifier);
     super.initState();
   }
 
@@ -116,9 +116,5 @@ class _FeedState extends State<Feed> {
             }
           },
         ));
-  }
-
-  Future<List<Artist>> _getArtists() async {
-    return getArtists(artistNotifier);
   }
 }

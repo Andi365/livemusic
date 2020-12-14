@@ -20,11 +20,6 @@ class _Home extends State<Home> {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     savedArtists = Provider.of<SavedArtistsNotifer>(context);
     savedBookmarks = Provider.of<SavedBookmarksNotifer>(context);

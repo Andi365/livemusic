@@ -168,6 +168,55 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _loginGoogle() {
+    return Container(
+      padding: EdgeInsets.only(top: 20, bottom: 15, right: 60, left: 60),
+      child: SizedBox(
+        width: double.infinity,
+        child: GoogleSignInButton(
+          onPressed: () {
+            signInWithGoogle().then(
+              (result) {
+                if (result != null) {
+                  Navigator.of(context).pushReplacementNamed('/');
+                }
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _loginAnonymously() {
+    return Center(
+      child: InkWell(
+        onTap: () {
+          signInAnonymously().then(
+            (result) {
+              if (result != null) {
+                Navigator.of(context).pushReplacementNamed('/');
+              }
+            },
+          );
+        },
+        child: Text(
+          'Later',
+          style: TextStyle(fontSize: 14, color: Colors.grey),
+        ),
+      ),
+    );
+  }
+
+  Widget _displayLogo(double size) {
+    return Container(
+        child: Image.asset(
+      'assets/icons/app_icon.png',
+      width: size,
+      height: size,
+    ));
+  }
+
   void _validateLoginInput() async {
     final FormState form = _formKeyLogin.currentState;
     form.save();
@@ -406,55 +455,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
     });
-  }
-
-  Widget _loginGoogle() {
-    return Container(
-      padding: EdgeInsets.only(top: 20, bottom: 15, right: 60, left: 60),
-      child: SizedBox(
-        width: double.infinity,
-        child: GoogleSignInButton(
-          onPressed: () {
-            signInWithGoogle().then(
-              (result) {
-                if (result != null) {
-                  Navigator.of(context).pushReplacementNamed('/');
-                }
-              },
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _loginAnonymously() {
-    return Center(
-      child: InkWell(
-        onTap: () {
-          signInAnonymously().then(
-            (result) {
-              if (result != null) {
-                Navigator.of(context).pushReplacementNamed('/');
-              }
-            },
-          );
-        },
-        child: Text(
-          'Later',
-          style: TextStyle(fontSize: 14, color: Colors.grey),
-        ),
-      ),
-    );
-  }
-
-  Widget _displayLogo(double size) {
-    return Container(
-        child: Image.asset(
-      'assets/icons/app_icon.png',
-      width: size,
-      height: size,
-    ));
   }
 
   String emailValidator(String value) {

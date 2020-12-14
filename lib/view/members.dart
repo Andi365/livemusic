@@ -4,8 +4,6 @@ import 'package:livemusic/model/colors.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:provider/provider.dart';
 
-import 'membersIndv.dart';
-
 class Members extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -37,12 +35,11 @@ class Members extends StatelessWidget {
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return MembersIndv(
-                (artistNotifier.currentArtist.members
-                    .elementAt(index))['image'],
-                (artistNotifier.currentArtist.members
-                    .elementAt(index))['member'],
-              );
+              return _membersIndv(
+                  (artistNotifier.currentArtist.members
+                      .elementAt(index))['image'],
+                  (artistNotifier.currentArtist.members
+                      .elementAt(index))['member']);
             },
             itemCount: artistNotifier.currentArtist.members.length,
           ),
@@ -50,4 +47,30 @@ class Members extends StatelessWidget {
       ],
     );
   }
+}
+
+Widget _membersIndv(String image, String member) {
+  return Container(
+    margin: EdgeInsets.all(5),
+    height: double.infinity,
+    width: 60,
+    child: Column(
+      children: [
+        Container(
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 3),
+          child: Image.network(
+            image,
+            height: 80,
+            width: 55,
+            fit: BoxFit.cover,
+          ),
+        ),
+        Text(
+          member,
+          style:
+              TextStyle(fontSize: 9, color: Color.fromRGBO(255, 255, 255, 1)),
+        )
+      ],
+    ),
+  );
 }

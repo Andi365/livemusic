@@ -35,7 +35,7 @@ class _ArtistPage extends State<ArtistPage> {
   @override
   void initState() {
     artistMap = widget.map;
-    _artist = _getArtist();
+    _artist = getArtist(artistMap['artistId']);
 
     _checkForFavorite();
     ConcertNotifier concertNotifier =
@@ -383,10 +383,5 @@ class _ArtistPage extends State<ArtistPage> {
         });
       }
     }
-  }
-
-  Future<Artist> _getArtist() async {
-    print(artistMap['artistId']);
-    return getArtist(artistMap['artistId']);
   }
 }
