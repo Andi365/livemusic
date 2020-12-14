@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:livemusic/model/User.dart';
+import 'package:livemusic/model/user.dart';
 
 class Rating {
   var rating;
@@ -9,7 +9,7 @@ class Rating {
   String userId = User().id;
   var wasCreated;
 
-  Rating();
+  Rating(this.artistName, this.date, this.artistId, this.wasCreated);
 
   Rating.fromMap(Map<String, dynamic> data) {
     rating = data['rating'].toDouble();

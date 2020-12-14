@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:livemusic/api/rating_api.dart';
-import 'package:livemusic/model/Rating.dart';
-import 'package:livemusic/notifier/artist_notifier.dart';
-import 'package:livemusic/notifier/concert_notifier.dart';
-import 'package:livemusic/notifier/rating_notifier.dart';
+import 'package:livemusic/model/rating.dart';
+import 'package:livemusic/controller/notifier/artist_notifier.dart';
+import 'package:livemusic/controller/notifier/concert_notifier.dart';
+import 'package:livemusic/controller/notifier/rating_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
-import '../colors.dart';
+import '../../model/colors.dart';
 
 class VotePage extends StatefulWidget {
   @override
@@ -22,16 +22,6 @@ class _VotePage extends State<VotePage> {
   Rating _rating;
   bool _isButtonDisabled = true;
 
-  isRatingFound() {
-    setState(() {
-      if (_rating.rating == null || _rating.rating == 0.0) {
-        _isButtonDisabled = true;
-      } else {
-        _isButtonDisabled = false;
-      }
-    });
-  }
-
   @override
   void initState() {
     ArtistNotifier artistNotifier =
@@ -43,11 +33,11 @@ class _VotePage extends State<VotePage> {
     if (ratingNotifier.rating != null) {
       _rating = ratingNotifier.rating;
     } else {
-      _rating = Rating();
-      _rating.wasCreated = Timestamp.now();
-      _rating.artistId = artistNotifier.currentArtist.id;
-      _rating.artistName = artistNotifier.currentArtist.name;
-      _rating.date = concertNotifier.currentConcert.date;
+      _rating = Rating(
+          artistNotifier.currentArtist.name,
+          concertNotifier.currentConcert.date,
+          artistNotifier.currentArtist.id,
+          Timestamp.now());
     }
     super.initState();
   }
@@ -75,7 +65,11 @@ class _VotePage extends State<VotePage> {
               children: [
                 Opacity(
                   opacity: 0.3,
-                  child: Image.network(artistNotifier.currentArtist.image),
+                  child: Image.network(
+                    artistNotifier.currentArtist.image,
+                    height: 350,
+                    width: double.infinity,
+                  ),
                 ),
                 Positioned.fill(
                   child: Align(
@@ -108,7 +102,7 @@ class _VotePage extends State<VotePage> {
               onRated: (double rating) {
                 setState(() {
                   _rating.rating = rating;
-                  isRatingFound();
+                  _isRatingFound();
                 });
               },
             ),
@@ -139,5 +133,15 @@ class _VotePage extends State<VotePage> {
         ),
       ),
     );
+  }
+
+  void _isRatingFound() {
+    setState(() {
+      if (_rating.rating == null || _rating.rating == 0.0) {
+        _isButtonDisabled = true;
+      } else {
+        _isButtonDisabled = false;
+      }
+    });
   }
 }

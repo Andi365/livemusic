@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
-import 'package:livemusic/colors.dart';
-import 'package:livemusic/view/customTextView.dart';
+import 'package:livemusic/model/colors.dart';
+import 'package:livemusic/view/login/custom_textview.dart';
 
-import '../api/signIn_api.dart';
-import '../colors.dart';
-import '../model/User.dart';
+import '../../api/signIn_api.dart';
+import '../../model/colors.dart';
+import '../../model/user.dart';
 
 class LoginPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginPage createState() => _LoginPage();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPage extends State<LoginPage> {
   //Some inspiration from here
   //https://github.com/pr-Mais/flutter_firebase_login
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     _loading = false;
 
-    StreamBuilder(
+    /*StreamBuilder(
       stream: auth.authStateChanges(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.of(context).pushReplacementNamed('/login');
         }
       },
-    );
+    );*/
     super.initState();
   }
 
@@ -166,6 +166,55 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Widget _loginGoogle() {
+    return Container(
+      padding: EdgeInsets.only(top: 20, bottom: 15, right: 60, left: 60),
+      child: SizedBox(
+        width: double.infinity,
+        child: GoogleSignInButton(
+          onPressed: () {
+            signInWithGoogle().then(
+              (result) {
+                if (result != null) {
+                  Navigator.of(context).pushReplacementNamed('/');
+                }
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _loginAnonymously() {
+    return Center(
+      child: InkWell(
+        onTap: () {
+          signInAnonymously().then(
+            (result) {
+              if (result != null) {
+                Navigator.of(context).pushReplacementNamed('/');
+              }
+            },
+          );
+        },
+        child: Text(
+          'Later',
+          style: TextStyle(fontSize: 14, color: Colors.grey),
+        ),
+      ),
+    );
+  }
+
+  Widget _displayLogo(double size) {
+    return Container(
+        child: Image.asset(
+      'assets/icons/app_icon.png',
+      width: size,
+      height: size,
+    ));
   }
 
   void _validateLoginInput() async {
@@ -406,55 +455,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
     });
-  }
-
-  Widget _loginGoogle() {
-    return Container(
-      padding: EdgeInsets.only(top: 20, bottom: 15, right: 60, left: 60),
-      child: SizedBox(
-        width: double.infinity,
-        child: GoogleSignInButton(
-          onPressed: () {
-            signInWithGoogle().then(
-              (result) {
-                if (result != null) {
-                  Navigator.of(context).pushReplacementNamed('/');
-                }
-              },
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _loginAnonymously() {
-    return Center(
-      child: InkWell(
-        onTap: () {
-          signInAnonymously().then(
-            (result) {
-              if (result != null) {
-                Navigator.of(context).pushReplacementNamed('/');
-              }
-            },
-          );
-        },
-        child: Text(
-          'Later',
-          style: TextStyle(fontSize: 14, color: Colors.grey),
-        ),
-      ),
-    );
-  }
-
-  Widget _displayLogo(double size) {
-    return Container(
-        child: Image.asset(
-      'assets/icons/app_icon.png',
-      width: size,
-      height: size,
-    ));
   }
 
   String emailValidator(String value) {

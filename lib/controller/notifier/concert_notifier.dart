@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
-import 'package:livemusic/model/Concert.dart';
+import 'package:livemusic/model/concert.dart';
 
 class ConcertNotifier with ChangeNotifier {
   List<Concert> _upcomingConcerts = [];

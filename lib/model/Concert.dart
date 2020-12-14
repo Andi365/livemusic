@@ -8,9 +8,11 @@ class Concert {
   String venueId;
   String _venueName;
 
-  Concert.fromMap(String concertId, Map<String, dynamic> data) {
-    this.concertId = concertId;
-    date = data['date'];
+  Concert.fromMap(Map<String, dynamic> data) {
+    Timestamp timestamp = data['date'];
+    int seconds = timestamp.seconds;
+    this.concertId = '${data['artistId']}_$seconds';
+    date = timestamp;
     name = data['name'];
     artistId = data['artistId'];
     venueId = data['venueId'];
