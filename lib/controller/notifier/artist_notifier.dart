@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
-import 'package:livemusic/model/Artist.dart';
+import 'package:livemusic/model/artist.dart';
 
 class ArtistNotifier with ChangeNotifier {
   List<Artist> _artistList = [];

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:livemusic/model/Concert.dart';
-import 'package:livemusic/model/Venue.dart';
+import 'package:livemusic/model/concert.dart';
+import 'package:livemusic/model/venue.dart';
 import 'package:livemusic/controller/notifier/concert_notifier.dart';
 
 getConcerts(String artistId, ConcertNotifier concertNotifier) async {

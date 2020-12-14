@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:livemusic/controller/timeController.dart';
+import 'package:livemusic/controller/time_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:livemusic/controller/api/concert_api.dart';
-import 'package:livemusic/model/Concert.dart';
+import 'package:livemusic/api/concert_api.dart';
+import 'package:livemusic/model/concert.dart';
 import 'package:livemusic/model/colors.dart';
-import 'package:livemusic/model/Venue.dart';
+import 'package:livemusic/model/venue.dart';
 
 class ConcertView extends StatefulWidget {
   final Map<String, dynamic> map;

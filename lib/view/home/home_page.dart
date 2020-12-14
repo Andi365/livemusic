@@ -3,17 +3,17 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:livemusic/model/colors.dart';
-import 'package:livemusic/controller/notifier/savedArtists_notifier.dart';
-import 'package:livemusic/controller/notifier/savedBookmarks_notifier.dart';
-import 'package:livemusic/view/cardview.dart';
+import 'package:livemusic/controller/notifier/saved_artists_notifier.dart';
+import 'package:livemusic/controller/notifier/saved_bookmarks_notifier.dart';
+import 'package:livemusic/view/card_view.dart';
 import 'package:provider/provider.dart';
 
-class Home extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _Home createState() => _Home();
+  _HomePage createState() => _HomePage();
 }
 
-class _Home extends State<Home> {
+class _HomePage extends State<HomePage> {
   SavedArtistsNotifer savedArtists;
   SavedBookmarksNotifer savedBookmarks;
   FirebaseAuth auth = FirebaseAuth.instance;

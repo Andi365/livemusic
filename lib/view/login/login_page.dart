@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:livemusic/model/colors.dart';
-import 'package:livemusic/view/customTextView.dart';
+import 'package:livemusic/view/login/custom_textview.dart';
 
-import '../controller/api/signIn_api.dart';
-import '../model/colors.dart';
-import '../model/User.dart';
+import '../../api/signIn_api.dart';
+import '../../model/colors.dart';
+import '../../model/user.dart';
 
 class LoginPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginPage createState() => _LoginPage();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPage extends State<LoginPage> {
   //Some inspiration from here
   //https://github.com/pr-Mais/flutter_firebase_login
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:livemusic/model/Rating.dart';
+import 'package:livemusic/model/rating.dart';
 import 'package:livemusic/controller/notifier/rating_notifier.dart';
 
 uploadRating(

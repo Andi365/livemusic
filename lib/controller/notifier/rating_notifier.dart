@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
-import 'package:livemusic/model/Rating.dart';
+import 'package:livemusic/model/rating.dart';
 
 class RatingNotifier with ChangeNotifier {
   List<Rating> _ratingList = [];

@@ -2,15 +2,15 @@ import 'dart:ui';
 
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:livemusic/controller/api/artist_api.dart';
-import 'package:livemusic/controller/api/concert_api.dart';
-import 'package:livemusic/controller/api/database_api.dart';
+import 'package:livemusic/api/artist_api.dart';
+import 'package:livemusic/api/concert_api.dart';
+import 'package:livemusic/api/database_api.dart';
 import 'package:livemusic/model/colors.dart';
-import 'package:livemusic/model/Artist.dart';
+import 'package:livemusic/model/artist.dart';
 import 'package:livemusic/controller/notifier/artist_notifier.dart';
 import 'package:livemusic/controller/notifier/concert_notifier.dart';
-import 'package:livemusic/controller/notifier/savedArtists_notifier.dart';
-import 'package:livemusic/view/concertsView.dart';
+import 'package:livemusic/controller/notifier/saved_artists_notifier.dart';
+import 'package:livemusic/view/artist/concerts_view.dart';
 import 'package:provider/provider.dart';
 
 class ArtistPage extends StatefulWidget {

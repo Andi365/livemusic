@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
-import 'package:livemusic/controller/api/database_api.dart';
+import 'package:livemusic/api/database_api.dart';
 
 class SavedArtistsNotifer with ChangeNotifier {
   final List<Favorite> _savedArtists = [];
