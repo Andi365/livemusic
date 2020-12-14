@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:livemusic/api/database_api.dart';
-import 'package:livemusic/colors.dart';
+import 'package:livemusic/model/colors.dart';
 import 'package:livemusic/notifier/savedArtists_notifier.dart';
 import 'package:livemusic/notifier/savedBookmarks_notifier.dart';
 import 'package:livemusic/view/cardview.dart';
@@ -116,6 +116,8 @@ class _Home extends State<Home> {
                       savedBookmarks.savedBookmarks[index].imageUrl,
                       savedBookmarks.savedBookmarks[index].venueName,
                       venueId: savedBookmarks.savedBookmarks[index].venueId,
+                      concertId:
+                          savedBookmarks.savedBookmarks[index].bookmarkId,
                     );
                   },
                   itemCount: savedBookmarks.savedBookmarks.length,

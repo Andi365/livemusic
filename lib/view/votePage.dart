@@ -9,7 +9,7 @@ import 'package:livemusic/notifier/rating_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
-import '../colors.dart';
+import '../model/colors.dart';
 
 class VotePage extends StatefulWidget {
   @override
@@ -43,11 +43,11 @@ class _VotePage extends State<VotePage> {
     if (ratingNotifier.rating != null) {
       _rating = ratingNotifier.rating;
     } else {
-      _rating = Rating();
-      _rating.wasCreated = Timestamp.now();
-      _rating.artistId = artistNotifier.currentArtist.id;
-      _rating.artistName = artistNotifier.currentArtist.name;
-      _rating.date = concertNotifier.currentConcert.date;
+      _rating = Rating(
+          artistNotifier.currentArtist.name,
+          concertNotifier.currentConcert.date,
+          artistNotifier.currentArtist.id,
+          Timestamp.now());
     }
     super.initState();
   }
@@ -75,7 +75,11 @@ class _VotePage extends State<VotePage> {
               children: [
                 Opacity(
                   opacity: 0.3,
-                  child: Image.network(artistNotifier.currentArtist.image),
+                  child: Image.network(
+                    artistNotifier.currentArtist.image,
+                    height: 350,
+                    width: double.infinity,
+                  ),
                 ),
                 Positioned.fill(
                   child: Align(

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:livemusic/model/Artist.dart';
-import 'package:livemusic/model/Venue.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
 
 Future<List<Artist>> getArtists(ArtistNotifier artistNotifier) async {
@@ -24,10 +23,4 @@ Future<Artist> getArtist(String artistId) async {
       await FirebaseFirestore.instance.collection('Artist').doc(artistId).get();
 
   return Artist.fromMap(artistId, doc.data());
-}
-
-Future<Venue> getVenue(String venueId) async {
-  DocumentSnapshot doc =
-      await FirebaseFirestore.instance.collection('venues').doc(venueId).get();
-  return Venue.fromMap(doc.id, doc.data());
 }

@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:livemusic/api/artist_api.dart';
 import 'package:livemusic/api/concert_api.dart';
 import 'package:livemusic/api/database_api.dart';
-import 'package:livemusic/colors.dart';
+import 'package:livemusic/model/colors.dart';
 import 'package:livemusic/model/Artist.dart';
+import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:livemusic/notifier/savedArtists_notifier.dart';
 import 'package:livemusic/view/concertsView.dart';
@@ -29,52 +30,7 @@ class _ArtistPage extends State<ArtistPage> {
   DatabaseAPI database = DatabaseAPI.instance;
   Map<String, dynamic> artistMap;
   Future<Artist> _artist;
-
-  void _isLikedCheck() async {
-    Favorite f = await database.getFavorite(artistMap['artistId']);
-    if (f == null) {
-      print('no entry found');
-    }
-    print('Entry was: ${f.toMap().toString()}');
-    print(f.isFavorite);
-    if (f.isFavorite) {
-      savedArtist.remove();
-      setState(() {
-        _isLiked = false;
-      });
-      f.isFavorite = false;
-      await database.updateFavorite(f);
-    } else {
-      setState(() {
-        _isLiked = true;
-      });
-      f.isFavorite = true;
-      await database.updateFavorite(f);
-      savedArtist.add(f);
-    }
-  }
-
-  void _checkForFavorite() async {
-    Favorite f = await database.getFavorite(artistMap['artistId']);
-    if (f == null) {
-      f = Favorite(
-          artistMap['artistId'], false, artistMap['image'], artistMap['name']);
-      _isLiked = false;
-      print('No entry found, inserted new');
-      database.insertFavorite(f);
-    } else {
-      print('inital entry was: ${f.toMap().toString()}');
-      if (f.isFavorite) {
-        setState(() {
-          _isLiked = true;
-        });
-      } else {
-        setState(() {
-          _isLiked = false;
-        });
-      }
-    }
-  }
+  ArtistNotifier artistNotifier;
 
   @override
   void initState() {
@@ -84,6 +40,7 @@ class _ArtistPage extends State<ArtistPage> {
     _checkForFavorite();
     ConcertNotifier concertNotifier =
         Provider.of<ConcertNotifier>(context, listen: false);
+
     savedArtist = Provider.of<SavedArtistsNotifer>(context, listen: false);
     getConcerts(artistMap['artistId'], concertNotifier);
     super.initState();
@@ -91,6 +48,7 @@ class _ArtistPage extends State<ArtistPage> {
 
   @override
   Widget build(BuildContext context) {
+    artistNotifier = Provider.of<ArtistNotifier>(context);
     return Scaffold(
       backgroundColor: backgroundColor,
       body: FutureBuilder(
@@ -306,8 +264,8 @@ class _ArtistPage extends State<ArtistPage> {
         ),
         Padding(
           padding: EdgeInsets.only(left: 8),
-          child:
-              Text('Rock', style: TextStyle(fontSize: 18, color: primaryColor)),
+          child: Text(artistNotifier.currentArtist.genre,
+              style: TextStyle(fontSize: 18, color: primaryColor)),
         ),
       ],
     );
@@ -379,6 +337,52 @@ class _ArtistPage extends State<ArtistPage> {
         ),
       ),
     );
+  }
+
+  void _isLikedCheck() async {
+    Favorite f = await database.getFavorite(artistMap['artistId']);
+    if (f == null) {
+      print('no entry found');
+    }
+    print('Entry was: ${f.toMap().toString()}');
+    print(f.isFavorite);
+    if (f.isFavorite) {
+      savedArtist.remove();
+      setState(() {
+        _isLiked = false;
+      });
+      f.isFavorite = false;
+      await database.updateFavorite(f);
+    } else {
+      setState(() {
+        _isLiked = true;
+      });
+      f.isFavorite = true;
+      await database.updateFavorite(f);
+      savedArtist.add(f);
+    }
+  }
+
+  void _checkForFavorite() async {
+    Favorite f = await database.getFavorite(artistMap['artistId']);
+    if (f == null) {
+      f = Favorite(
+          artistMap['artistId'], false, artistMap['image'], artistMap['name']);
+      _isLiked = false;
+      print('No entry found, inserted new');
+      database.insertFavorite(f);
+    } else {
+      print('inital entry was: ${f.toMap().toString()}');
+      if (f.isFavorite) {
+        setState(() {
+          _isLiked = true;
+        });
+      } else {
+        setState(() {
+          _isLiked = false;
+        });
+      }
+    }
   }
 
   Future<Artist> _getArtist() async {

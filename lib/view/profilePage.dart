@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:livemusic/api/signIn_api.dart';
 
-import 'package:livemusic/colors.dart';
+import 'package:livemusic/model/colors.dart';
 import 'package:livemusic/model/User.dart';
 import 'package:livemusic/notifier/navigation_notifier.dart';
 import 'package:livemusic/notifier/rating_notifier.dart';
@@ -9,7 +9,7 @@ import 'package:livemusic/api/rating_api.dart';
 import 'package:livemusic/view/loginpage.dart';
 import 'package:provider/provider.dart';
 
-import '../colors.dart';
+import '../model/colors.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
