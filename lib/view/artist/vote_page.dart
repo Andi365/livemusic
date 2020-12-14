@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:livemusic/controller/api/rating_api.dart';
+import 'package:livemusic/api/rating_api.dart';
 import 'package:livemusic/model/rating.dart';
 import 'package:livemusic/controller/notifier/artist_notifier.dart';
 import 'package:livemusic/controller/notifier/concert_notifier.dart';

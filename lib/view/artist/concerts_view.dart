@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/entypo_icons.dart';
-import 'package:livemusic/controller/api/database_api.dart';
+import 'package:livemusic/api/database_api.dart';
 import 'package:livemusic/controller/time_controller.dart';
 import 'package:livemusic/controller/notifier/artist_notifier.dart';
 import 'package:livemusic/controller/notifier/concert_notifier.dart';

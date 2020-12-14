@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:livemusic/controller/api/signIn_api.dart';
+import 'package:livemusic/api/signIn_api.dart';
 
 import 'package:livemusic/model/colors.dart';
 import 'package:livemusic/model/user.dart';
 import 'package:livemusic/controller/notifier/navigation_notifier.dart';
 import 'package:livemusic/controller/notifier/rating_notifier.dart';
-import 'package:livemusic/controller/api/rating_api.dart';
+import 'package:livemusic/api/rating_api.dart';
 import 'package:livemusic/view/login/login_page.dart';
 import 'package:provider/provider.dart';
 

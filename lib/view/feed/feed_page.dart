@@ -6,7 +6,7 @@ import 'package:livemusic/model/artist.dart';
 import 'package:livemusic/controller/notifier/artist_notifier.dart';
 import 'package:provider/provider.dart';
 
-import '../../controller/api/artist_api.dart';
+import '../../api/artist_api.dart';
 
 class FeedPage extends StatefulWidget {
   @override

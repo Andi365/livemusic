@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:livemusic/model/colors.dart';
 import 'package:livemusic/controller/notifier/saved_artists_notifier.dart';
 import 'package:livemusic/controller/notifier/saved_bookmarks_notifier.dart';
-import 'package:livemusic/view/cardview.dart';
+import 'package:livemusic/view/card_view.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:livemusic/model/colors.dart';
 import 'package:livemusic/controller/notifier/navigation_notifier.dart';
 import 'package:livemusic/view/feed/feed_page.dart';
-import 'package:livemusic/view/home.dart';
+import 'package:livemusic/view/home/home_page.dart';
 import 'package:livemusic/view/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +13,7 @@ class Navigation extends StatefulWidget {
 
 class _Navigation extends State<Navigation> {
   var currentTab = [
-    Home(),
+    HomePage(),
     FeedPage(),
     ProfilePage(),
     ProfilePage(),
