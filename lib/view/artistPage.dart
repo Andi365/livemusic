@@ -7,6 +7,7 @@ import 'package:livemusic/api/concert_api.dart';
 import 'package:livemusic/api/database_api.dart';
 import 'package:livemusic/model/colors.dart';
 import 'package:livemusic/model/Artist.dart';
+import 'package:livemusic/notifier/artist_notifier.dart';
 import 'package:livemusic/notifier/concert_notifier.dart';
 import 'package:livemusic/notifier/savedArtists_notifier.dart';
 import 'package:livemusic/view/concertsView.dart';
@@ -29,6 +30,7 @@ class _ArtistPage extends State<ArtistPage> {
   DatabaseAPI database = DatabaseAPI.instance;
   Map<String, dynamic> artistMap;
   Future<Artist> _artist;
+  ArtistNotifier artistNotifier;
 
   @override
   void initState() {
@@ -38,6 +40,7 @@ class _ArtistPage extends State<ArtistPage> {
     _checkForFavorite();
     ConcertNotifier concertNotifier =
         Provider.of<ConcertNotifier>(context, listen: false);
+
     savedArtist = Provider.of<SavedArtistsNotifer>(context, listen: false);
     getConcerts(artistMap['artistId'], concertNotifier);
     super.initState();
@@ -45,6 +48,7 @@ class _ArtistPage extends State<ArtistPage> {
 
   @override
   Widget build(BuildContext context) {
+    artistNotifier = Provider.of<ArtistNotifier>(context);
     return Scaffold(
       backgroundColor: backgroundColor,
       body: FutureBuilder(
@@ -260,8 +264,8 @@ class _ArtistPage extends State<ArtistPage> {
         ),
         Padding(
           padding: EdgeInsets.only(left: 8),
-          child:
-              Text('Rock', style: TextStyle(fontSize: 18, color: primaryColor)),
+          child: Text(artistNotifier.currentArtist.genre,
+              style: TextStyle(fontSize: 18, color: primaryColor)),
         ),
       ],
     );
