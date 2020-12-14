@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:livemusic/api/artist_api.dart';
-import 'package:livemusic/api/concert_api.dart';
-import 'package:livemusic/api/database_api.dart';
+import 'package:livemusic/controller/api/artist_api.dart';
+import 'package:livemusic/controller/api/concert_api.dart';
+import 'package:livemusic/controller/api/database_api.dart';
 import 'package:livemusic/model/colors.dart';
 import 'package:livemusic/model/Artist.dart';
 import 'package:livemusic/notifier/artist_notifier.dart';
