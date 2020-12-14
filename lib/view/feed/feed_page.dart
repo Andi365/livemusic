@@ -2,18 +2,18 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:livemusic/model/colors.dart';
-import 'package:livemusic/model/Artist.dart';
+import 'package:livemusic/model/artist.dart';
 import 'package:livemusic/controller/notifier/artist_notifier.dart';
 import 'package:provider/provider.dart';
 
-import '../controller/api/artist_api.dart';
+import '../../controller/api/artist_api.dart';
 
-class Feed extends StatefulWidget {
+class FeedPage extends StatefulWidget {
   @override
-  _FeedState createState() => _FeedState();
+  _FeedPage createState() => _FeedPage();
 }
 
-class _FeedState extends State<Feed> {
+class _FeedPage extends State<FeedPage> {
   Future<List<Artist>> _artists;
   ArtistNotifier artistNotifier;
 

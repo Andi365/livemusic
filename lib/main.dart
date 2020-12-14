@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:livemusic/controller/routeGenerator.dart';
+import 'package:livemusic/controller/route_generator.dart';
 import 'package:livemusic/controller/notifier/artist_notifier.dart';
 import 'package:livemusic/controller/notifier/concert_notifier.dart';
 import 'package:livemusic/controller/notifier/navigation_notifier.dart';
 import 'package:livemusic/controller/notifier/rating_notifier.dart';
-import 'package:livemusic/controller/notifier/savedArtists_notifier.dart';
-import 'package:livemusic/controller/notifier/savedBookmarks_notifier.dart';
+import 'package:livemusic/controller/notifier/saved_artists_notifier.dart';
+import 'package:livemusic/controller/notifier/saved_bookmarks_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 

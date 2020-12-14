@@ -2,13 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/entypo_icons.dart';
 import 'package:livemusic/controller/api/database_api.dart';
-import 'package:livemusic/controller/timeController.dart';
+import 'package:livemusic/controller/time_controller.dart';
 import 'package:livemusic/controller/notifier/artist_notifier.dart';
 import 'package:livemusic/controller/notifier/concert_notifier.dart';
-import 'package:livemusic/controller/notifier/savedBookmarks_notifier.dart';
+import 'package:livemusic/controller/notifier/saved_bookmarks_notifier.dart';
 import 'package:provider/provider.dart';
 
-import '../model/colors.dart';
+import '../../model/colors.dart';
 
 class ConcertsView extends StatefulWidget {
   @override
